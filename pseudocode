@@ -1,0 +1,7 @@
+
+
+miss_pc = searchMissPC(trace);
+
+while(!isAllTerminal(sources) && !samePC()) {
+    backtrace(miss_pc);
+}
