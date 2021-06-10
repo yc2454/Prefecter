@@ -110,6 +110,8 @@ uint64_t search_last_occurence(uint64_t miss_pc) {
             found = 1;
         }
     }
+
+    return -1;
 }
 
 
