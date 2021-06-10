@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <assert.h>
-#include "graph.h"
+// #include "graph.h"
 
 // store the trace name here
 char trace_string[1024];
@@ -198,10 +198,10 @@ int main(int argc, char** argv)
 
     cout << sizeof(input_instr) << endl;
 
-    while (read_from_trace())
-    {
-        count += read_from_trace();
-    }
+    // while (read_from_trace())
+    // {
+    //     count += read_from_trace();
+    // }
 
     
     return 0;
