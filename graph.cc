@@ -1,44 +1,50 @@
+#include "graph.h"
 
-#include <iostream> // for std::cout
-#include <utility> // for std::pair
-#include <algorithm> // for std::for_each
-#include <string>
-#include <boost/graph/graph_traits.hpp>
-#include <boost/graph/adjacency_list.hpp>
-#include <boost/graph/dijkstra_shortest_paths.hpp>
-using namespace boost;
+EdgeProperty ep; 
 
-int main(int,char*[])
-{
-    struct VertexProperty{
-
-        int id, size;
-
-    };
-
-    struct EdgeProperty {
-
-        int id;
-        int weight;
-
-    };
+Graph graph_create() {
     
-    typedef boost::adjacency_list<boost::vecS, boost::vecS,       
-             boost::bidirectionalS, VertexProperty, EdgeProperty>
-        Graph;
+    Graph graph;
+
+    return graph;
+
+}
+
+vertex_descriptor_t add_vertex(Graph * g, string name, vertex_type t) {
     
-    typedef graph_traits<Graph>::vertex_descriptor vertex_descriptor_t;
+    VertexProperty vp; 
 
-    Graph graph; //声明一个图
-    VertexProperty vp; // 声明一个顶点属性
-    EdgeProperty ep; // 声明一个边属性
+    vp.name = name;
+    vp.ty = t;
 
-    vertex_descriptor_t src, dst; // 声明两个顶点的descriptor
+    vertex_descriptor_t vd = boost::add_vertex(vp, *g);
 
-    vp.id = 100;
-    vp.size = 200;
-    src = boost::add_vertex(vp, graph); // 给图里添加顶点
-    dst = boost::add_vertex(vp, graph); // 给图里添加顶点
-    boost::add_edge(src, dst, ep, graph); // 给src和dst之间添加边，属性是ep.
+    return vd;
+}
 
+pair<edge_descriptor_t, bool> add_edge(Graph * g, vertex_descriptor_t src, vertex_descriptor_t dst, string op){
+
+    EdgeProperty ep;
+    ep.operation = op;
+
+    edge_descriptor_t ed;
+    bool inserted;
+
+    tie(ed, inserted) = boost::add_edge(src, dst, *g);
+    pair<edge_descriptor_t, bool> ret (ed, inserted);
+
+    return ret;
+
+}
+
+
+int main() {
+
+    Graph g = graph_create();
+
+    vertex_descriptor_t vd1 = add_vertex(&g, "0x18279e26", ADDR);
+    vertex_descriptor_t vd2 = add_vertex(&g, "$rax", REG);
+    
+    pair<edge_descriptor_t, bool> ed_suc = add_edge(&g, vd1, vd2, "add");
+    
 }

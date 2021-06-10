@@ -1,29 +1,36 @@
-#include </Users/yalucai/Downloads/igraph-0.9.4/include/igraph.h>
+#include <iostream> // for std::cout
+#include <utility> // for std::pair
+#include <algorithm> // for std::for_each
 #include <string>
-
-enum vertex_types {CONSTANT, REG, ADDR};
-
+#include <boost/graph/graph_traits.hpp>
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/dijkstra_shortest_paths.hpp>
 using namespace std;
 
-struct Vertex
-{
-    vertex_types ty;
-    char * name;
-    int id;
+enum vertex_type {CONST, REG, ADDR};
+
+struct VertexProperty{
+
+    vertex_type ty;
+    string name;
+
 };
 
-/* create a new graph with n vertices labeled 0..n-1 and no edges */
-igraph_t graph_create(int n);
+struct EdgeProperty {
 
-/* free all space used by graph */
-void graph_destroy(igraph_t);
+    string operation;
 
-/* add an edge to an existing graph */
-/* doing this more than once may have unpredictable results */
-void graph_add_edge(igraph_t, int source, int sink);
+};
 
-/* return the number of vertices/edges in the graph */
-int graph_vertex_count(igraph_t);
-int graph_edge_count(igraph_t);
+typedef boost::adjacency_list<boost::vecS, boost::vecS,       
+            boost::bidirectionalS, VertexProperty, EdgeProperty>
+    Graph;
 
-void graph_add_vertex(igraph_t *g, struct Vertex v);
+typedef boost::graph_traits<Graph>::vertex_descriptor vertex_descriptor_t;
+typedef boost::graph_traits<Graph>::edge_descriptor edge_descriptor_t;
+
+Graph graph_create();
+
+vertex_descriptor_t add_vertex(Graph * g, string name, vertex_type t);
+
+pair<edge_descriptor_t, bool> add_edge(Graph * g, vertex_descriptor_t src, vertex_descriptor_t dst, string op);
