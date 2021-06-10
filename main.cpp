@@ -20,6 +20,9 @@ FILE *profile;
 #define NUM_INSTR_DESTINATIONS 2
 #define NUM_INSTR_SOURCES 4
 
+// ./main -traces ../ChampSim/dpc3_traces/600.perlbench_s-210B.champsimtrace.xz examp.txt
+// g++ -g -Wall -std=c++11 -o main main.cpp
+
 using namespace std;
 
 class input_instr {
