@@ -2,27 +2,43 @@
 #include <iostream> // for std::cout
 #include <utility> // for std::pair
 #include <algorithm> // for std::for_each
+#include <string>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 using namespace boost;
- 
+
 int main(int,char*[])
 {
-    typedef adjacency_list<vecS, vecS, bidirectionalS> Graph;
-    // Make convenient labels for the vertices
-    enum { A, B, C, D, E, N }; //代表 0 ，1，2，3，4 顶点,其中N为顶点数
-    const int num_vertices = N;//N的值是5
-    const char* name = "ABCDE";
-    //图中的边
-    typedef std::pair<int, int> Edge;
-    Edge edge_array[] = { Edge(A,B), Edge(A,D), Edge(C,A), Edge(D,C),
-                            Edge(C,E), Edge(B,D), Edge(D,E) };
-    const int num_edges = sizeof(edge_array)/sizeof(edge_array[0]);
-    // 创建一个拥有5个顶点的图对象
-    Graph g(num_vertices);
-    // 给图对象添加边
-    for (int i = 0; i < num_edges; ++i)
-      add_edge(edge_array[i].first, edge_array[i].second, g);//其中first表示第一个顶点，second表示第二个顶点，两个顶点连接
-   return 0;
+    struct VertexProperty{
+
+        int id, size;
+
+    };
+
+    struct EdgeProperty {
+
+        int id;
+        int weight;
+
+    };
+    
+    typedef boost::adjacency_list<boost::vecS, boost::vecS,       
+             boost::bidirectionalS, VertexProperty, EdgeProperty>
+        Graph;
+    
+    typedef graph_traits<Graph>::vertex_descriptor vertex_descriptor_t;
+
+    Graph graph; //声明一个图
+    VertexProperty vp; // 声明一个顶点属性
+    EdgeProperty ep; // 声明一个边属性
+
+    vertex_descriptor_t src, dst; // 声明两个顶点的descriptor
+
+    vp.id = 100;
+    vp.size = 200;
+    src = boost::add_vertex(vp, graph); // 给图里添加顶点
+    dst = boost::add_vertex(vp, graph); // 给图里添加顶点
+    boost::add_edge(src, dst, ep, graph); // 给src和dst之间添加边，属性是ep.
+
 }
