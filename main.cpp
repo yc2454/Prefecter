@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <assert.h>
+#include "graph.h"
 
 // store the trace name here
 char trace_string[1024];
@@ -57,9 +58,10 @@ class input_instr {
 int read_from_trace() {
 
     input_instr trace_read_instr;
+    char instr[255];
     size_t instr_size = sizeof(input_instr);
 
-    if (!fread(&trace_read_instr, instr_size, 1, trace_file))
+    if (!fread(&instr, sizeof(instr), 1, trace_file))
     {
         // reached end of file for this trace
         cout << "*** Reached end of trace " << endl; 
@@ -73,6 +75,7 @@ int read_from_trace() {
     else
     {
         // cout << hex << "0x" << trace_read_instr.ip << dec << endl;
+        printf("%s", instr); 
         return 1;
     }
     
