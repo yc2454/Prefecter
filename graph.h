@@ -12,7 +12,7 @@ enum vertex_type {CONST, REG, ADDR};
 struct VertexProperty{
 
     vertex_type ty;
-    string name;
+    uint64_t value;
 
 };
 
@@ -31,6 +31,6 @@ typedef boost::graph_traits<Graph>::edge_descriptor edge_descriptor_t;
 
 Graph graph_create();
 
-vertex_descriptor_t add_vertex(Graph * g, string name, vertex_type t);
+vertex_descriptor_t add_vertex(Graph * g, uint64_t value, vertex_type t);
 
 pair<edge_descriptor_t, bool> add_edge(Graph * g, vertex_descriptor_t src, vertex_descriptor_t dst, string op);
