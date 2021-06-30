@@ -7,18 +7,20 @@
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 using namespace std;
 
-enum vertex_type {CONST, REG, ADDR};
+enum vertex_type {CONST, REG, ADDR, NONTERM};
 
+// The properties of the vertex
+// value stands for the op code when ty == NONTERM
+// value stands for a constant/addr/reg otherwise
 struct VertexProperty{
 
     vertex_type ty;
     uint64_t value;
+    uint64_t source;
 
 };
 
 struct EdgeProperty {
-
-    string operation;
 
 };
 
@@ -29,8 +31,10 @@ typedef boost::adjacency_list<boost::vecS, boost::vecS,
 typedef boost::graph_traits<Graph>::vertex_descriptor vertex_descriptor_t;
 typedef boost::graph_traits<Graph>::edge_descriptor edge_descriptor_t;
 
+
+
 Graph graph_create();
 
-vertex_descriptor_t add_vertex(Graph * g, uint64_t value, vertex_type t);
+vertex_descriptor_t add_vertex(Graph * g, uint64_t value, uint64_t source, vertex_type t);
 
-pair<edge_descriptor_t, bool> add_edge(Graph * g, vertex_descriptor_t src, vertex_descriptor_t dst, string op);
+pair<edge_descriptor_t, bool> add_edge(Graph * g, vertex_descriptor_t src, vertex_descriptor_t dst);

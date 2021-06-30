@@ -5,6 +5,8 @@
         "iosfwd": "cpp",
         "__locale": "cpp",
         "string": "cpp",
-        "filesystem": "cpp"
+        "filesystem": "cpp",
+        "deque": "cpp",
+        "vector": "cpp"
     }
 }

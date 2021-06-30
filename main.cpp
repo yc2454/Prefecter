@@ -9,6 +9,8 @@ char trace_string[1024];
 char gunzip_command[1024];
 
 uint64_t champsim_seed;
+uint64_t load_op = 69698705567;
+uint64_t add_op = 1691269;
 
 // the trace file
 FILE *trace_file;
@@ -18,6 +20,13 @@ FILE *profile;
 
 // ./main -traces ../ChampSim/dpc3_traces/600.perlbench_s-210B.champsimtrace.xz examp.txt
 // g++ -g -Wall -std=c++11 -o main main.cpp
+
+struct Source
+{
+    bool is_mem;
+    uint8_t reg;
+    uint64_t mem;
+};
 
 using namespace std;
 
@@ -56,6 +65,7 @@ ooo_model_instr copy_into_format (input_instr current_instr) {
 
     // arch_instr.instr_id = instr_unique_id;
     arch_instr.ip = current_instr.ip;
+    arch_instr.op = current_instr.op;
     arch_instr.is_branch = current_instr.is_branch;
     arch_instr.branch_taken = current_instr.branch_taken;
 
@@ -135,7 +145,7 @@ ooo_model_instr copy_into_format (input_instr current_instr) {
         if (arch_instr.source_memory[i])
             num_mem_ops++;
     }
-
+    
     arch_instr.num_reg_ops = num_reg_ops;
     arch_instr.num_mem_ops = num_mem_ops;
     if (num_mem_ops > 0) 
@@ -203,7 +213,7 @@ ooo_model_instr copy_into_format (input_instr current_instr) {
 
 }
 
-ooo_model_instr search_last_occurence(uint64_t miss_pc) {
+deque<ooo_model_instr> search_last_occurence(uint64_t miss_pc) {
 
     // to read in from the trace file
     input_instr current_instr_read;
@@ -244,10 +254,11 @@ ooo_model_instr search_last_occurence(uint64_t miss_pc) {
         
     // exit
     if (found) {
-        
+        return window;
     } 
     else
-        return ooo_model_instr();
+        // if the miss_pc was not found, return an empty deque;
+        return deque<ooo_model_instr>();
 
 }
 
@@ -256,45 +267,190 @@ uint64_t find_source(input_instr i) {
     return 0;
 }
 
-// TODO:
-input_instr* find_last_use(uint64_t source) {
-    input_instr current_instr;
-    return &current_instr;
+// Search the last occurence of register reg
+// if not found, return -1
+int traceback_reg(uint8_t reg, vector<ooo_model_instr> trace_window, int index) {
+    
+    int size = trace_window.size();
+    ooo_model_instr cur_instr;
+    bool found = -1;
+
+    for (int i = index; i < size; i++)
+    {
+        cur_instr = trace_window.at(i);
+        if(cur_instr.source_registers[0] == reg) {
+            found = 1;
+            return i;
+        }
+    }
+
+    return -1;
+    
 }
 
-// TODO:
-bool is_terminal(ooo_model_instr instr) {
+int traceback_ea(uint64_t ea, vector<ooo_model_instr> trace_window, int index) {
+    
+    int size = trace_window.size();
+    ooo_model_instr cur_instr;
+    bool found = -1;
+
+    for (int i = index; i < size; i++)
+    {
+        cur_instr = trace_window.at(i);
+        if(cur_instr.source_memory[0] == ea) {
+            found = 1;
+            return i;
+        }
+    }
+
+    return -1;
+    
+}
+
+void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
+
     
 
-
 }
 
-// TODO:
-void build_graph(vector<ooo_model_instr> trace_window, Graph *g) {
+// Builds the graph
+// Returns the descriptor of the sink of the graph
+vertex_descriptor_t build_graph(vector<ooo_model_instr> trace_window, Graph *g, uint64_t miss_pc) {
 
-    ooo_model_instr miss_instr = trace_window.at(0);
-    // the root of the graph
-    vertex_descriptor_t sink = add_vertex(g, miss_instr.source_memory[0], ADDR);
+    bool complete = false;
+    int cur_index = 0;
 
-    vertex_descriptor_t new_vertex;
-    vertex_descriptor_t old_vertex;
-    ooo_model_instr cur_instr;
+    ooo_model_instr cur_instr = trace_window.at(cur_index);
 
-    uint8_t source;
+    vertex_descriptor_t cur_root_vertex = add_vertex(g, cur_instr.source_memory[0], 0, ADDR);
 
-    old_vertex = new_vertex;
+    vertex_descriptor_t the_root_vertex = cur_root_vertex;
+
+    vertex_descriptor_t load_op_vertex;
+    vertex_descriptor_t add_op_vertex;
+    vertex_descriptor_t const_vertex;
+    vertex_descriptor_t reg_vertex;
+    vertex_descriptor_t ea_vertex;
+
+    int reg_index, ea_index;
     
     // backtrack in the trace window for another dependence
-    for (int i = 0; i < trace_window.size(); i++)
+    while (1)
     {
-    
-        if (trace_window.at(i).destination_registers[0] == cur_instr.source_registers[0])
+        cur_instr = trace_window.at(cur_index);
+
+        // if we come across the miss PC again, stop
+        if (cur_instr.ip == miss_pc && cur_index != 0)
+            break;
+
+        if (cur_instr.source_offsets[0] != 0) {
+            
+            // first add the ADD vertex into the graph
+            add_op_vertex = add_vertex(g, add_op, 0, NONTERM);
+            add_edge(g, cur_root_vertex, add_op_vertex);
+            // add the children of ADD vertex
+            const_vertex = add_vertex(g, cur_instr.source_offsets[0], 0, CONST);
+            add_edge(g, add_op_vertex, const_vertex);
+            
+            if (cur_instr.is_memory)
+            {
+                ea_index = traceback_ea(cur_instr.source_memory[0], trace_window, cur_index);
+                
+                // set the current root to a new value
+                cur_root_vertex = add_vertex(g, load_op, cur_instr.source_memory[0], NONTERM);
+                add_edge(g, add_op_vertex, cur_root_vertex);
+                
+                if (ea_index == -1)
+                {
+                    ea_vertex = add_vertex(g, cur_instr.source_memory[0], 0, ADDR);
+                    add_edge(g, cur_root_vertex, ea_vertex);
+                    break;
+                }
+                else
+                {
+                    cur_index = ea_index;
+                    continue;
+                }
+            }
+            // when the source is not from main memory, search for occurrence 
+            // of the register
+            else
+            {
+                // traceback to find the register
+                reg_index = traceback_reg(cur_instr.source_registers[0], trace_window, cur_index);
+                
+                // set the current root to a new value
+                cur_root_vertex = add_vertex(g, load_op, cur_instr.source_registers[0], NONTERM);
+                add_edge(g, add_op_vertex, cur_root_vertex);
+
+                // the register cannot be traced back further
+                if (reg_index == -1)
+                {
+                    reg_vertex = add_vertex(g, cur_instr.source_registers[0], 0, REG);
+                    add_edge(g, cur_root_vertex, reg_vertex);
+                    break;
+                }
+                else
+                {
+                    cur_index = reg_index;
+                    continue;
+                }
+                
+            }
+            
+        }
+        else
         {
-            cur_instr = trace_window.at(i);
-            add_edge(g, old_vertex, new_vertex, "");
+
+            if (cur_instr.is_memory)
+            {
+                ea_index = traceback_ea(cur_instr.source_memory[0], trace_window, cur_index);
+
+                load_op_vertex = add_vertex(g, load_op, cur_instr.source_memory[0], NONTERM);
+                add_edge(g, cur_root_vertex, load_op_vertex);
+                cur_root_vertex = load_op_vertex;
+
+                if (ea_index == -1)
+                {
+                    ea_vertex = add_vertex(g, cur_instr.source_memory[0], 0, ADDR);
+                    add_edge(g, cur_root_vertex, ea_vertex);
+                    break;
+                }
+                else
+                {
+                    cur_index = ea_index;
+                    continue;
+                }
+            }
+            else
+            {
+                // traceback to find the register
+                reg_index = traceback_reg(cur_instr.source_registers[0], trace_window, cur_index);
+
+                load_op_vertex = add_vertex(g, load_op, cur_instr.source_registers[0], NONTERM);
+                add_edge(g, cur_root_vertex, load_op_vertex);
+                cur_root_vertex = load_op_vertex;
+                
+                // the register cannot be traced back further
+                if (reg_index == -1)
+                {
+                    reg_vertex = add_vertex(g, cur_instr.source_registers[0], 0, REG);
+                    add_edge(g, cur_root_vertex, reg_vertex);
+                    break;
+                }
+                else
+                {
+                    cur_index = reg_index;
+                    continue;
+                }
+            }
+            
         }
         
+        
     }
+    
+    return the_root_vertex;
     
 }
 
@@ -302,7 +458,7 @@ int main(int argc, char** argv)
 {
 
     char miss_instr[255];
-    ooo_model_instr last_occur;
+    deque<ooo_model_instr> last_occur_window;
 
     for (int i=0; i<argc; i++) {
         cout << "num of arg: " << i << " arg: " << argv[i] << endl;
@@ -373,7 +529,7 @@ int main(int argc, char** argv)
         
         printf("%s", miss_instr); 
         miss_pc = atoi(miss_instr);
-        last_occur = search_last_occurence(miss_pc);
+        last_occur_window = search_last_occurence(miss_pc);
 
     }
     

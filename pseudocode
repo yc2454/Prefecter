@@ -5,3 +5,13 @@ miss_pc = searchMissPC(trace);
 while(!isAllTerminal(sources) && !samePC()) {
     backtrace(miss_pc);
 }
+
+if (is_mem(instr)) {
+    offset = instr.offset;
+    ea = instr.source_mem;
+    reg = instr.source_reg;
+    
+    add_vertex(reg)
+    add_vertex(offset)
+
+}
