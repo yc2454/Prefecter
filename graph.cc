@@ -40,7 +40,7 @@ pair<edge_descriptor_t, bool> add_edge(Graph * g, vertex_descriptor_t src, verte
 
 }
 
-vector<vertex_descriptor_t> find_adj_vertices(Graph g, vertex_descriptor_t v) {
+void find_adj_vertices(Graph g, vertex_descriptor_t v) {
     typename boost::graph_traits<Graph>::adjacency_iterator ai;
     typename boost::graph_traits<Graph>::adjacency_iterator ai_end;
 
