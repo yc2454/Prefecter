@@ -40,66 +40,34 @@ pair<edge_descriptor_t, bool> add_edge(Graph * g, vertex_descriptor_t src, verte
 
 }
 
-void find_adj_vertices(Graph g, vertex_descriptor_t v) {
+vector<VertexProperty> find_adj_vertices(Graph g, vertex_descriptor_t v) {
+    
     typename boost::graph_traits<Graph>::adjacency_iterator ai;
     typename boost::graph_traits<Graph>::adjacency_iterator ai_end;
 
-    for (tie(ai, ai_end) = boost::adjacent_vertices(v, g); ai != ai_end; ++ai)
-        ;
-}
+    vector<VertexProperty> adjs;
 
-typedef boost::adjacency_list<boost::setS,boost::setS,boost::undirectedS, uint32_t, float> AdjacencyList;
-typedef boost::graph_traits<AdjacencyList>::adjacency_iterator AdjacencyIterator;
+    for (tie(ai, ai_end) = boost::adjacent_vertices(v, g); ai != ai_end; ++ai) {
+        adjs.push_back(g[*ai]);
+    }
+
+    return adjs;
+
+}
 
 int main() {
-    AdjacencyList adjacency_list;;
 
-    boost::add_edge(
-            boost::add_vertex(10, adjacency_list),
-            boost::add_vertex(20, adjacency_list),
-            1.5f,
-            adjacency_list
-        );
+    Graph g = graph_create();
 
-    boost::add_edge(
-            boost::add_vertex(30, adjacency_list),
-            boost::add_vertex(40, adjacency_list),
-            2.5f,
-            adjacency_list
-        );
-
-    AdjacencyList::vertex_iterator i, end;
-
-    for (boost::tie(i, end) = boost::vertices(adjacency_list); i != end; i++) {
-        AdjacencyIterator ai, a_end; 
-
-        boost::tie(ai, a_end) = boost::adjacent_vertices(*i, adjacency_list);
-        for (; ai != a_end; ai++) { 
-            std::cout << adjacency_list[*ai] << "\t";
-        }
-    }
-}
-
-// int main() {
-
-//     Graph g = graph_create();
-
-//     // vertex_descriptor_t vd1 = add_vertex(&g, "0x18279e26", ADDR);
-//     // vertex_descriptor_t vd2 = add_vertex(&g, "$rax", REG);
+    vertex_descriptor_t vd1 = add_vertex(&g, 0, 0x18279e26, ADDR);
+    vertex_descriptor_t vd2 = add_vertex(&g, 0, 0x18279e26, REG);
     
-//     // pair<edge_descriptor_t, bool> ed_suc = add_edge(&g, vd1, vd2, "add");
+    pair<edge_descriptor_t, bool> ed_suc = add_edge(&g, vd1, vd2);
 
-//     // typedef boost::property_map<Graph, boost::vertex_index_t>::type IndexMap;
-//     // IndexMap index = get(boost::vertex_index, g);
+    vector<VertexProperty> adjs = find_adj_vertices(g, vd1);
 
-//     // std::cout << "vertices(g) = ";
-//     // typedef boost::graph_traits<Graph>::vertex_iterator vertex_iter;
-//     // std::pair<vertex_iter, vertex_iter> vp;
-//     // for (vp = vertices(g); vp.first != vp.second; ++vp.first)
-//     //   std::cout << index[*vp.first] <<  " ";
-//     // std::cout << std::endl;
-//     // // ...
+    cout << adjs[0].source << endl; 
 
-//     return 0;
+    return 0;
 
-// }
+}
