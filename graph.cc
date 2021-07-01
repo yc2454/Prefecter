@@ -55,18 +55,55 @@ vector<VertexProperty> find_adj_vertices(Graph g, vertex_descriptor_t v) {
 
 }
 
+VertexProperty get_source_property(Graph g, vertex_descriptor_t target) {
+
+    // find in edges to target
+    boost::graph_traits<Graph>::edge_iterator ei, ei_end;
+    boost::tie(ei, ei_end) = boost::in_edges(target, g);
+    // find source
+    vertex_descriptor_t source = boost::source(*ei, g);
+    // get property
+    boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, g);
+    VertexProperty vp = boost::get(pmap, source);
+
+    return vp;
+
+}
+
+void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
+
+    vector<VertexProperty> adj_vertices;
+
+    adj_vertices = find_adj_vertices(*g, root);
+
+    uint64_t cur_start;
+
+    for (VertexProperty vp : adj_vertices)
+    {
+        if (vp.ty != NONTERM) {
+            continue;
+        }
+        else {
+            cur_start = vp.source;
+        }    
+    }
+
+    
+
+}
+
 int main() {
 
     Graph g = graph_create();
 
-    vertex_descriptor_t vd1 = add_vertex(&g, 0, 0x18279e26, ADDR);
-    vertex_descriptor_t vd2 = add_vertex(&g, 0, 0x18279e26, REG);
+    vertex_descriptor_t vd1 = add_vertex(&g, 0x18279e26, 0, ADDR);
+    vertex_descriptor_t vd2 = add_vertex(&g, 20, 0, REG);
     
     pair<edge_descriptor_t, bool> ed_suc = add_edge(&g, vd1, vd2);
 
-    vector<VertexProperty> adjs = find_adj_vertices(g, vd1);
+    VertexProperty vp = get_source_property(g, vd2);
 
-    cout << adjs[0].source << endl; 
+    cout << vp.value << endl;
 
     return 0;
 
