@@ -58,7 +58,7 @@ vector<VertexProperty> find_adj_vertices(Graph g, vertex_descriptor_t v) {
 void get_source_property(Graph g, vertex_descriptor_t target) {
 
     // find in edges to target
-    boost::graph_traits<Graph>::edge_iterator ei, ei_end;
+    boost::graph_traits<Graph>::in_edge_iterator ei, ei_end;
     boost::tie(ei, ei_end) = boost::in_edges(target, g);
     // find source
     // vertex_descriptor_t src = boost::source(*ei, g);
