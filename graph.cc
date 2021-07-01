@@ -55,20 +55,20 @@ vector<VertexProperty> find_adj_vertices(Graph g, vertex_descriptor_t v) {
 
 }
 
-// VertexProperty get_source_property(Graph g, vertex_descriptor_t target) {
+void get_source_property(Graph g, vertex_descriptor_t target) {
 
-//     // find in edges to target
-//     boost::graph_traits<Graph>::edge_iterator ei, ei_end;
-//     boost::tie(ei, ei_end) = boost::in_edges(target, g);
-//     // find source
-//     vertex_descriptor_t src = boost::source(*ei, g);
-//     // get property
-//     boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, g);
-//     VertexProperty vp = boost::get(pmap, src);
+    // find in edges to target
+    boost::graph_traits<Graph>::edge_iterator ei, ei_end;
+    boost::tie(ei, ei_end) = boost::in_edges(target, g);
+    // find source
+    // vertex_descriptor_t src = boost::source(*ei, g);
+    // get property
+    // boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, g);
+    // VertexProperty vp = boost::get(pmap, src);
 
-//     return vp;
+    return;
 
-// }
+}
 
 void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
 
