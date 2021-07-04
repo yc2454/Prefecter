@@ -26,7 +26,6 @@ using namespace std;
 int read_from_trace() {
 
     input_instr trace_read_instr;
-    char instr[255];
     size_t instr_size = sizeof(input_instr);
 
     if (!fread(&trace_read_instr, instr_size, 1, trace_file))
