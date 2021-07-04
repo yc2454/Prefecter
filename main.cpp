@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <assert.h>
-#include "graph.h"
+// #include "graph.h"
 #include "instruction.h"
 
 // store the trace name here
