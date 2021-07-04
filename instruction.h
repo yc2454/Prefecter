@@ -27,6 +27,8 @@
 
 #include "set.h"
 
+using namespace std;
+
 class input_instr {
   public:
 
@@ -268,21 +270,25 @@ class ooo_model_instr {
     // cout << "*** " << instr_id << " ***" << endl;
     cout << hex << "0x" << (uint64_t)ip << dec << endl;
     cout << (uint32_t)is_branch << " " << (uint32_t)branch_taken << endl;
+    cout << "source registers:";
     for(uint32_t i=0; i<NUM_INSTR_SOURCES; i++)
       {
 	cout << (uint32_t)source_registers[i] << " ";
       }
     cout << endl;
+    cout << "source memory location:";
     for(uint32_t i=0; i<NUM_INSTR_SOURCES; i++)
       {
 	cout << hex << "0x" << (uint32_t)source_memory[i] << dec << " ";
       }
     cout << endl;
+    cout << "destination registers:";
     for(uint32_t i=0; i<NUM_INSTR_DESTINATIONS; i++)
       {
 	cout << (uint32_t)destination_registers[i] << " ";
       }
     cout << endl;
+    cout << "destination memory location:";
     for(uint32_t i=0; i<NUM_INSTR_DESTINATIONS; i++)
       {
         cout << hex << "0x" << (uint32_t)destination_memory[i] << dec << " ";
