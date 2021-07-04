@@ -307,7 +307,7 @@ int main(int argc, char** argv)
     //     assert(0);
     // }
 
-    read_from_trace();
+    print_trace();
     
     return 0;
 }
