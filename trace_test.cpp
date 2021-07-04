@@ -205,6 +205,40 @@ ooo_model_instr copy_into_format (input_instr current_instr) {
 
 }
 
+void print_trace() {
+
+    // to read in from the trace file
+    input_instr current_instr_read;
+    input_instr last_occur;
+    // structure better for program use
+    ooo_model_instr current_instr;
+    ooo_model_instr res;
+    size_t instr_size = sizeof(input_instr);
+    // signaling whether ip is found
+    bool found = 0;
+
+    deque<ooo_model_instr> window;
+    int max_window_size = 1000;
+
+    while (fread(&current_instr_read, instr_size, 1, trace_file))
+    {
+        current_instr = copy_into_format(current_instr_read);
+        current_instr.print_instr();
+        if (window.size() < max_window_size)
+        {
+            window.push_front(current_instr);
+        }
+        else
+        {
+            window.pop_back();
+            window.push_front(current_instr);
+        }
+
+    }
+
+    pclose(trace_file);
+
+}
 
 // Builds the graph
 // Returns the descriptor of the sink of the graph
