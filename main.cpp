@@ -307,12 +307,6 @@ int traceback_ea(uint64_t ea, vector<ooo_model_instr> trace_window, int index) {
     
 }
 
-void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
-
-    
-
-}
-
 // Builds the graph
 // Returns the descriptor of the sink of the graph
 vertex_descriptor_t build_graph(vector<ooo_model_instr> trace_window, Graph *g, uint64_t miss_pc) {
