@@ -27,6 +27,8 @@
 
 #include "set.h"
 
+using namespace std;
+
 class input_instr {
   public:
 
