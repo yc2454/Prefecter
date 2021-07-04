@@ -273,19 +273,7 @@ int main(int argc, char** argv)
     //     assert(0);
     // }
 
-    profile = fopen(argv[3], "r");
-    uint64_t miss_pc;
-
-    while (fgets(miss_instr, sizeof(miss_instr), profile)) {
-        /* note that fgets don't strip the terminating \n, checking its
-           presence would allow to handle lines longer that sizeof(line) */
-        
-        printf("%s", miss_instr); 
-        miss_pc = atoi(miss_instr);
-
-    }
-    
-    fclose(profile);
+    read_from_trace();
     
     return 0;
 }
