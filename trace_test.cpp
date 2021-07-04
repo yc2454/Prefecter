@@ -2,6 +2,7 @@
 #include <fstream>
 #include <assert.h>
 #include "instruction.h"
+#include <deque>
 
 // store the trace name here
 char trace_string[1024];
@@ -226,8 +227,6 @@ int main(int argc, char** argv)
 
     std::string fmtstr;
     std::string decomp_program;
-
-    int status;
 
     if (full_name.substr(0,4) == "http")
     {
