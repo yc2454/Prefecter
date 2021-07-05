@@ -213,7 +213,6 @@ void print_trace() {
     // structure better for program use
     ooo_model_instr current_instr;
     size_t instr_size = sizeof(input_instr);
-    int count = 0;
 
     deque<ooo_model_instr> window;
     int max_window_size = 1000;
@@ -232,9 +231,6 @@ void print_trace() {
             window.push_front(current_instr);
         }
 
-        count++;
-        if (count > 50)
-            break;
     }
 
     pclose(trace_file);
