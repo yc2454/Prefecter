@@ -212,10 +212,8 @@ void print_trace() {
     input_instr last_occur;
     // structure better for program use
     ooo_model_instr current_instr;
-    ooo_model_instr res;
     size_t instr_size = sizeof(input_instr);
-    // signaling whether ip is found
-    bool found = 0;
+    int count = 0;
 
     deque<ooo_model_instr> window;
     int max_window_size = 1000;
@@ -234,6 +232,9 @@ void print_trace() {
             window.push_front(current_instr);
         }
 
+        count++;
+        if (count > 50)
+            break;
     }
 
     pclose(trace_file);
