@@ -57,7 +57,7 @@ ooo_model_instr copy_into_format (input_instr current_instr) {
 
     // arch_instr.instr_id = instr_unique_id;
     arch_instr.ip = current_instr.ip;
-    arch_instr.op = current_instr.op;
+    // arch_instr.op = current_instr.op;
     arch_instr.is_branch = current_instr.is_branch;
     arch_instr.branch_taken = current_instr.branch_taken;
 
@@ -221,7 +221,7 @@ void print_trace() {
     {
         current_instr = copy_into_format(current_instr_read);
         current_instr.print_instr();
-        
+
         if (window.size() < max_window_size)
         {
             window.push_front(current_instr);
