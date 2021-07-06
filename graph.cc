@@ -70,24 +70,85 @@ VertexProperty get_source_property(Graph g, vertex_descriptor_t target) {
 
 }
 
-void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
-
-    vector<VertexProperty> adj_vertices;
-
-    adj_vertices = find_adj_vertices(*g, root);
-
-    uint64_t cur_start;
-
-    for (VertexProperty vp : adj_vertices)
-    {
-        if (vp.ty != NONTERM) {
-            continue;
-        }
-        else {
-            cur_start = vp.source;
-        }    
+vertex_descriptor_t get_nonterm_source(Graph g, vertex_descriptor_t target) {
+    
+    // find in edges to target
+    boost::graph_traits<Graph>::in_edge_iterator ei, ei_end;
+    boost::tie(ei, ei_end) = boost::in_edges(target, g);
+    // find source
+    vertex_descriptor_t src, nonterm_src;
+    VertexProperty vp;
+    boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, g);
+    
+    for (; ei != ei_end; ++ei) {
+        src = boost::source(*ei, g);
+        vp = boost::get(pmap, src);
+        if (vp.ty == NONTERM) 
+            nonterm_src = src;
+        else 
+            nonterm_src = -100;
     }
 
+    return nonterm_src;
+    
+}
+
+void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
+
+    int num_sources;
+
+    // The vector to keep track of the vertices along the path
+    deque<vertex_descriptor_t> circle;
+
+    // find the first non-terminal source
+    vertex_descriptor_t start = get_nonterm_source(*g, root);
+
+    // the current place on the path
+    vertex_descriptor_t cur;
+    // properties of the vertices
+    VertexProperty cur_property;
+    VertexProperty start_property;
+
+    cur = start;
+    circle.push_front(start);
+
+    boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, *g);
+
+    // search up along the path
+    while (1)
+    {
+        num_sources = find_adj_vertices(*g, cur).size();
+        // when there are 2 sources
+        if (num_sources == 2) {
+            // check whether cur complete the circle
+            cur_property = boost::get(pmap, cur);
+            start_property = boost::get(pmap, cur);
+            // if a circle is completed, remove all vertices in the circle
+            if (cur_property.source == start_property.source) {
+                for (int i = 0; circle[i] != cur; i++) {
+                    boost::remove_vertex(circle[i], *g);
+                }
+            }
+            // change the start of the circle
+            start = cur;
+        }
+        else if (num_sources == 0) {
+            break;
+        }
+        else if (num_sources) {
+            // check whether cur complete the circle
+            cur_property = boost::get(pmap, cur);
+            start_property = boost::get(pmap, cur);
+            // if a circle is completed, remove all vertices in the circle
+            if (cur_property.source == start_property.source) {
+                for (int i = 0; circle[i] != cur; i++) {
+                    boost::remove_vertex(circle[i], *g);
+                }
+            }
+            start = cur;
+        }
+    }
+    
     
 
 }

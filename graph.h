@@ -38,3 +38,5 @@ Graph graph_create();
 vertex_descriptor_t add_vertex(Graph * g, uint64_t value, uint64_t source, vertex_type t);
 
 pair<edge_descriptor_t, bool> add_edge(Graph * g, vertex_descriptor_t src, vertex_descriptor_t dst);
+
+vector<VertexProperty> find_adj_vertices(Graph g, vertex_descriptor_t v);

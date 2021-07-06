@@ -209,7 +209,7 @@ void print_trace() {
 
     // to read in from the trace file
     input_instr current_instr_read;
-    input_instr last_occur;
+
     // structure better for program use
     ooo_model_instr current_instr;
     size_t instr_size = sizeof(input_instr);
@@ -221,6 +221,7 @@ void print_trace() {
     {
         current_instr = copy_into_format(current_instr_read);
         current_instr.print_instr();
+        
         if (window.size() < max_window_size)
         {
             window.push_front(current_instr);
