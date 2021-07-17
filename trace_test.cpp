@@ -215,7 +215,7 @@ void print_trace() {
     size_t instr_size = sizeof(input_instr);
 
     deque<ooo_model_instr> window;
-    int max_window_size = 1000;
+    int max_window_size = 100;
 
     while (fread(&current_instr_read, instr_size, 1, trace_file))
     {
@@ -228,8 +228,7 @@ void print_trace() {
         }
         else
         {
-            window.pop_back();
-            window.push_front(current_instr);
+            break;
         }
 
     }
@@ -299,11 +298,6 @@ int main(int argc, char** argv)
         printf("\n*** Trace file not found: %s ***\n\n", argv[2]);
         assert(0);
     }
-
-    // if (count_traces != NUM_CPUS) {
-    //     printf("\n*** Not enough traces for the configured number of cores ***\n\n");
-    //     assert(0);
-    // }
 
     print_trace();
     
