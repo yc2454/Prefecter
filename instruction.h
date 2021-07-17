@@ -36,7 +36,7 @@ class input_instr {
     uint64_t ip;
 
     // operation code 
-    // uint64_t op;
+    uint64_t op;
 
     // branch info
     uint8_t is_branch;
@@ -116,7 +116,7 @@ class cloudsuite_instr {
 class ooo_model_instr {
   public:
     uint64_t ip,
-    // uint64_t op,
+             op,
              fetch_producer,
              producer_id,
              translated_cycle,
@@ -268,7 +268,7 @@ class ooo_model_instr {
   void print_instr()
   {
     // cout << "*** " << instr_id << " ***" << endl;
-    cout << hex << "0x" << (uint64_t)ip << dec << endl;
+    cout << hex << "ip: 0x" << (uint64_t)ip << dec << endl;
     cout << (uint32_t)is_branch << " " << (uint32_t)branch_taken << endl;
     cout << "source registers:";
     for(uint32_t i=0; i<NUM_INSTR_SOURCES; i++)
