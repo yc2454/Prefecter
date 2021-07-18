@@ -93,8 +93,8 @@ class input_instr {
 
     uint64_t destination_memory[NUM_INSTR_DESTINATIONS]; // output memory
     uint64_t source_memory[NUM_INSTR_SOURCES]; // input memory
-    // uint64_t source_offsets[NUM_INSTR_SOURCES * NUM_INSTR_SOURCES];
-    // uint64_t destination_offsets[NUM_INSTR_DESTINATIONS * NUM_INSTR_DESTINATIONS];
+    uint64_t source_offsets[NUM_INSTR_SOURCES * NUM_INSTR_SOURCES];
+    uint64_t destination_offsets[NUM_INSTR_DESTINATIONS * NUM_INSTR_DESTINATIONS];
 
     input_instr() {
         ip = 0;
@@ -111,13 +111,13 @@ class input_instr {
             destination_memory[i] = 0;
         }
 
-        // for (uint32_t i=0; i<NUM_INSTR_SOURCES * NUM_INSTR_SOURCES; i++) {
-        //     source_offsets[i] = 0;
-        // }
+        for (uint32_t i=0; i<NUM_INSTR_SOURCES * NUM_INSTR_SOURCES; i++) {
+            source_offsets[i] = 0;
+        }
         
-        // for (uint32_t i=0; i<NUM_INSTR_DESTINATIONS * NUM_INSTR_DESTINATIONS; i++) {
-        //     destination_offsets[i] = 0;
-        // }
+        for (uint32_t i=0; i<NUM_INSTR_DESTINATIONS * NUM_INSTR_DESTINATIONS; i++) {
+            destination_offsets[i] = 0;
+        }
     };
 };
 
@@ -230,8 +230,8 @@ class ooo_model_instr {
              sq_index[NUM_INSTR_DESTINATIONS_SPARC],
              forwarding_index[NUM_INSTR_DESTINATIONS_SPARC];
 
-    // uint64_t destination_offsets[NUM_INSTR_DESTINATIONS * NUM_INSTR_DESTINATIONS];
-    // uint64_t source_offsets[NUM_INSTR_SOURCES * NUM_INSTR_SOURCES];
+    uint64_t destination_offsets[NUM_INSTR_DESTINATIONS * NUM_INSTR_DESTINATIONS];
+    uint64_t source_offsets[NUM_INSTR_SOURCES * NUM_INSTR_SOURCES];
 
     ooo_model_instr() {
         ip = 0;
@@ -292,13 +292,13 @@ class ooo_model_instr {
             forwarding_index[i] = 0;
         }
 
-        // for (uint32_t i=0; i<NUM_INSTR_SOURCES * NUM_INSTR_SOURCES; i++) {
-        //     source_offsets[i] = 0;
-        // }
+        for (uint32_t i=0; i<NUM_INSTR_SOURCES * NUM_INSTR_SOURCES; i++) {
+            source_offsets[i] = 0;
+        }
         
-        // for (uint32_t i=0; i<NUM_INSTR_DESTINATIONS * NUM_INSTR_DESTINATIONS; i++) {
-        //     destination_offsets[i] = 0;
-        // }
+        for (uint32_t i=0; i<NUM_INSTR_DESTINATIONS * NUM_INSTR_DESTINATIONS; i++) {
+            destination_offsets[i] = 0;
+        }
 
 #if 0
         for (uint32_t i=0; i<ROB_SIZE; i++) {
