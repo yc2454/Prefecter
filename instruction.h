@@ -102,7 +102,7 @@ class input_instr {
     input_instr() {
         ip = 0;
         op = 0;
-        offset = 0;
+        offset = -1;
         is_branch = 0;
         branch_taken = 0;
 
