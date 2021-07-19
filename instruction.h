@@ -322,7 +322,7 @@ class ooo_model_instr {
   {
     // cout << "*** " << instr_id << " ***" << endl;
     cout << hex << "ip: 0x" << (uint64_t)ip << dec << endl;
-    cout << "offset: " << (uint64_t)offset << endl;
+    cout << hex << "offset: " << (uint64_t)offset << dec << endl;
     cout << (uint32_t)is_branch << " " << (uint32_t)branch_taken << endl;
     cout << "source registers:";
     for(uint32_t i=0; i<NUM_INSTR_SOURCES; i++)
