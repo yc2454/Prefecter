@@ -212,7 +212,7 @@ void print_trace() {
 
     // structure better for program use
     ooo_model_instr_old current_instr;
-    size_t instr_size = sizeof(input_instr);
+    size_t instr_size = sizeof(input_instr_old);
 
     deque<ooo_model_instr_old> window;
     int max_window_size = 100;
