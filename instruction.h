@@ -84,13 +84,13 @@ class input_instr {
     // operation code 
     uint64_t op;
 
-    // constant offset between memory read and value stored in reg
-    uint64_t offset[2];
-
     // branch info
     uint8_t is_branch;
     uint8_t branch_taken;
 
+    // constant offset between memory read and value stored in reg
+    uint64_t offset[2];
+    
     uint8_t destination_registers[NUM_INSTR_DESTINATIONS]; // output registers
     uint8_t source_registers[NUM_INSTR_SOURCES]; // input registers
 
