@@ -58,8 +58,8 @@ ooo_model_instr copy_into_format (input_instr current_instr) {
     // arch_instr.instr_id = instr_unique_id;
     arch_instr.ip = current_instr.ip;
     arch_instr.op = current_instr.op;
-    arch_instr.offset[0] = current_instr.offset[0];
-    arch_instr.offset[1] = current_instr.offset[1];
+    arch_instr.offset1 = current_instr.offset1;
+    arch_instr.offset2 = current_instr.offset2;
     arch_instr.is_branch = current_instr.is_branch;
     arch_instr.branch_taken = current_instr.branch_taken;
 
