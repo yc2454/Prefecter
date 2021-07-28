@@ -47,8 +47,6 @@ class input_instr_old {
 
     uint64_t destination_memory[NUM_INSTR_DESTINATIONS]; // output memory
     uint64_t source_memory[NUM_INSTR_SOURCES]; // input memory
-    // uint64_t source_offsets[NUM_INSTR_SOURCES * NUM_INSTR_SOURCES];
-    // uint64_t destination_offsets[NUM_INSTR_DESTINATIONS * NUM_INSTR_DESTINATIONS];
 
     input_instr_old() {
         ip = 0;
@@ -64,14 +62,6 @@ class input_instr_old {
             destination_registers[i] = 0;
             destination_memory[i] = 0;
         }
-
-        // for (uint32_t i=0; i<NUM_INSTR_SOURCES * NUM_INSTR_SOURCES; i++) {
-        //     source_offsets[i] = 0;
-        // }
-        
-        // for (uint32_t i=0; i<NUM_INSTR_DESTINATIONS * NUM_INSTR_DESTINATIONS; i++) {
-        //     destination_offsets[i] = 0;
-        // }
     };
 };
 
@@ -85,8 +75,8 @@ class input_instr {
     uint64_t op;
 
     // constant offset between memory read and value stored in reg
-    uint64_t offset1;
-    uint64_t offset2;
+    int offset1;
+    int offset2;
 
     // branch info
     uint8_t is_branch;
@@ -97,8 +87,6 @@ class input_instr {
 
     uint64_t destination_memory[NUM_INSTR_DESTINATIONS]; // output memory
     uint64_t source_memory[NUM_INSTR_SOURCES]; // input memory
-    // uint64_t source_offsets[NUM_INSTR_SOURCES * NUM_INSTR_SOURCES];
-    // uint64_t destination_offsets[NUM_INSTR_DESTINATIONS * NUM_INSTR_DESTINATIONS];
 
     input_instr() {
         ip = 0;
@@ -117,14 +105,6 @@ class input_instr {
             destination_registers[i] = 0;
             destination_memory[i] = 0;
         }
-
-        // for (uint32_t i=0; i<NUM_INSTR_SOURCES * NUM_INSTR_SOURCES; i++) {
-        //     source_offsets[i] = 0;
-        // }
-        
-        // for (uint32_t i=0; i<NUM_INSTR_DESTINATIONS * NUM_INSTR_DESTINATIONS; i++) {
-        //     destination_offsets[i] = 0;
-        // }
     };
 };
 
@@ -198,8 +178,8 @@ class ooo_model_instr {
     uint8_t branch_type;
     uint64_t branch_target;
 
-    uint64_t offset1;
-    uint64_t offset2;
+    int offset1;
+    int offset2;
 
     uint32_t fetched, scheduled;
     int num_reg_ops, num_mem_ops, num_reg_dependent;
@@ -239,9 +219,6 @@ class ooo_model_instr {
     uint32_t lq_index[NUM_INSTR_SOURCES],
              sq_index[NUM_INSTR_DESTINATIONS_SPARC],
              forwarding_index[NUM_INSTR_DESTINATIONS_SPARC];
-
-    // uint64_t destination_offsets[NUM_INSTR_DESTINATIONS * NUM_INSTR_DESTINATIONS];
-    // uint64_t source_offsets[NUM_INSTR_SOURCES * NUM_INSTR_SOURCES];
 
     ooo_model_instr() {
         ip = 0;
@@ -304,14 +281,6 @@ class ooo_model_instr {
             forwarding_index[i] = 0;
         }
 
-        // for (uint32_t i=0; i<NUM_INSTR_SOURCES * NUM_INSTR_SOURCES; i++) {
-        //     source_offsets[i] = 0;
-        // }
-        
-        // for (uint32_t i=0; i<NUM_INSTR_DESTINATIONS * NUM_INSTR_DESTINATIONS; i++) {
-        //     destination_offsets[i] = 0;
-        // }
-
 #if 0
         for (uint32_t i=0; i<ROB_SIZE; i++) {
             registers_instrs_depend_on_me[i] = 0;
@@ -328,8 +297,8 @@ class ooo_model_instr {
     // cout << "*** " << instr_id << " ***" << endl;
     cout << hex << "ip: 0x" << (uint64_t)ip << dec << endl;
     cout << hex << "op: 0x" << (uint64_t)op << dec << endl;
-    cout << hex << "first offset: " << (uint64_t)offset1 << dec << endl;
-    cout << hex << "second offset: " << (uint64_t)offset2 << dec << endl;
+    cout << "first offset: " << offset1 << endl;
+    cout << "second offset: " << offset2 << endl;
     cout << (uint32_t)is_branch << " " << (uint32_t)branch_taken << endl;
     cout << "source registers:";
     for(uint32_t i=0; i<NUM_INSTR_SOURCES; i++)
@@ -431,9 +400,6 @@ class ooo_model_instr_old {
              sq_index[NUM_INSTR_DESTINATIONS_SPARC],
              forwarding_index[NUM_INSTR_DESTINATIONS_SPARC];
 
-    // uint64_t destination_offsets[NUM_INSTR_DESTINATIONS * NUM_INSTR_DESTINATIONS];
-    // uint64_t source_offsets[NUM_INSTR_SOURCES * NUM_INSTR_SOURCES];
-
     ooo_model_instr_old() {
         ip = 0;
         // op = 0;
@@ -492,14 +458,6 @@ class ooo_model_instr_old {
             sq_index[i] = UINT32_MAX;
             forwarding_index[i] = 0;
         }
-
-        // for (uint32_t i=0; i<NUM_INSTR_SOURCES * NUM_INSTR_SOURCES; i++) {
-        //     source_offsets[i] = 0;
-        // }
-        
-        // for (uint32_t i=0; i<NUM_INSTR_DESTINATIONS * NUM_INSTR_DESTINATIONS; i++) {
-        //     destination_offsets[i] = 0;
-        // }
 
 #if 0
         for (uint32_t i=0; i<ROB_SIZE; i++) {
