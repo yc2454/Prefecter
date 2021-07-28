@@ -75,8 +75,8 @@ class input_instr {
     uint64_t op;
 
     // constant offset between memory read and value stored in reg
-    int offset1;
-    int offset2;
+    uint64_t offset1;
+    uint64_t offset2;
 
     // branch info
     uint8_t is_branch;
@@ -178,8 +178,8 @@ class ooo_model_instr {
     uint8_t branch_type;
     uint64_t branch_target;
 
-    int offset1;
-    int offset2;
+    uint64_t offset1;
+    uint64_t offset2;
 
     uint32_t fetched, scheduled;
     int num_reg_ops, num_mem_ops, num_reg_dependent;
@@ -297,8 +297,8 @@ class ooo_model_instr {
     // cout << "*** " << instr_id << " ***" << endl;
     cout << hex << "ip: 0x" << (uint64_t)ip << dec << endl;
     cout << hex << "op: 0x" << (uint64_t)op << dec << endl;
-    cout << "first offset: " << offset1 << endl;
-    cout << "second offset: " << offset2 << endl;
+    cout << "first offset: " << (uint64_t)offset1 << endl;
+    cout << "second offset: " << (uint64_t)offset2 << endl;
     cout << (uint32_t)is_branch << " " << (uint32_t)branch_taken << endl;
     cout << "source registers:";
     for(uint32_t i=0; i<NUM_INSTR_SOURCES; i++)
