@@ -75,8 +75,8 @@ class input_instr {
     uint64_t op;
 
     // constant offset between memory read and value stored in reg
-    uint64_t offset1;
-    uint64_t offset2;
+    long long int offset1;
+    long long int offset2;
 
     // branch info
     uint8_t is_branch;
@@ -178,8 +178,8 @@ class ooo_model_instr {
     uint8_t branch_type;
     uint64_t branch_target;
 
-    uint64_t offset1;
-    uint64_t offset2;
+    long long int offset1;
+    long long int offset2;
 
     uint32_t fetched, scheduled;
     int num_reg_ops, num_mem_ops, num_reg_dependent;
