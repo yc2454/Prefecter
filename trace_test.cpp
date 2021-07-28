@@ -218,25 +218,22 @@ void print_trace() {
 
     deque<ooo_model_instr> window;
     int max_window_size = 100;
-    fread(&current_instr_read, instr_size, 1, trace_file);
-    current_instr = copy_into_format(current_instr_read);
-    current_instr.print_instr();
 
-    // while (fread(&current_instr_read, instr_size, 1, trace_file))
-    // {
-    //     current_instr = copy_into_format(current_instr_read);
-    //     current_instr.print_instr();
+    while (fread(&current_instr_read, instr_size, 1, trace_file))
+    {
+        current_instr = copy_into_format(current_instr_read);
+        current_instr.print_instr();
 
-    //     if (window.size() < max_window_size)
-    //     {
-    //         window.push_front(current_instr);
-    //     }
-    //     else
-    //     {
-    //         break;
-    //     }
+        if (window.size() < max_window_size)
+        {
+            window.push_front(current_instr);
+        }
+        else
+        {
+            break;
+        }
 
-    // }
+    }
 
     pclose(trace_file);
 
