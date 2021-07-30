@@ -11,10 +11,6 @@ Graph graph_create() {
 
 }
 
-void print_1() {
-    cout << 1 << endl;
-}
-
 vertex_descriptor_t add_vertex(Graph * g, uint64_t value, uint64_t source, vertex_type t) {
     
     VertexProperty vp; 

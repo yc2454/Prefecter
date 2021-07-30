@@ -312,8 +312,6 @@ int traceback_ea(uint64_t ea, vector<ooo_model_instr> trace_window, int index) {
 // Returns the descriptor of the sink of the graph
 vertex_descriptor_t build_graph(vector<ooo_model_instr> trace_window, Graph *g, uint64_t miss_pc) {
 
-    print_1();
-
     bool complete = false;
     int cur_index = 0;
 
