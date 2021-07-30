@@ -31,8 +31,6 @@ typedef boost::adjacency_list<boost::vecS, boost::vecS,
 typedef boost::graph_traits<Graph>::vertex_descriptor vertex_descriptor_t;
 typedef boost::graph_traits<Graph>::edge_descriptor edge_descriptor_t;
 
-
-
 Graph graph_create();
 
 vertex_descriptor_t add_vertex(Graph * g, uint64_t value, uint64_t source, vertex_type t);
@@ -40,3 +38,5 @@ vertex_descriptor_t add_vertex(Graph * g, uint64_t value, uint64_t source, verte
 pair<edge_descriptor_t, bool> add_edge(Graph * g, vertex_descriptor_t src, vertex_descriptor_t dst);
 
 vector<VertexProperty> find_adj_vertices(Graph g, vertex_descriptor_t v);
+
+void print_1();
