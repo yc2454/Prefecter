@@ -1,7 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <assert.h>
-// #include "graph.h"
+#include <deque>
+#include "graph.h"
 #include "instruction.h"
 
 // store the trace name here
@@ -337,13 +338,13 @@ vertex_descriptor_t build_graph(vector<ooo_model_instr> trace_window, Graph *g, 
         if (cur_instr.ip == miss_pc && cur_index != 0)
             break;
 
-        if (cur_instr.source_offsets[0] != 0) {
+        if (cur_instr.offset1 != 0) {
             
             // first add the ADD vertex into the graph
             add_op_vertex = add_vertex(g, add_op, 0, NONTERM);
             add_edge(g, cur_root_vertex, add_op_vertex);
             // add the children of ADD vertex
-            const_vertex = add_vertex(g, cur_instr.source_offsets[0], 0, CONST);
+            const_vertex = add_vertex(g, cur_instr.offset1, 0, CONST);
             add_edge(g, add_op_vertex, const_vertex);
             
             if (cur_instr.is_memory)
