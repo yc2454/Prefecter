@@ -270,7 +270,7 @@ uint64_t find_source(input_instr i) {
 
 // Search the last occurence of register reg
 // if not found, return -1
-int traceback_reg(uint8_t reg, vector<ooo_model_instr> trace_window, int index) {
+int traceback_reg(uint8_t reg, deque<ooo_model_instr> trace_window, int index) {
     
     int size = trace_window.size();
     ooo_model_instr cur_instr;
@@ -289,7 +289,7 @@ int traceback_reg(uint8_t reg, vector<ooo_model_instr> trace_window, int index) 
     
 }
 
-int traceback_ea(uint64_t ea, vector<ooo_model_instr> trace_window, int index) {
+int traceback_ea(uint64_t ea, deque<ooo_model_instr> trace_window, int index) {
     
     int size = trace_window.size();
     ooo_model_instr cur_instr;
@@ -308,9 +308,18 @@ int traceback_ea(uint64_t ea, vector<ooo_model_instr> trace_window, int index) {
     
 }
 
+long long int find_const_offset(ooo_model_instr cur_instr) {
+    if (cur_instr.offset1 != -1 && cur_instr.offset1 != 0) 
+        return cur_instr.offset1;
+    else if (cur_instr.offset2 != -1 && cur_instr.offset2 != 0) 
+        return cur_instr.offset2;
+    else
+        return -17;
+}
+
 // Builds the graph
 // Returns the descriptor of the sink of the graph
-vertex_descriptor_t build_graph(vector<ooo_model_instr> trace_window, Graph *g, uint64_t miss_pc) {
+vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, uint64_t miss_pc) {
 
     bool complete = false;
     int cur_index = 0;
@@ -328,27 +337,32 @@ vertex_descriptor_t build_graph(vector<ooo_model_instr> trace_window, Graph *g, 
     vertex_descriptor_t ea_vertex;
 
     int reg_index, ea_index;
+
+    long long int offset;
     
     // backtrack in the trace window for another dependence
     while (1)
     {
         cur_instr = trace_window.at(cur_index);
+        
+        // the memory op number at which there is a discrepency between ea and reg value
+        offset = find_const_offset(cur_instr);
 
         // if we come across the miss PC again, stop
         if (cur_instr.ip == miss_pc && cur_index != 0)
             break;
 
-        if (cur_instr.offset1 != 0) {
+        if (offset != -17) {
             
             // first add the ADD vertex into the graph
             add_op_vertex = add_vertex(g, add_op, 0, NONTERM);
             add_edge(g, cur_root_vertex, add_op_vertex);
             // add the children of ADD vertex
-            const_vertex = add_vertex(g, cur_instr.offset1, 0, CONST);
+            const_vertex = add_vertex(g, offset, 0, CONST);
             add_edge(g, add_op_vertex, const_vertex);
             
-            if (cur_instr.is_memory)
-            {
+            // When the current instruction fetch data from memory
+            if (cur_instr.is_memory) {
                 ea_index = traceback_ea(cur_instr.source_memory[0], trace_window, cur_index);
                 
                 // set the current root to a new value
@@ -367,10 +381,10 @@ vertex_descriptor_t build_graph(vector<ooo_model_instr> trace_window, Graph *g, 
                     continue;
                 }
             }
+
             // when the source is not from main memory, search for occurrence 
             // of the register
-            else
-            {
+            else {
                 // traceback to find the register
                 reg_index = traceback_reg(cur_instr.source_registers[0], trace_window, cur_index);
                 
@@ -394,11 +408,8 @@ vertex_descriptor_t build_graph(vector<ooo_model_instr> trace_window, Graph *g, 
             }
             
         }
-        else
-        {
-
-            if (cur_instr.is_memory)
-            {
+        else {
+            if (cur_instr.is_memory) {
                 ea_index = traceback_ea(cur_instr.source_memory[0], trace_window, cur_index);
 
                 load_op_vertex = add_vertex(g, load_op, cur_instr.source_memory[0], NONTERM);
@@ -417,8 +428,7 @@ vertex_descriptor_t build_graph(vector<ooo_model_instr> trace_window, Graph *g, 
                     continue;
                 }
             }
-            else
-            {
+            else {
                 // traceback to find the register
                 reg_index = traceback_reg(cur_instr.source_registers[0], trace_window, cur_index);
 
@@ -510,10 +520,9 @@ int main(int argc, char** argv)
         assert(0);
     }
 
-    // if (count_traces != NUM_CPUS) {
-    //     printf("\n*** Not enough traces for the configured number of cores ***\n\n");
-    //     assert(0);
-    // }
+    // ------------------------------------------------------------------------ //
+    /////////////////////// trace reading complete ///////////////////////////////
+    // ------------------------------------------------------------------------ //
 
     profile = fopen(argv[3], "r");
     uint64_t miss_pc;
@@ -529,6 +538,7 @@ int main(int argc, char** argv)
     }
     
     fclose(profile);
+
     
     return 0;
 }
