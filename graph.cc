@@ -101,7 +101,7 @@ void print_vertex(Graph g, vertex_descriptor_t v) {
 
     VertexProperty property = boost::get(pmap, v);
 
-    cout << property.value;
+    cout << property.value << " ";
 
 }
 
