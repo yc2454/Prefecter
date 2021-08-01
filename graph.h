@@ -70,15 +70,15 @@ pair<edge_descriptor_t, bool> add_edge(Graph * g, vertex_descriptor_t src, verte
 
 }
 
-vector<VertexProperty> find_adj_vertices(Graph g, vertex_descriptor_t v) {
+vector<vertex_descriptor_t> find_adj_vertices(Graph g, vertex_descriptor_t v) {
     
     typename boost::graph_traits<Graph>::adjacency_iterator ai;
     typename boost::graph_traits<Graph>::adjacency_iterator ai_end;
 
-    vector<VertexProperty> adjs;
+    vector<vertex_descriptor_t> adjs;
 
     for (tie(ai, ai_end) = boost::adjacent_vertices(v, g); ai != ai_end; ++ai) {
-        adjs.push_back(g[*ai]);
+        adjs.push_back(*ai);
     }
 
     return adjs;
@@ -179,8 +179,6 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
         }
     }
     
-    
-
 }
 
 // void print_1();
