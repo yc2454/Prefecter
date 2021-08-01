@@ -1,8 +1,6 @@
 #include "graph.h"
 using namespace std;
 
-EdgeProperty ep; 
-
 Graph graph_create() {
     
     Graph graph;
@@ -143,7 +141,7 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
 
     // search up along the path
     while (1) {
-        num_sources = find_adj_vertices(*g, cur).size();
+        num_sources = find_source_vertices(*g, cur).size();
         // when there are 2 sources
         if (num_sources == 2) {
             // check whether cur complete the circle
