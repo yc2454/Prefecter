@@ -101,7 +101,7 @@ void print_vertex(Graph g, vertex_descriptor_t v) {
 
     VertexProperty property = boost::get(pmap, v);
 
-    cout << property.value << endl;
+    cout << property.value;
 
 }
 
@@ -115,6 +115,7 @@ void print_graph(Graph g, vertex_descriptor_t root) {
 
     for (vector<vertex_descriptor_t>::iterator i = sources.begin(); i != sources.end(); i++) {
         print_graph(g, *i);
+        cout << endl;
     }
 
 }
