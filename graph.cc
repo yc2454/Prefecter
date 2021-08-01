@@ -101,7 +101,7 @@ void print_vertex(Graph g, vertex_descriptor_t v) {
 
     VertexProperty property = boost::get(pmap, v);
 
-    cout << property.value << " ";
+    cout << property.value << endl;
 
 }
 
@@ -115,7 +115,6 @@ void print_graph(Graph g, vertex_descriptor_t root) {
 
     for (vector<vertex_descriptor_t>::iterator i = sources.begin(); i != sources.end(); i++) {
         print_graph(g, *i);
-        cout << endl;
     }
 
 }
@@ -188,14 +187,19 @@ int main() {
     vertex_descriptor_t ld1 = add_vertex(&g, 22222, 0x12345678, NONTERM);
     vertex_descriptor_t add1 = add_vertex(&g, 11111, 0, NONTERM);
     vertex_descriptor_t const2 = add_vertex(&g, 8, 0, CONST);
-    vertex_descriptor_t reg = add_vertex(&g, 26, 0, REG);
+    vertex_descriptor_t ld2 = add_vertex(&g, 26, 0x12345678, NONTERM);
+
 
     add_edge(&g, const1, root);
     add_edge(&g, ld1, root);
     add_edge(&g, add1, ld1);
     add_edge(&g, const2, add1);
-    add_edge(&g, reg, add1);
+    add_edge(&g, ld2, add1);
 
+    cout << "before pruning" << endl;
+    print_graph(g, root);
+    store_load_bypassing(&g, root);
+    cout << "after pruning" << endl;
     print_graph(g, root);
 
     return 0;
