@@ -1,5 +1,6 @@
 #include "graph.h"
 using namespace std;
+#define NO_NONTERM -100
 
 Graph graph_create() {
     
@@ -86,12 +87,10 @@ vertex_descriptor_t get_nonterm_source(Graph g, vertex_descriptor_t target) {
         src = boost::source(*ei, g);
         vp = boost::get(pmap, src);
         if (vp.ty == NONTERM) 
-            nonterm_src = src;
-        else 
-            nonterm_src = -100;
+            return src;
     }
 
-    return nonterm_src;
+    return NO_NONTERM;
     
 }
 
@@ -147,15 +146,25 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
         if (num_sources == 2) {
             // check whether cur complete the circle
             cur_property = boost::get(pmap, cur);
-            start_property = boost::get(pmap, cur);
+            start_property = boost::get(pmap, start);
+
             // if a circle is completed, remove all vertices in the circle
             if (cur_property.source == start_property.source) {
                 for (int i = 0; circle[i] != cur; i++) {
                     boost::remove_vertex(circle[i], *g);
                 }
+                // change the start of the circle
+                start = cur;
             }
-            // change the start of the circle
-            start = cur;
+
+            else {
+                circle.push_back(cur);
+            }
+
+            // update the current vertex
+            cur = get_nonterm_source(*g, cur);
+            if (cur == NO_NONTERM)
+                break;
         }
         else if (num_sources == 0) {
             break;
@@ -169,8 +178,13 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
                 for (int i = 0; circle[i] != cur; i++) {
                     boost::remove_vertex(circle[i], *g);
                 }
+                start = cur;
             }
-            start = cur;
+            
+            // update the current vertex
+            cur = get_nonterm_source(*g, cur);
+            if (cur == NO_NONTERM)
+                break;
         }
     }
     
