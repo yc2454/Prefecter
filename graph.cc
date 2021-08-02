@@ -50,6 +50,7 @@ vector<vertex_descriptor_t> find_source_vertices(Graph g, vertex_descriptor_t v)
 
     for (; ei != ei_end; ++ei) {
         src = boost::source(*ei, g);
+        adjs.push_back(src);
     }
 
     cout << "the number of source here is " << adjs.size() << endl;
