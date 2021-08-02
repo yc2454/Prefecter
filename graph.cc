@@ -127,10 +127,10 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
     deque<vertex_descriptor_t> circle;
 
     // find the first non-terminal source
-    vertex_descriptor_t start = get_nonterm_source(*g, root);
+    vertex_descriptor_t start;
 
     // the current place on the path
-    vertex_descriptor_t cur;
+    vertex_descriptor_t cur = get_nonterm_source(*g, root);
     // properties of the vertices
     VertexProperty cur_property;
     VertexProperty start_property;
@@ -138,8 +138,8 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
     // properties for testing
     VertexProperty p;
 
-    cur = start;
-    circle.push_front(start);
+    // cur = start;
+    // circle.push_front(start);
 
     boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, *g);
 
@@ -148,6 +148,13 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
         num_sources = find_source_vertices(*g, cur).size();
         // when there are 2 sources
         if (num_sources == 2) {
+            
+            start = get_nonterm_source(*g, cur);
+            if (cur == NO_NONTERM)
+                break;
+            else 
+                circle.push_back(cur);
+            
             // check whether cur complete the circle
             cur_property = boost::get(pmap, cur);
             start_property = boost::get(pmap, start);
@@ -170,17 +177,18 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
                 circle.push_back(cur);
             }
 
-            // update the current vertex
-            cur = get_nonterm_source(*g, cur);
-            if (cur == NO_NONTERM)
-                break;
-            else 
-                circle.push_back(cur);
         }
         else if (num_sources == 0) {
             break;
         }
         else if (num_sources == 1) {
+            
+            start = get_nonterm_source(*g, cur);
+            if (cur == NO_NONTERM)
+                break;
+            else 
+                circle.push_back(cur);
+            
             // check whether cur complete the circle
             cur_property = boost::get(pmap, cur);
             start_property = boost::get(pmap, cur);
@@ -201,10 +209,6 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
                 circle.push_back(cur);
             }
             
-            // update the current vertex
-            cur = get_nonterm_source(*g, cur);
-            if (cur == NO_NONTERM)
-                break;
         }
     }
     
