@@ -212,13 +212,15 @@ int main() {
     add_edge(&g, const2, add1);
     add_edge(&g, ld2, add1);
 
+    cout << root << const1 << ld1 << add1 << endl;
+
     // cout << "before pruning" << endl;
     // print_graph(g, root);
     // store_load_bypassing(&g, root);
     boost::remove_vertex(const2, g);
     boost::remove_vertex(const1, g);
     cout << "after pruning" << endl;
-    print_graph(g, root);
+    // print_graph(g, root);
 
     return 0;
 
