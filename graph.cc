@@ -135,6 +135,9 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
     VertexProperty cur_property;
     VertexProperty start_property;
 
+    // properties for testing
+    VertexProperty p;
+
     cur = start;
     circle.push_front(start);
 
@@ -151,9 +154,14 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
 
             // if a circle is completed, remove all vertices in the circle
             if (cur_property.source == start_property.source) {
+                cout << "start removing:" << endl;
+            
                 for (int i = 0; circle[i] != cur; i++) {
+                    p = boost::get(pmap, circle[i]);
+                    cout << p.value << " ";
                     boost::remove_vertex(circle[i], *g);
                 }
+                cout << endl;
                 // change the start of the circle
                 start = cur;
             }
@@ -218,7 +226,7 @@ int main() {
     // boost::remove_vertex(const2, g);
     // boost::remove_vertex(const1, g);
     cout << "after pruning" << endl;
-    print_graph(g, root);
+    // print_graph(g, root);
 
     return 0;
 
