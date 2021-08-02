@@ -196,6 +196,10 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
                 cout << endl;
                 start = cur;
             }
+
+            else {
+                circle.push_back(cur);
+            }
             
             // update the current vertex
             cur = get_nonterm_source(*g, cur);
