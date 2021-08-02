@@ -203,7 +203,7 @@ int main() {
     vertex_descriptor_t ld1 = add_vertex(&g, 22222, 0x12345678, NONTERM);
     vertex_descriptor_t add1 = add_vertex(&g, 11111, 0, NONTERM);
     vertex_descriptor_t const2 = add_vertex(&g, 8, 0, CONST);
-    vertex_descriptor_t ld2 = add_vertex(&g, 26, 0x12345678, NONTERM);
+    vertex_descriptor_t ld2 = add_vertex(&g, 22222, 0x12345678, NONTERM);
 
 
     add_edge(&g, const1, root);
