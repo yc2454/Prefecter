@@ -165,6 +165,8 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
             cur = get_nonterm_source(*g, cur);
             if (cur == NO_NONTERM)
                 break;
+            else 
+                circle.push_back(cur);
         }
         else if (num_sources == 0) {
             break;
