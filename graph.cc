@@ -214,7 +214,8 @@ int main() {
 
     cout << "before pruning" << endl;
     print_graph(g, root);
-    store_load_bypassing(&g, root);
+    // store_load_bypassing(&g, root);
+    boost::remove_vertex(add1, g);
     cout << "after pruning" << endl;
     print_graph(g, root);
 
