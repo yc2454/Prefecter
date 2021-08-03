@@ -221,18 +221,25 @@ int main() {
 
     vertex_descriptor_t root = add_vertex(&g, ADD, 0, NONTERM);
     vertex_descriptor_t const1 = add_vertex(&g, 28, 0, CONST);
-    vertex_descriptor_t ld1 = add_vertex(&g, LOAD, 12, NONTERM);
-    vertex_descriptor_t add1 = add_vertex(&g, ADD, 0, NONTERM);
-    vertex_descriptor_t const2 = add_vertex(&g, 8, 0, CONST);
-    vertex_descriptor_t ld2 = add_vertex(&g, LOAD, 0x12345678, NONTERM);\
-    vertex_descriptor_t ld3 = add_vertex(&g, LOAD, 12, NONTERM);
+    vertex_descriptor_t ld1 = add_vertex(&g, LOAD, 3, NONTERM);
+    vertex_descriptor_t ld2 = add_vertex(&g, LOAD, 4, NONTERM);
+    vertex_descriptor_t ld3 = add_vertex(&g, LOAD, 5, NONTERM);
+    vertex_descriptor_t ld4 = add_vertex(&g, LOAD, 6, NONTERM);
+    vertex_descriptor_t ld5 = add_vertex(&g, LOAD, 3, NONTERM);
+    // vertex_descriptor_t add1 = add_vertex(&g, ADD, 0, NONTERM);
+    // vertex_descriptor_t const2 = add_vertex(&g, 8, 0, CONST);
+    // vertex_descriptor_t ld2 = add_vertex(&g, LOAD, 0x12345678, NONTERM);
+    // vertex_descriptor_t ld3 = add_vertex(&g, LOAD, 12, NONTERM);
 
     add_edge(&g, const1, root);
     add_edge(&g, ld1, root);
-    add_edge(&g, add1, ld1);
-    add_edge(&g, const2, add1);
-    add_edge(&g, ld2, add1);
+    add_edge(&g, ld2, ld1);
     add_edge(&g, ld3, ld2);
+    add_edge(&g, ld4, ld3);
+    add_edge(&g, ld4, ld5);
+    // add_edge(&g, const2, add1);
+    // add_edge(&g, ld2, add1);
+    // add_edge(&g, ld3, ld2);
 
     // cout << "before pruning" << endl;
     // print_graph(g, root);
@@ -240,7 +247,7 @@ int main() {
     // boost::remove_vertex(const2, g);
     // boost::remove_vertex(const1, g);
     cout << "after pruning" << endl;
-    // print_graph(g, root);
+    print_graph(g, root);
 
     return 0;
 
