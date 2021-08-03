@@ -202,19 +202,16 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
                     cout << circle[i];
                 }
                 cout << endl;
-            
+
                 for (int i = 0; i < circle.size(); i++) {
                     p = boost::get(pmap, circle[i]);
                     cout << p.value << " ";
                     boost::remove_vertex(circle[i], *g);
                 }
-                cout << endl;
 
-                for (int i = 0; i < circle.size(); i++) {
-                    cout << circle[i];
-                }
+                // reconnect the graph
+
                 
-
                 cout << endl;
                 circle.clear();
                 start = next;
@@ -252,6 +249,7 @@ int main() {
     add_edge(&g, ld3, ld2);
     add_edge(&g, ld4, ld3);
     add_edge(&g, ld5, ld4);
+    cout << const1 << ld1 << ld2 << ld3 << ld4 << ld5 << endl;
     // add_edge(&g, const2, add1);
     // add_edge(&g, ld2, add1);
     // add_edge(&g, ld3, ld2);
