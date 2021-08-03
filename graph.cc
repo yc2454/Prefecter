@@ -173,6 +173,7 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
 
         // when we reach a leaf node
         else if (num_sources == 0) {
+            cout << "no more source!" << endl;
             break;
         }
 
