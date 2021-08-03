@@ -256,7 +256,7 @@ int main() {
     // boost::remove_vertex(const2, g);
     // boost::remove_vertex(const1, g);
     cout << "after pruning" << endl;
-    print_graph(g, root);
+    // print_graph(g, root);
 
     return 0;
 
