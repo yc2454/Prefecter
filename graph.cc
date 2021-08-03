@@ -101,7 +101,7 @@ vertex_descriptor_t get_target(Graph g, vertex_descriptor_t v) {
 
     // find in edges to target
     boost::graph_traits<Graph>::in_edge_iterator ei, ei_end;
-    boost::tie(ei, ei_end) = boost::in_edges(v, g);
+    boost::tie(ei, ei_end) = boost::out_edges(v, g);
     // find source
     vertex_descriptor_t target;
     
@@ -223,18 +223,12 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
 
                 for (int i = 0; i < circle.size(); i++) {
                     cout << circle[i];
-                }
-                cout << endl;
-
-                for (int i = 0; i < circle.size(); i++) {
-                    p = boost::get(pmap, circle[i]);
-                    cout << p.value << " ";
                     boost::remove_vertex(circle[i], *g);
                 }
-
                 cout << endl;
 
                 // reconnect the graph
+
                 target_of_start = get_target(*g, start);
                 add_edge(g, next, target_of_start);
                 cout << "reconnect target " << target_of_start << " of start " << start << " to the next vertex " << next;
@@ -282,8 +276,8 @@ int main() {
     // add_edge(&g, ld2, add1);
     // add_edge(&g, ld3, ld2);
 
-    cout << "before pruning" << endl;
-    print_graph(g, root);
+    // cout << "before pruning" << endl;
+    // print_graph(g, root);
     store_load_bypassing(&g, root);
     // boost::remove_vertex(const2, g);
     // boost::remove_vertex(const1, g);
