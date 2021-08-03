@@ -132,7 +132,7 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
     vertex_descriptor_t start;
 
     // the current place on the path
-    vertex_descriptor_t cur;
+    vertex_descriptor_t cur = root;
 
     // the next place in the path
     vertex_descriptor_t next;
