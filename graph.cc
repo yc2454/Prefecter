@@ -141,7 +141,7 @@ void print_graph(Graph g, vertex_descriptor_t root) {
 
 }
 
-void store_load_bypassing(Graph g, vertex_descriptor_t root) {
+void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
 
     int num_sources;
 
@@ -172,18 +172,18 @@ void store_load_bypassing(Graph g, vertex_descriptor_t root) {
     edge_descriptor_t start_self;
     bool start_self_exists;
 
-    boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, g);
+    boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, *g);
 
     // search up along the path
     while (1) {
         
-        num_sources = find_source_vertices(g, cur).size();
+        num_sources = find_source_vertices(*g, cur).size();
         
         // when we are at an ADD node
         if (num_sources == 2) {
             cout << "two source!" << endl;
             // check if the ADD node has a child who is a nonterm
-            cur = get_nonterm_source(g, cur);
+            cur = get_nonterm_source(*g, cur);
             cur_property = boost::get(pmap, cur);
             if (cur == NO_NONTERM) 
                 break;
@@ -208,7 +208,7 @@ void store_load_bypassing(Graph g, vertex_descriptor_t root) {
 
             // circle.push_back(cur);
 
-            next = get_nonterm_source(g, cur);
+            next = get_nonterm_source(*g, cur);
             if (next == NO_NONTERM)
                 break;
             
@@ -224,17 +224,17 @@ void store_load_bypassing(Graph g, vertex_descriptor_t root) {
 
                 for (int i = 0; i < circle.size(); i++) {
                     cout << circle[i] << " ";
-                    boost::remove_vertex(circle[i], g);
+                    boost::remove_vertex(circle[i], *g);
                 }
                 cout << endl;
 
                 // reconnect the graph
-                boost::tie(start_self, start_self_exists) = boost::edge(start, start, g);
-                if (start_self_exists) {
-                    boost::remove_edge(start_self, g);
-                }
-                target_of_start = get_target(g, start);
-                add_edge(&g, next, target_of_start);
+                // boost::tie(start_self, start_self_exists) = boost::edge(start, start, *g);
+                // if (start_self_exists) {
+                //     boost::remove_edge(start_self, *g);
+                // }
+                target_of_start = get_target(*g, start);
+                add_edge(g, next, target_of_start);
                 cout << "reconnect target " << target_of_start << " of start " << start << " to the next vertex " << next;
                 
                 cout << endl;
@@ -283,7 +283,7 @@ int main() {
     cout << "before pruning" << endl;
     cout << "the graph contains " << boost::num_vertices(g) << " vertices" << endl;
     // print_graph(g, root);
-    store_load_bypassing(g, root);
+    store_load_bypassing(&g, root);
     // boost::remove_vertex(const2, g);
     // boost::remove_vertex(const1, g);
     cout << "after pruning" << endl;
