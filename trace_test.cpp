@@ -239,11 +239,8 @@ void print_trace() {
 
 }
 
-// Builds the graph
-// Returns the descriptor of the sink of the graph
-
-int main(int argc, char** argv)
-{
+// read the trace stored in file
+void read_trace_file(int argc, char** argv) {
 
     char miss_instr[255];
     deque<ooo_model_instr> last_occur_window;
@@ -300,6 +297,12 @@ int main(int argc, char** argv)
         printf("\n*** Trace file not found: %s ***\n\n", argv[2]);
         assert(0);
     }
+}
+
+int main(int argc, char** argv)
+{
+
+    read_trace_file(argc, argv);
 
     print_trace();
     
