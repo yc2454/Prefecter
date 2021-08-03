@@ -224,14 +224,14 @@ void print_trace() {
         current_instr = copy_into_format(current_instr_read);
         current_instr.print_instr();
 
-        if (window.size() < max_window_size)
-        {
+        // if (window.size() < max_window_size)
+        // {
             window.push_front(current_instr);
-        }
-        else
-        {
-            break;
-        }
+        // }
+        // else
+        // {
+        //     break;
+        // }
 
     }
 
