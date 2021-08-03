@@ -196,6 +196,7 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
             // if a circle is completed, remove all vertices in the circle
             if (next_property.source == start_property.source) {
                 cout << "start removing:" << endl;
+                cout << "the size of the circle is: " << circle.size() << endl;
             
                 for (int i = 0; i < circle.size(); i++) {
                     p = boost::get(pmap, circle[i]);
