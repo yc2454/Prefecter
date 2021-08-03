@@ -123,6 +123,8 @@ void print_vertex(Graph g, vertex_descriptor_t v) {
 
 void print_graph(Graph g, vertex_descriptor_t root) {
 
+    cout << "current vertex: " << root << endl;
+
     print_vertex(g, root);
     
     boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, g);
