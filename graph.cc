@@ -97,6 +97,20 @@ vertex_descriptor_t get_nonterm_source(Graph g, vertex_descriptor_t target) {
     
 }
 
+vertex_descriptor_t get_target(Graph g, vertex_descriptor_t v) {
+
+    // find in edges to target
+    boost::graph_traits<Graph>::in_edge_iterator ei, ei_end;
+    boost::tie(ei, ei_end) = boost::in_edges(v, g);
+    // find source
+    vertex_descriptor_t target;
+    
+    target = boost::target(*ei, g);
+    return target;
+    
+        
+}
+
 void print_vertex(Graph g, vertex_descriptor_t v) {
 
     boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, g);
@@ -136,6 +150,9 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
 
     // the next place in the path
     vertex_descriptor_t next;
+
+    // the target of the start point
+    vertex_descriptor_t target_of_start;
 
     // properties of the vertices
     VertexProperty cur_property;
@@ -210,10 +227,13 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
                 }
 
                 // reconnect the graph
-
+                target_of_start = get_target(*g, start);
+                add_edge(g, next, target_of_start);
                 
                 cout << endl;
+                // clear the circle
                 circle.clear();
+                // the new start of the circle is the next vertex
                 start = next;
             }
             else {
@@ -249,7 +269,6 @@ int main() {
     add_edge(&g, ld3, ld2);
     add_edge(&g, ld4, ld3);
     add_edge(&g, ld5, ld4);
-    cout << const1 << ld1 << ld2 << ld3 << ld4 << ld5 << endl;
     // add_edge(&g, const2, add1);
     // add_edge(&g, ld2, add1);
     // add_edge(&g, ld3, ld2);
