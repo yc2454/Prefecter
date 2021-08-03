@@ -254,6 +254,10 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
     
 }
 
+void remove_vertex_in_func(Graph *g, vertex_descriptor_t v) {
+    boost::remove_vertex(v, *g);
+}
+
 int main() {
 
     Graph g = graph_create();
@@ -283,9 +287,9 @@ int main() {
     cout << "before pruning" << endl;
     cout << "the graph contains " << boost::num_vertices(g) << " vertices" << endl;
     // print_graph(g, root);
-    store_load_bypassing(&g, root);
-    // boost::remove_vertex(const2, g);
-    // boost::remove_vertex(const1, g);
+    // store_load_bypassing(&g, root);
+    remove_vertex_in_func(&g, root);
+    remove_vertex_in_func(&g, ld1);
     cout << "after pruning" << endl;
     cout << "the graph contains " << boost::num_vertices(g) << " vertices" << endl;
     print_graph(g, root);
