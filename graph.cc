@@ -124,7 +124,7 @@ void print_vertex(Graph g, vertex_descriptor_t v) {
 void print_graph(Graph g, vertex_descriptor_t root) {
 
     print_vertex(g, root);
-    cout << "current vertex is: " << endl;
+    cout << "current vertex is: " << root << " and its neighbors are: " << endl;
     
     boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, g);
 
