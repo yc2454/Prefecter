@@ -239,7 +239,7 @@ int main() {
     add_edge(&g, ld2, ld1);
     add_edge(&g, ld3, ld2);
     add_edge(&g, ld4, ld3);
-    add_edge(&g, ld4, ld5);
+    add_edge(&g, ld5, ld4);
     // add_edge(&g, const2, add1);
     // add_edge(&g, ld2, add1);
     // add_edge(&g, ld3, ld2);
