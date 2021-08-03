@@ -141,7 +141,7 @@ void print_graph(Graph g, vertex_descriptor_t root) {
 
 }
 
-void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
+void store_load_bypassing(Graph g, vertex_descriptor_t root) {
 
     int num_sources;
 
@@ -283,9 +283,7 @@ int main() {
     cout << "before pruning" << endl;
     cout << "the graph contains " << boost::num_vertices(g) << " vertices" << endl;
     // print_graph(g, root);
-    // store_load_bypassing(&g, root);
-    boost::remove_vertex(root, g);
-    boost::remove_vertex(ld1, g);
+    store_load_bypassing(g, root);
     // boost::remove_vertex(const2, g);
     // boost::remove_vertex(const1, g);
     cout << "after pruning" << endl;
