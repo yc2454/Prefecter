@@ -198,6 +198,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
         // when we reach a leaf node
         else if (num_sources == 0) {
             cout << "no more source!" << endl;
+            cout << "BEFORE EXITING, the graph contains " << boost::num_vertices(*g) << " vertices" << endl;
             break;
         }
 
@@ -227,7 +228,6 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                     boost::remove_vertex(circle[i], *g);
                 }
                 cout << endl;
-                cout << "IN FUNCTION, the graph contains " << boost::num_vertices(*g) << " vertices" << endl;
 
                 // reconnect the graph
                 // boost::tie(start_self, start_self_exists) = boost::edge(start, start, *g);
