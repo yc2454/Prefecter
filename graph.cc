@@ -223,7 +223,7 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
                 // cout << "the size of the circle is: " << circle.size() << endl;
 
                 for (int i = 0; i < circle.size(); i++) {
-                    cout << circle[i];
+                    cout << circle[i] << " ";
                     boost::remove_vertex(circle[i], *g);
                 }
                 cout << endl;
@@ -280,12 +280,14 @@ int main() {
     // add_edge(&g, ld2, add1);
     // add_edge(&g, ld3, ld2);
 
-    // cout << "before pruning" << endl;
+    cout << "before pruning" << endl;
+    cout << "the graph contains " << boost::num_vertices(g) << " vertices" << endl;
     // print_graph(g, root);
     store_load_bypassing(&g, root);
     // boost::remove_vertex(const2, g);
     // boost::remove_vertex(const1, g);
     cout << "after pruning" << endl;
+    cout << "the graph contains " << boost::num_vertices(g) << " vertices" << endl;
     print_graph(g, root);
 
     return 0;
