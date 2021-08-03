@@ -155,7 +155,6 @@ void remove_self_edge(Graph * g) {
         if (start_self_exists) {
             boost::remove_edge(start_self, *g);
         }
-
     }
 }
 
@@ -248,7 +247,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                 cout << endl;
 
                 // reconnect the graph
-                remove_self_edge(g);
+                
                 // target_of_start = get_target(*g, start);
                 // add_edge(g, next, target_of_start);
                 // cout << "reconnect target " << target_of_start << " of start " << start << " to the next vertex " << next;
@@ -304,6 +303,7 @@ int main() {
     cout << "the graph contains " << boost::num_vertices(g) << " vertices" << endl;
     // print_graph(g, root);
     store_load_bypassing(&g, root);
+    remove_self_edge(&g);
     // remove_vertex_in_func(&g, root);
     // remove_vertex_in_func(&g, ld1);
     cout << "after pruning" << endl;
