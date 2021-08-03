@@ -1,6 +1,8 @@
 #include "graph.h"
 using namespace std;
 #define NO_NONTERM -100
+#define ADD 11111
+#define LOAD 22222
 
 Graph graph_create() {
     
@@ -130,10 +132,15 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
     vertex_descriptor_t start;
 
     // the current place on the path
-    vertex_descriptor_t cur = get_nonterm_source(*g, root);
+    vertex_descriptor_t cur;
+
+    // the next place in the path
+    vertex_descriptor_t next;
+
     // properties of the vertices
     VertexProperty cur_property;
     VertexProperty start_property;
+    VertexProperty next_property;
 
     // properties for testing
     VertexProperty p;
@@ -145,93 +152,87 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
 
     // search up along the path
     while (1) {
+        
         num_sources = find_source_vertices(*g, cur).size();
-        // when there are 2 sources
+        
+        // when we are at an ADD node
         if (num_sources == 2) {
             
-            start = get_nonterm_source(*g, cur);
-            if (cur == NO_NONTERM)
-                break;
-            else 
-                circle.push_back(cur);
-            
-            // check whether cur complete the circle
+            // check if the ADD node has a child who is a nonterm
+            cur = get_nonterm_source(*g, cur);
             cur_property = boost::get(pmap, cur);
-            start_property = boost::get(pmap, start);
-
-            // if a circle is completed, remove all vertices in the circle
-            if (cur_property.source == start_property.source) {
-                cout << "start removing:" << endl;
-            
-                for (int i = 0; circle[i] != cur; i++) {
-                    p = boost::get(pmap, circle[i]);
-                    cout << p.value << " ";
-                    boost::remove_vertex(circle[i], *g);
-                }
-                cout << endl;
-                // change the start of the circle
+            if (cur == NO_NONTERM) 
+                break;
+            else if (cur_property.value == LOAD) {
                 start = cur;
+                circle.push_back(start);
             }
-
-            else {
-                circle.push_back(cur);
-            }
+                
 
         }
+
+        // when we reach a leaf node
         else if (num_sources == 0) {
             break;
         }
+
+        // when we reach a LOAD node
         else if (num_sources == 1) {
-            
-            start = get_nonterm_source(*g, cur);
-            if (cur == NO_NONTERM)
+
+            circle.push_back(cur);
+
+            next = get_nonterm_source(*g, cur);
+            if (next == NO_NONTERM)
                 break;
-            else 
-                circle.push_back(cur);
             
             // check whether cur complete the circle
             cur_property = boost::get(pmap, cur);
-            start_property = boost::get(pmap, cur);
+            next_property = boost::get(pmap, next);
+            start_property = boost::get(pmap, start);
+
             // if a circle is completed, remove all vertices in the circle
-            if (cur_property.source == start_property.source) {
+            if (next_property.source == start_property.source) {
                 cout << "start removing:" << endl;
             
-                for (int i = 0; circle[i] != cur; i++) {
+                for (int i = 0; i < circle.size(); i++) {
                     p = boost::get(pmap, circle[i]);
                     cout << p.value << " ";
                     boost::remove_vertex(circle[i], *g);
                 }
+
                 cout << endl;
-                start = cur;
+                circle.clear();
+                start = next;
+            }
+            else {
+                circle.push_back(next);
             }
 
-            else {
-                circle.push_back(cur);
-            }
+            cur = next;
             
         }
     }
     
-    
-
 }
 
 int main() {
 
     Graph g = graph_create();
 
-    vertex_descriptor_t root = add_vertex(&g, 11111, 0, NONTERM);
+    vertex_descriptor_t root = add_vertex(&g, ADD, 0, NONTERM);
     vertex_descriptor_t const1 = add_vertex(&g, 28, 0, CONST);
-    vertex_descriptor_t ld1 = add_vertex(&g, 22222, 0x12345678, NONTERM);
-    vertex_descriptor_t add1 = add_vertex(&g, 11111, 0, NONTERM);
+    vertex_descriptor_t ld1 = add_vertex(&g, LOAD, 12, NONTERM);
+    vertex_descriptor_t add1 = add_vertex(&g, ADD, 0, NONTERM);
     vertex_descriptor_t const2 = add_vertex(&g, 8, 0, CONST);
-    vertex_descriptor_t ld2 = add_vertex(&g, 22222, 0x12345678, NONTERM);
+    vertex_descriptor_t ld2 = add_vertex(&g, LOAD, 0x12345678, NONTERM);\
+    vertex_descriptor_t ld3 = add_vertex(&g, LOAD, 12, NONTERM);
 
     add_edge(&g, const1, root);
     add_edge(&g, ld1, root);
     add_edge(&g, add1, ld1);
     add_edge(&g, const2, add1);
     add_edge(&g, ld2, add1);
+    add_edge(&g, ld3, ld2);
 
     // cout << "before pruning" << endl;
     // print_graph(g, root);
