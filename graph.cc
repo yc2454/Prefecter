@@ -282,8 +282,8 @@ int main() {
     // add_edge(&g, ld2, add1);
     // add_edge(&g, ld3, ld2);
 
-    // cout << "before pruning" << endl;
-    // print_graph(g, root);
+    cout << "before pruning" << endl;
+    print_graph(g, root);
     store_load_bypassing(&g, root);
     // boost::remove_vertex(const2, g);
     // boost::remove_vertex(const1, g);
