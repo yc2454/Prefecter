@@ -285,6 +285,7 @@ int main() {
     // print_graph(g, root);
     // store_load_bypassing(&g, root);
     boost::remove_vertex(root, g);
+    boost::remove_vertex(ld1, g);
     // boost::remove_vertex(const2, g);
     // boost::remove_vertex(const1, g);
     cout << "after pruning" << endl;
