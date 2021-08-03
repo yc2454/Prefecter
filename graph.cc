@@ -123,13 +123,18 @@ void print_vertex(Graph g, vertex_descriptor_t v) {
 
 void print_graph(Graph g, vertex_descriptor_t root) {
 
-    cout << "current vertex: " << root << endl;
-
     print_vertex(g, root);
     
     boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, g);
 
     vector<vertex_descriptor_t> sources = find_source_vertices(g, root);
+    if (root == 2) {
+        cout << "the source of 2 is:";
+        for (vector<vertex_descriptor_t>::iterator i = sources.begin(); i != sources.end(); i++) {
+            cout << *i;
+        }
+        cout << endl;
+    }
 
     for (vector<vertex_descriptor_t>::iterator i = sources.begin(); i != sources.end(); i++) {
         print_graph(g, *i);
