@@ -131,7 +131,7 @@ void print_graph(Graph g, vertex_descriptor_t root) {
     if (root == 2) {
         cout << "the source of 2 is:";
         for (vector<vertex_descriptor_t>::iterator i = sources.begin(); i != sources.end(); i++) {
-            cout << *i;
+            cout << *i << " ";
         }
         cout << endl;
     }
@@ -236,6 +236,7 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
                 // reconnect the graph
                 target_of_start = get_target(*g, start);
                 add_edge(g, next, target_of_start);
+                cout << "reconnect target " << target_of_start << "to the next vertex " << next;
                 
                 cout << endl;
                 // clear the circle
