@@ -182,7 +182,7 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
 
             cout << "only one source!" << endl;
 
-            circle.push_back(cur);
+            // circle.push_back(cur);
 
             next = get_nonterm_source(*g, cur);
             if (next == NO_NONTERM)
