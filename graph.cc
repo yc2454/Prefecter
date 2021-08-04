@@ -4,6 +4,8 @@ using namespace std;
 #define ADD 11111
 #define LOAD 22222
 
+// Problem Aug 3, the reordering of vertices after removing
+
 Graph graph_create() {
     
     Graph graph;
@@ -269,6 +271,18 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
     
 }
 
+void print_vertices(Graph *g) {
+    boost::graph_traits<Graph>::vertex_iterator vi, vi_end;
+    boost::tie(vi, vi_end) = boost::vertices(*g);
+
+
+    for (; vi != vi_end; vi++) {
+        cout << *vi << " ";
+    }
+
+    cout << endl;
+}
+
 int main() {
 
     Graph g = graph_create();
@@ -297,14 +311,16 @@ int main() {
 
     cout << "before pruning" << endl;
     cout << "the graph contains " << boost::num_vertices(g) << " vertices" << endl;
+    print_vertices(&g);
     // print_graph(g, root);
     store_load_bypassing(&g, root);
-    remove_self_edge(&g);
+    // remove_self_edge(&g);
     // remove_vertex_in_func(&g, root);
     // remove_vertex_in_func(&g, ld1);
     cout << "after pruning" << endl;
     cout << "the graph contains " << boost::num_vertices(g) << " vertices" << endl;
-    print_graph(g, root);
+    print_vertices(&g);
+    // print_graph(g, root);
 
     return 0;
 
