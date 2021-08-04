@@ -152,6 +152,7 @@ void remove_self_edge(Graph * g) {
     for (; vi != vi_end; vi++) {
         boost::tie(start_self, start_self_exists) = boost::edge(*vi, *vi, *g);
         if (start_self_exists) {
+            cout << "removed self edge for " << *vi << endl;
             boost::remove_edge(start_self, *g);
         }
     }
