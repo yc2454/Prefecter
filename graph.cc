@@ -141,21 +141,21 @@ void print_graph(Graph g, vertex_descriptor_t root) {
 
 }
 
-void remove_self_edge(Graph * g) {
-    vertex_descriptor_t vi, vi_end;
-    boost::tie(vi, vi_end) = boost::vertices(*g);
+// void remove_self_edge(Graph * g) {
+//     vertex_descriptor_t vi, vi_end;
+//     boost::tie(vi, vi_end) = boost::vertices(*g);
 
-    // self-edge. Don't understand why it exists yet
-    edge_descriptor_t start_self;
-    bool start_self_exists;
+//     // self-edge. Don't understand why it exists yet
+//     edge_descriptor_t start_self;
+//     bool start_self_exists;
 
-    for (; vi != vi_end; vi++) {
-        boost::tie(start_self, start_self_exists) = boost::edge(*vi, *vi, *g);
-        if (start_self_exists) {
-            boost::remove_edge(start_self, *g);
-        }
-    }
-}
+//     for (; vi != vi_end; vi++) {
+//         boost::tie(start_self, start_self_exists) = boost::edge(vi, vi, *g);
+//         if (start_self_exists) {
+//             boost::remove_edge(start_self, *g);
+//         }
+//     }
+// }
 
 void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
 
@@ -298,7 +298,7 @@ int main() {
     cout << "the graph contains " << boost::num_vertices(g) << " vertices" << endl;
     // print_graph(g, root);
     store_load_bypassing(&g, root);
-    remove_self_edge(&g);
+    // remove_self_edge(&g);
     // remove_vertex_in_func(&g, root);
     // remove_vertex_in_func(&g, ld1);
     cout << "after pruning" << endl;
