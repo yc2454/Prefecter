@@ -150,8 +150,7 @@ void remove_self_edge(Graph * g) {
     bool start_self_exists;
 
     for (; vi != vi_end; vi++) {
-
-        boost::tie(start_self, start_self_exists) = boost::edge(vi, vi, *g);
+        boost::tie(start_self, start_self_exists) = boost::edge(*vi, *vi, *g);
         if (start_self_exists) {
             boost::remove_edge(start_self, *g);
         }
@@ -267,10 +266,6 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
         }
     }
     
-}
-
-void remove_vertex_in_func(Graph *g, vertex_descriptor_t v) {
-    boost::remove_vertex(v, *g);
 }
 
 int main() {
