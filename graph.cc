@@ -239,18 +239,17 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
 
             // if a circle is completed, remove all vertices in the circle
             if (next_property.source == start_property.source) {
-                cout << "start: " << start;
+                circle.push_back(next);
                 cout << "start removing:" << endl;
                 // cout << "the size of the circle is: " << circle.size() << endl;
 
-                for (int i = 0; i < circle.size(); i++) {
+                for (int i = 1; i < circle.size(); i++) {
                     cout << i  << " " << circle[i] << " ";
                     boost::remove_vertex(circle[i], *g);
                 }
                 cout << endl;
 
                 // reconnect the graph
-                cout << "start: " << start;
                 target_of_start = get_target(*g, start);
                 cout << "found" << endl;
                 add_edge(g, next, target_of_start);
