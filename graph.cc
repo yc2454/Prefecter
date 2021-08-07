@@ -289,6 +289,7 @@ void print_vertices(Graph *g) {
         vp = boost::get(pmap, *vi);
         cout << vp.source << " ";
     }
+    cout << endl;
 
     boost::tie(vi, vi_end) = boost::vertices(*g);
     for (; vi != vi_end; vi++) {
