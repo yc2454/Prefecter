@@ -271,6 +271,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
     
 }
 
+// print out the graph in matrix from
 void print_vertices(Graph *g) {
     boost::graph_traits<Graph>::vertex_iterator vi, vi_end;
     boost::tie(vi, vi_end) = boost::vertices(*g);
@@ -280,7 +281,19 @@ void print_vertices(Graph *g) {
     edge_descriptor_t e;
     bool to, from;
 
+    boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, *g);
+    VertexProperty vp;
+
+    cout << "  ";
     for (; vi != vi_end; vi++) {
+        vp = boost::get(pmap, *vi);
+        cout << vp.source << " ";
+    }
+
+    boost::tie(vi, vi_end) = boost::vertices(*g);
+    for (; vi != vi_end; vi++) {
+        vp = boost::get(pmap, *vi);
+        cout << vp.source << " ";
         boost::tie(ui, ui_end) = boost::vertices(*g);
         for (; ui != ui_end; ui++) {
             boost::tie(e, to) = boost::edge(*ui, *vi, *g);
