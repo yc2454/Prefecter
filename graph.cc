@@ -243,7 +243,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                 // cout << "the size of the circle is: " << circle.size() << endl;
 
                 for (int i = 0; i < circle.size(); i++) {
-                    cout << circle[i] << " ";
+                    cout << i  << " " << circle[i] << " ";
                     boost::remove_vertex(circle[i], *g);
                 }
                 cout << endl;
