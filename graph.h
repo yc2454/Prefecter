@@ -24,7 +24,7 @@ struct EdgeProperty {
 
 };
 
-typedef boost::adjacency_list<boost::vecS, boost::vecS,       
+typedef boost::adjacency_list<boost::vecS, boost::listS,       
             boost::bidirectionalS, VertexProperty, EdgeProperty>
     Graph;
 
