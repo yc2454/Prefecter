@@ -113,35 +113,35 @@ vertex_descriptor_t get_target(Graph g, vertex_descriptor_t v) {
         
 }
 
-void print_vertex(Graph g, vertex_descriptor_t v) {
+// void print_vertex(Graph g, vertex_descriptor_t v) {
 
-    boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, g);
+//     boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, g);
 
-    VertexProperty property = boost::get(pmap, v);
+//     VertexProperty property = boost::get(pmap, v);
 
-    cout << property.value << endl;
+//     cout << property.value << endl;
 
-}
+// }
 
-void print_graph(Graph g, vertex_descriptor_t root) {
+// void print_graph(Graph g, vertex_descriptor_t root) {
 
-    print_vertex(g, root);
-    cout << "current vertex is: " << root << " and its neighbors are: " << endl;
+//     print_vertex(g, root);
+//     cout << "current vertex is: " << root << " and its neighbors are: " << endl;
     
-    boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, g);
+//     boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, g);
 
-    vector<vertex_descriptor_t> sources = find_source_vertices(g, root);
+//     vector<vertex_descriptor_t> sources = find_source_vertices(g, root);
 
-    for (vector<vertex_descriptor_t>::iterator i = sources.begin(); i != sources.end(); i++) {
-        cout << *i << " ";
-    }
-    cout << endl;
+//     for (vector<vertex_descriptor_t>::iterator i = sources.begin(); i != sources.end(); i++) {
+//         cout << *i << " ";
+//     }
+//     cout << endl;
 
-    for (vector<vertex_descriptor_t>::iterator i = sources.begin(); i != sources.end(); i++) {
-        print_graph(g, *i);
-    }
+//     for (vector<vertex_descriptor_t>::iterator i = sources.begin(); i != sources.end(); i++) {
+//         print_graph(g, *i);
+//     }
 
-}
+// }
 
 void remove_self_edge(Graph * g) {
     boost::graph_traits<Graph>::vertex_iterator vi, vi_end;
@@ -275,9 +275,23 @@ void print_vertices(Graph *g) {
     boost::graph_traits<Graph>::vertex_iterator vi, vi_end;
     boost::tie(vi, vi_end) = boost::vertices(*g);
 
+    boost::graph_traits<Graph>::vertex_iterator ui, ui_end;
+    boost::tie(ui, ui_end) = boost::vertices(*g);
+
+    edge_descriptor_t e;
+    bool e_exists;
 
     for (; vi != vi_end; vi++) {
-        cout << *vi << " ";
+        for (; ui != ui_end; ui++)
+        {
+            boost::tie(e, e_exists) = boost::edge(*ui, *ui, *g);
+            if (e_exists)
+                cout << 1 << " ";
+            else 
+                cout << 0 << " ";  
+        }
+        
+        cout << endl;
     }
 
     cout << endl;
