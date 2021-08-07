@@ -285,6 +285,7 @@ void print_vertices(Graph *g) {
         for (; ui != ui_end; ui++) {
             boost::tie(e, to) = boost::edge(*ui, *vi, *g);
             boost::tie(e, from) = boost::edge(*vi, *ui, *g);
+            cout << "mat";
             if (to || from)
                 cout << 1 << " ";
             else 
