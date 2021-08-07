@@ -279,13 +279,13 @@ void print_vertices(Graph *g) {
     boost::tie(ui, ui_end) = boost::vertices(*g);
 
     edge_descriptor_t e;
-    bool e_exists;
+    bool to, from;
 
     for (; vi != vi_end; vi++) {
-        for (; ui != ui_end; ui++)
-        {
-            boost::tie(e, e_exists) = boost::edge(*ui, *vi, *g);
-            if (e_exists)
+        for (; ui != ui_end; ui++) {
+            boost::tie(e, to) = boost::edge(*ui, *vi, *g);
+            boost::tie(e, from) = boost::edge(*vi, *ui, *g);
+            if (to || from)
                 cout << 1 << " ";
             else 
                 cout << 0 << " ";  
