@@ -284,7 +284,7 @@ void print_vertices(Graph *g) {
     for (; vi != vi_end; vi++) {
         for (; ui != ui_end; ui++)
         {
-            boost::tie(e, e_exists) = boost::edge(*ui, *ui, *g);
+            boost::tie(e, e_exists) = boost::edge(*ui, *vi, *g);
             if (e_exists)
                 cout << 1 << " ";
             else 
