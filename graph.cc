@@ -346,7 +346,7 @@ int main() {
     print_vertices(&g);
     // print_graph(g, root);
     store_load_bypassing(&g, root);
-    // remove_self_edge(&g);
+    remove_self_edge(&g);
     // remove_vertex_in_func(&g, root);
     // remove_vertex_in_func(&g, ld1);
     cout << "after pruning" << endl;
