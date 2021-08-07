@@ -95,7 +95,7 @@ vertex_descriptor_t get_nonterm_source(Graph g, vertex_descriptor_t target) {
             return src;
     }
 
-    return NO_NONTERM;
+    return NULL;
     
 }
 
@@ -204,7 +204,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
             // check if the ADD node has a child who is a nonterm
             cur = get_nonterm_source(*g, cur);
             cur_property = boost::get(pmap, cur);
-            if (cur == NO_NONTERM) 
+            if (cur == NULL) 
                 break;
             else if (cur_property.value == LOAD) {
                 start = cur;
@@ -229,7 +229,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
             // circle.push_back(cur);
 
             next = get_nonterm_source(*g, cur);
-            if (next == NO_NONTERM)
+            if (next == NULL)
                 break;
             
             // check whether cur complete the circle
@@ -250,8 +250,8 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
 
                 // reconnect the graph
                 
-                // target_of_start = get_target(*g, start);
-                // add_edge(g, next, target_of_start);
+                target_of_start = get_target(*g, start);
+                add_edge(g, next, target_of_start);
                 // cout << "reconnect target " << target_of_start << " of start " << start << " to the next vertex " << next;
                 
                 cout << endl;
