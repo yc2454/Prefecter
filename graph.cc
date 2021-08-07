@@ -239,6 +239,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
 
             // if a circle is completed, remove all vertices in the circle
             if (next_property.source == start_property.source) {
+                cout << "start: " << start;
                 cout << "start removing:" << endl;
                 // cout << "the size of the circle is: " << circle.size() << endl;
 
@@ -249,7 +250,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                 cout << endl;
 
                 // reconnect the graph
-                cout << start;
+                cout << "start: " << start;
                 target_of_start = get_target(*g, start);
                 cout << "found" << endl;
                 add_edge(g, next, target_of_start);
