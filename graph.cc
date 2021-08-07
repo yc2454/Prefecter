@@ -319,8 +319,8 @@ int main() {
 
     Graph g = graph_create();
 
-    vertex_descriptor_t root = add_vertex(&g, ADD, 0, NONTERM);
-    vertex_descriptor_t const1 = add_vertex(&g, 28, 0, CONST);
+    vertex_descriptor_t root = add_vertex(&g, ADD, 1, NONTERM);
+    vertex_descriptor_t const1 = add_vertex(&g, 28, 2, CONST);
     vertex_descriptor_t ld1 = add_vertex(&g, LOAD, 3, NONTERM);
     vertex_descriptor_t ld2 = add_vertex(&g, LOAD, 4, NONTERM);
     vertex_descriptor_t ld3 = add_vertex(&g, LOAD, 5, NONTERM);
