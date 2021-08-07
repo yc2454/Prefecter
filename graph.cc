@@ -276,16 +276,15 @@ void print_vertices(Graph *g) {
     boost::tie(vi, vi_end) = boost::vertices(*g);
 
     boost::graph_traits<Graph>::vertex_iterator ui, ui_end;
-    boost::tie(ui, ui_end) = boost::vertices(*g);
 
     edge_descriptor_t e;
     bool to, from;
 
     for (; vi != vi_end; vi++) {
+        boost::tie(ui, ui_end) = boost::vertices(*g);
         for (; ui != ui_end; ui++) {
             boost::tie(e, to) = boost::edge(*ui, *vi, *g);
             boost::tie(e, from) = boost::edge(*vi, *ui, *g);
-            cout << "mat";
             if (to || from)
                 cout << 1 << " ";
             else 
