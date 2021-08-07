@@ -250,6 +250,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                 cout << endl;
 
                 // reconnect the graph
+                print_vertices(g);
                 target_of_start = get_target(*g, start);
                 cout << "found" << endl;
                 add_edge(g, next, target_of_start);
