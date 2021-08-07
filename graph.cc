@@ -245,13 +245,13 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                 for (int i = 0; i < circle.size(); i++) {
                     cout << i  << " " << circle[i] << " ";
                     boost::remove_vertex(circle[i], *g);
-                    cout << "|||";
                 }
                 cout << endl;
 
                 // reconnect the graph
                 
                 target_of_start = get_target(*g, start);
+                cout << "got here" << endl;
                 add_edge(g, next, target_of_start);
                 // cout << "reconnect target " << target_of_start << " of start " << start << " to the next vertex " << next;
                 
