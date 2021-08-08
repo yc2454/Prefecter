@@ -107,7 +107,9 @@ vertex_descriptor_t get_target(Graph g, vertex_descriptor_t v) {
     // find source
     vertex_descriptor_t target;
     
+    cout << "got here 1" << endl;
     target = boost::target(*ei, g);
+    cout << "got here 1" << endl;
     return target;
     
         
@@ -293,10 +295,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
 
                 // reconnect the graph
                 print_vertices(g);
-                cout << start;
-                cout << "quoting start is OK" << endl;
                 target_of_start = get_target(*g, start);
-                cout << "found" << endl;
                 add_edge(g, next, target_of_start);
                 // cout << "reconnect target " << target_of_start << " of start " << start << " to the next vertex " << next;
                 
