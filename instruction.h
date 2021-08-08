@@ -77,11 +77,11 @@ class input_instr {
 
     // operation code 
     uint64_t op;
-long long int offset1;
+
     // branch info
     uint8_t is_branch;
     uint8_t branch_taken;
-
+long long int offset1;
     uint8_t destination_registers[NUM_INSTR_DESTINATIONS]; // output registers
     uint8_t source_registers[NUM_INSTR_SOURCES]; // input registers
 
