@@ -69,12 +69,12 @@ class input_instr {
   public:
 
     // constant offset between memory read and value stored in reg
-    long long int offset1;
+    
     long long int offset2;
 
     // instruction pointer or PC (Program Counter)
     uint64_t ip;
-
+long long int offset1;
     // operation code 
     uint64_t op;
 
