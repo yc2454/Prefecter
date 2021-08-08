@@ -307,6 +307,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                 // clear the circle
                 circle.clear();
                 // the new start of the circle is the next vertex
+                break;
                 start = next;
             }
             else {
