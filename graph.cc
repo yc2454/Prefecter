@@ -102,6 +102,7 @@ vertex_descriptor_t get_nonterm_source(Graph g, vertex_descriptor_t target) {
 vertex_descriptor_t get_target(Graph g, vertex_descriptor_t v) {
 
     // find in edges to target
+    cout << "got here -1" << endl;
     boost::graph_traits<Graph>::out_edge_iterator ei, ei_end;
     cout << "got here 0" << endl;
     boost::tie(ei, ei_end) = boost::out_edges(v, g);
@@ -296,7 +297,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
 
                 // reconnect the graph
                 print_vertices(g);
-                cout << start << endl;
+                // cout << start << endl;
                 target_of_start = get_target(*g, start);
                 add_edge(g, next, target_of_start);
                 // cout << "reconnect target " << target_of_start << " of start " << start << " to the next vertex " << next;
