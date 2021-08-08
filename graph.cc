@@ -103,13 +103,14 @@ vertex_descriptor_t get_target(Graph g, vertex_descriptor_t v) {
 
     // find in edges to target
     boost::graph_traits<Graph>::out_edge_iterator ei, ei_end;
+    cout << "got here 0" << endl;
     boost::tie(ei, ei_end) = boost::out_edges(v, g);
     // find source
     vertex_descriptor_t target;
     
     cout << "got here 1" << endl;
     target = boost::target(*ei, g);
-    cout << "got here 1" << endl;
+    cout << "got here 2" << endl;
     return target;
     
         
