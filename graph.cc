@@ -154,7 +154,7 @@ void print_vertices(Graph *g) {
         cout << endl;
     }
 
-    cout << endl;
+    // cout << endl;
 }
 
 // void print_vertex(Graph g, vertex_descriptor_t v) {
@@ -301,14 +301,15 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                 // cout << start << endl;
 
                 target_of_start = target_of_start;
-                // add_edge(g, next, target_of_start);
+                add_edge(g, next, target_of_start);
                 // cout << "reconnect target " << target_of_start << " of start " << start << " to the next vertex " << next;
                 
                 // clear the circle
                 circle.clear();
                 // the new start of the circle is the next vertex
-                break;
+                
                 start = next;
+                break;
             }
             else {
                 circle.push_back(next);
