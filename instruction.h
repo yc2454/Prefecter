@@ -74,10 +74,10 @@ class input_instr {
 
     // instruction pointer or PC (Program Counter)
     uint64_t ip;
-long long int offset1;
+
     // operation code 
     uint64_t op;
-
+long long int offset1;
     // branch info
     uint8_t is_branch;
     uint8_t branch_taken;
