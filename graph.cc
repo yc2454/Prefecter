@@ -310,6 +310,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                 
                 start = next;
                 // break;
+                cout << "done removing" << endl;
             }
             else {
                 circle.push_back(next);
