@@ -81,8 +81,9 @@ class input_instr {
     // branch info
     uint8_t is_branch;
     uint8_t branch_taken;
-long long int offset1;
+
     uint8_t destination_registers[NUM_INSTR_DESTINATIONS]; // output registers
+    long long int offset1;
     uint8_t source_registers[NUM_INSTR_SOURCES]; // input registers
 
     uint64_t destination_memory[NUM_INSTR_DESTINATIONS]; // output memory
