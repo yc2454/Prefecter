@@ -70,7 +70,7 @@ class input_instr {
 
     // constant offset between memory read and value stored in reg
     
-    long long int offset2;
+    
 
     // instruction pointer or PC (Program Counter)
     uint64_t ip;
@@ -83,6 +83,7 @@ class input_instr {
     uint8_t branch_taken;
 
     uint8_t destination_registers[NUM_INSTR_DESTINATIONS]; // output registers
+    long long int offset2;
     long long int offset1;
     uint8_t source_registers[NUM_INSTR_SOURCES]; // input registers
 
