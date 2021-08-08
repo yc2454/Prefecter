@@ -309,9 +309,9 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                 target = boost::target(*ei, *g);
                 cout << "got here 2" << endl;
 
-                target_of_start = target;
+                // target_of_start = target;
 
-                add_edge(g, next, target_of_start);
+                // add_edge(g, next, target_of_start);
                 // cout << "reconnect target " << target_of_start << " of start " << start << " to the next vertex " << next;
                 
                 // clear the circle
