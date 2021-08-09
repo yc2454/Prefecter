@@ -41,34 +41,34 @@ EdgeProperty ep;
 
 // }
 
-// vertex_descriptor_t add_vertex(Graph * g, uint64_t value, uint64_t source, vertex_type t) {
+vertex_descriptor_t add_vertex(Graph * g, uint64_t value, uint64_t source, vertex_type t) {
     
-//     VertexProperty vp; 
+    VertexProperty vp; 
 
-//     vp.ty = t;
+    vp.ty = t;
 
-//     vp.value = value;
+    vp.value = value;
 
-//     vp.source = source;
+    vp.source = source;
     
-//     vertex_descriptor_t vd = boost::add_vertex(vp, *g);
+    vertex_descriptor_t vd = boost::add_vertex(vp, *g);
 
-//     return vd;
-// }
+    return vd;
+}
 
-// pair<edge_descriptor_t, bool> add_edge(Graph * g, vertex_descriptor_t src, vertex_descriptor_t dst){
+pair<edge_descriptor_t, bool> add_edge(Graph * g, vertex_descriptor_t src, vertex_descriptor_t dst){
 
-//     EdgeProperty ep;
+    EdgeProperty ep;
 
-//     edge_descriptor_t ed;
-//     bool inserted;
+    edge_descriptor_t ed;
+    bool inserted;
 
-//     tie(ed, inserted) = boost::add_edge(src, dst, *g);
-//     pair<edge_descriptor_t, bool> ret (ed, inserted);
+    tie(ed, inserted) = boost::add_edge(src, dst, *g);
+    pair<edge_descriptor_t, bool> ret (ed, inserted);
 
-//     return ret;
+    return ret;
 
-// }
+}
 
 // vector<vertex_descriptor_t> find_adj_vertices(Graph g, vertex_descriptor_t v) {
     

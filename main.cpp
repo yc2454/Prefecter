@@ -263,6 +263,7 @@ deque<ooo_model_instr> search_last_occurence(uint64_t miss_pc) {
 
 }
 
+
 // TODO:
 uint64_t find_source(input_instr i) {
     return 0;
@@ -352,31 +353,35 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
         if (cur_instr.ip == miss_pc && cur_index != 0)
             break;
 
+        // This means that we found a constant offset
         if (offset != -17) {
             
-            // first add the ADD vertex into the graph
+            // first add the ADD vertex into the graph, because we need to add the offset as 
+            // part of the kernel
             add_op_vertex = add_vertex(g, add_op, 0, NONTERM);
+            // connect it to the current root
             add_edge(g, cur_root_vertex, add_op_vertex);
-            // add the children of ADD vertex
+
+            // add the children of ADD vertex, the first one is of course the offset
             const_vertex = add_vertex(g, offset, 0, CONST);
             add_edge(g, add_op_vertex, const_vertex);
             
             // When the current instruction fetch data from memory
             if (cur_instr.is_memory) {
+                // find the last occurence of the current effective address
                 ea_index = traceback_ea(cur_instr.source_memory[0], trace_window, cur_index);
                 
-                // set the current root to a new value
+                // set the current root to a new value, notice that it is a
+                // load node
                 cur_root_vertex = add_vertex(g, load_op, cur_instr.source_memory[0], NONTERM);
-                add_edge(g, add_op_vertex, cur_root_vertex);
                 
-                if (ea_index == -1)
-                {
+                // when there does not exist a previous occurence
+                if (ea_index == -1) {
                     ea_vertex = add_vertex(g, cur_instr.source_memory[0], 0, ADDR);
                     add_edge(g, cur_root_vertex, ea_vertex);
                     break;
                 }
-                else
-                {
+                else {
                     cur_index = ea_index;
                     continue;
                 }
