@@ -347,9 +347,11 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
         offset = find_const_offset(cur_instr);
 
         // if we come across the miss PC again, stop
-        if (cur_instr.ip == miss_pc && cur_index != 0)
+        if (cur_instr.ip == miss_pc && cur_index != 0) {
+            cout << "found the miss pc" << endl;
             break;
-
+        }
+            
         // This means that we found a constant offset
         if (offset != -17) {
             
@@ -395,14 +397,12 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
                 add_edge(g, add_op_vertex, cur_root_vertex);
 
                 // the register cannot be traced back further
-                if (reg_index == -1)
-                {
+                if (reg_index == -1) {
                     reg_vertex = add_vertex(g, cur_instr.source_registers[0], 0, REG);
                     add_edge(g, cur_root_vertex, reg_vertex);
                     break;
                 }
-                else
-                {
+                else {
                     cur_index = reg_index;
                     continue;
                 }
