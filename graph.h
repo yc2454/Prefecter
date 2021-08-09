@@ -33,13 +33,13 @@ typedef boost::graph_traits<Graph>::edge_descriptor edge_descriptor_t;
 
 EdgeProperty ep; 
 
-// Graph graph_create() {
+Graph graph_create() {
     
-//     Graph graph;
+    Graph graph;
 
-//     return graph;
+    return graph;
 
-// }
+}
 
 vertex_descriptor_t add_vertex(Graph * g, uint64_t value, uint64_t source, vertex_type t) {
     
