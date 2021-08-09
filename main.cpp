@@ -322,7 +322,7 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
     bool complete = false;
     int cur_index = 0;
 
-    ooo_model_instr cur_instr = trace_window.at(cur_index);
+    ooo_model_instr cur_instr = NULL;
     cout << "got here\n";
     vertex_descriptor_t cur_root_vertex = add_vertex(g, cur_instr.source_memory[0], 0, ADDR);
 
