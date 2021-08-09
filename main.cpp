@@ -339,8 +339,8 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
     long long int offset;
     
     // backtrack in the trace window for another dependence
-    while (1)
-    {
+    while (1) {
+        cout << "loop once\n";
         cur_instr = trace_window.at(cur_index);
         
         // the memory op number at which there is a discrepency between ea and reg value
