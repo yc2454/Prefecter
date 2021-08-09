@@ -540,6 +540,8 @@ int main(int argc, char** argv)
     
     fclose(profile);
 
+    cout << "building the graph" << endl;
+
     Graph g = graph_create();
 
     build_graph(last_occur_window, &g, miss_pc);
