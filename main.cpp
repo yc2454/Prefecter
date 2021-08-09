@@ -347,10 +347,8 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
         offset = find_const_offset(cur_instr);
 
         // if we come across the miss PC again, stop
-        if (cur_instr.ip == miss_pc && cur_index != 0) {
-            cout << "found the miss pc" << endl;
+        if (cur_instr.ip == miss_pc && cur_index != 0) 
             break;
-        }
             
         // This means that we found a constant offset
         if (offset != -17) {
