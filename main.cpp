@@ -232,19 +232,16 @@ deque<ooo_model_instr> search_last_occurence(uint64_t miss_pc) {
     while (fread(&current_instr_read, instr_size, 1, trace_file))
     {
         current_instr = copy_into_format(current_instr_read);
-        if (window.size() < max_window_size)
-        {
+        if (window.size() < max_window_size) {
             window.push_front(current_instr);
         }
-        else
-        {
+        else {
             window.pop_back();
             window.push_front(current_instr);
         }
         
 
-        if (miss_pc == current_instr_read.ip)
-        {
+        if (miss_pc == current_instr_read.ip) {
             found = 1;
             break;
         }
@@ -538,12 +535,16 @@ int main(int argc, char** argv)
         
         printf("%s", miss_instr); 
         miss_pc = atoi(miss_instr);
+        cout << miss_pc;
         last_occur_window = search_last_occurence(miss_pc);
 
     }
     
     fclose(profile);
 
+    Graph g = graph_create();
+
+    build_graph(last_occur_window, &g, miss_pc);
     
     return 0;
 }
