@@ -258,7 +258,7 @@ deque<ooo_model_instr> search_last_occurence(uint64_t miss_pc) {
     else {
         // if the miss_pc was not found, return an empty deque;
         cout << "NOT FOUND\n";
-        return deque<ooo_model_instr>();
+        return window;
     }
         
 }
@@ -324,7 +324,7 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
 
     bool complete = false;
     int cur_index = 1;
-    // cout << "the size of the window " << trace_window.size() << endl;
+    cout << "the size of the window " << trace_window.size() << endl;
     ooo_model_instr cur_instr = trace_window.at(cur_index);
     
     vertex_descriptor_t cur_root_vertex = add_vertex(g, cur_instr.source_memory[0], 0, ADDR);
