@@ -252,12 +252,15 @@ deque<ooo_model_instr> search_last_occurence(uint64_t miss_pc) {
         
     // exit
     if (found) {
+        cout << "the instruction is found\n";
         return window;
     } 
-    else
+    else {
         // if the miss_pc was not found, return an empty deque;
+        cout << "NOT FOUND\n";
         return deque<ooo_model_instr>();
-
+    }
+        
 }
 
 
@@ -321,7 +324,7 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
 
     bool complete = false;
     int cur_index = 1;
-    cout << "the size of the window " << trace_window.size() << endl;
+    // cout << "the size of the window " << trace_window.size() << endl;
     ooo_model_instr cur_instr = trace_window.at(cur_index);
     
     vertex_descriptor_t cur_root_vertex = add_vertex(g, cur_instr.source_memory[0], 0, ADDR);
@@ -340,7 +343,7 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
     
     // backtrack in the trace window for another dependence
     while (1) {
-        cout << "loop once\n";
+        // cout << "loop once\n";
         cur_instr = trace_window.at(cur_index);
         
         // the memory op number at which there is a discrepency between ea and reg value
