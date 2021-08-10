@@ -252,12 +252,15 @@ deque<ooo_model_instr> search_last_occurence(uint64_t miss_pc) {
         
     // exit
     if (found) {
+        cout << "the instruction is found\n";
         return window;
     } 
-    else
+    else {
         // if the miss_pc was not found, return an empty deque;
-        return deque<ooo_model_instr>();
-
+        cout << "NOT FOUND\n";
+        return window;
+    }
+        
 }
 
 
@@ -320,10 +323,10 @@ long long int find_const_offset(ooo_model_instr cur_instr) {
 vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, uint64_t miss_pc) {
 
     bool complete = false;
-    int cur_index = 0;
-
+    int cur_index = 1;
+    cout << "the size of the window " << trace_window.size() << endl;
     ooo_model_instr cur_instr = trace_window.at(cur_index);
-
+    
     vertex_descriptor_t cur_root_vertex = add_vertex(g, cur_instr.source_memory[0], 0, ADDR);
 
     vertex_descriptor_t the_root_vertex = cur_root_vertex;
@@ -339,18 +342,16 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
     long long int offset;
     
     // backtrack in the trace window for another dependence
-    while (1)
-    {
+    while (1) {
+        // cout << "loop once\n";
         cur_instr = trace_window.at(cur_index);
         
         // the memory op number at which there is a discrepency between ea and reg value
         offset = find_const_offset(cur_instr);
 
         // if we come across the miss PC again, stop
-        if (cur_instr.ip == miss_pc && cur_index != 0) {
-            cout << "found the miss pc" << endl;
+        if (cur_instr.ip == miss_pc && cur_index != 0) 
             break;
-        }
             
         // This means that we found a constant offset
         if (offset != -17) {
@@ -542,9 +543,15 @@ int main(int argc, char** argv)
     
     fclose(profile);
 
+    cout << "creating the graph" << endl;
+
     Graph g = graph_create();
 
+    cout << "building the graph" << endl;
+
     build_graph(last_occur_window, &g, miss_pc);
+
+    cout << "finish\n";
     
     return 0;
 }
