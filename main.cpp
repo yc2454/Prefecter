@@ -320,9 +320,9 @@ long long int find_const_offset(ooo_model_instr cur_instr) {
 vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, uint64_t miss_pc) {
 
     bool complete = false;
-    int cur_index = 0;
-    cout << "the size of the window " << trace_window.size() << endl;
-    ooo_model_instr cur_instr = *trace_window.begin();
+    int cur_index = 1;
+    // cout << "the size of the window " << trace_window.size() << endl;
+    ooo_model_instr cur_instr = trace_window.at(cur_index);
     
     vertex_descriptor_t cur_root_vertex = add_vertex(g, cur_instr.source_memory[0], 0, ADDR);
 
