@@ -72,7 +72,6 @@ class input_instr {
     long long int offset1;
     long long int offset2;
     
-
     // instruction pointer or PC (Program Counter)
     uint64_t ip;
 
