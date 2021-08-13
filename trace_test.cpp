@@ -18,7 +18,7 @@ FILE *trace_file;
 // the profile
 FILE *profile;
 
-// ./main -traces ../ChampSim/dpc3_traces/600.perlbench_s-210B.champsimtrace.xz examp.txt
+// ./trace_test -traces ../MyChampSim/simple_array_trace_my.xz examp.txt
 // g++ -g -Wall -std=c++11 -o main main.cpp
 
 using namespace std;
@@ -217,21 +217,21 @@ void print_trace() {
     size_t instr_size = sizeof(input_instr);
 
     deque<ooo_model_instr> window;
-    int max_window_size = 100;
+    // int max_window_size = 100;
 
     while (fread(&current_instr_read, instr_size, 1, trace_file))
     {
         current_instr = copy_into_format(current_instr_read);
         current_instr.print_instr();
 
+        window.push_front(current_instr);
+
         // if (window.size() < max_window_size)
         // {
-            window.push_front(current_instr);
+        //     window.push_front(current_instr);
         // }
         // else
-        // {
         //     break;
-        // }
 
     }
 

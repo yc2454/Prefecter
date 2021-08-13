@@ -69,7 +69,8 @@ class input_instr {
   public:
 
     // constant offset between memory read and value stored in reg
-    
+    long long int offset1;
+    long long int offset2;
     
 
     // instruction pointer or PC (Program Counter)
@@ -83,8 +84,7 @@ class input_instr {
     uint8_t branch_taken;
 
     uint8_t destination_registers[NUM_INSTR_DESTINATIONS]; // output registers
-    long long int offset2;
-    long long int offset1;
+    
     uint8_t source_registers[NUM_INSTR_SOURCES]; // input registers
 
     uint64_t destination_memory[NUM_INSTR_DESTINATIONS]; // output memory
@@ -475,6 +475,10 @@ class ooo_model_instr_old {
   void print_instr()
   {
     // cout << "*** " << instr_id << " ***" << endl;
+    if (ip == 0) {
+      cout << "IP IS ZEROOOO\n";
+      exit(0);
+    }
     cout << hex << "ip: 0x" << (uint64_t)ip << dec << endl;
     cout << (uint32_t)is_branch << " " << (uint32_t)branch_taken << endl;
     cout << "source registers:";
