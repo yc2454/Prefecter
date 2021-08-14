@@ -322,7 +322,7 @@ int main() {
     vertex_descriptor_t ld1 = add_vertex(&g, LOAD, 3, NONTERM);
     vertex_descriptor_t ld2 = add_vertex(&g, LOAD, 4, NONTERM);
     vertex_descriptor_t ld3 = add_vertex(&g, LOAD, 5, NONTERM);
-    vertex_descriptor_t ld4 = add_vertex(&g, LOAD, 6, NONTERM);
+    vertex_descriptor_t ld4 = add_vertex(&g, LOAD, 3, NONTERM);
     vertex_descriptor_t ld5 = add_vertex(&g, LOAD, 7, NONTERM);
     vertex_descriptor_t ld6 = add_vertex(&g, LOAD, 6, NONTERM);
     vertex_descriptor_t ld7 = add_vertex(&g, LOAD, 3, NONTERM);
