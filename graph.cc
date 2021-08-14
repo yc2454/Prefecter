@@ -220,6 +220,7 @@ bool remove_circle(Graph *g, vertex_descriptor_t start, boost::property_map<Grap
     deque<vertex_descriptor_t> circle;
 
     while (1) {
+        cout << "looping";
         num_sources = find_source_vertices(*g, cur).size();
 
         // when we are at an ADD node
