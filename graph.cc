@@ -207,34 +207,25 @@ void remove_self_edge(Graph * g) {
 void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
 
     int num_sources;
-
     // The vector to keep track of the vertices along the path
     deque<vertex_descriptor_t> circle;
-
     // find the first non-terminal source
     vertex_descriptor_t start;
-
     // the current place on the path
     vertex_descriptor_t cur = root;
-
     // the next place in the path
     vertex_descriptor_t next;
-
     // the target of the start point
     vertex_descriptor_t target_of_start;
-
     // properties of the vertices
     VertexProperty cur_property;
     VertexProperty start_property;
     VertexProperty next_property;
-
     // properties for testing
     VertexProperty p;
-
     // self-edge. Don't understand why it exists yet
     edge_descriptor_t start_self;
     bool start_self_exists;
-
     boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, *g);
 
     // search up along the path
@@ -254,8 +245,6 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                 target_of_start = get_target(*g, start);
                 circle.push_back(start);
             }
-                
-
         }
 
         // when we reach a leaf node
@@ -309,7 +298,6 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                 cout << "done removing" << endl;
                 start = next;
                 break;
-                
             }
             else {
                 circle.push_back(next);
@@ -335,7 +323,9 @@ int main() {
     vertex_descriptor_t ld2 = add_vertex(&g, LOAD, 4, NONTERM);
     vertex_descriptor_t ld3 = add_vertex(&g, LOAD, 5, NONTERM);
     vertex_descriptor_t ld4 = add_vertex(&g, LOAD, 6, NONTERM);
-    vertex_descriptor_t ld5 = add_vertex(&g, LOAD, 3, NONTERM);
+    vertex_descriptor_t ld5 = add_vertex(&g, LOAD, 7, NONTERM);
+    vertex_descriptor_t ld6 = add_vertex(&g, LOAD, 6, NONTERM);
+    vertex_descriptor_t ld7 = add_vertex(&g, LOAD, 3, NONTERM);
     // vertex_descriptor_t add1 = add_vertex(&g, ADD, 0, NONTERM);
     // vertex_descriptor_t const2 = add_vertex(&g, 8, 0, CONST);
     // vertex_descriptor_t ld2 = add_vertex(&g, LOAD, 0x12345678, NONTERM);
@@ -347,6 +337,8 @@ int main() {
     add_edge(&g, ld3, ld2);
     add_edge(&g, ld4, ld3);
     add_edge(&g, ld5, ld4);
+    add_edge(&g, ld6, ld5);
+    add_edge(&g, ld7, ld6);
     // add_edge(&g, const2, add1);
     // add_edge(&g, ld2, add1);
     // add_edge(&g, ld3, ld2);
