@@ -240,7 +240,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
     // search up along the path
     while (1) {
         num_sources = find_source_vertices(*g, cur).size();
-        cout << "num of sources can be found\n";
+
         // when we are at an ADD node
         if (num_sources == 2) {
             cout << "two source!" << endl;
@@ -306,10 +306,10 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                 // clear the circle
                 circle.clear();
                 // the new start of the circle is the next vertex
-                
-                start = next;
-                // break;
                 cout << "done removing" << endl;
+                start = next;
+                break;
+                
             }
             else {
                 circle.push_back(next);
