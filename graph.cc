@@ -310,6 +310,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
             if (start == NULL) {
                 break;
             }
+            cout << "finding a new circle\n";
         }
     }
     
