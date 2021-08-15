@@ -207,6 +207,7 @@ void remove_self_edge(Graph * g) {
 bool remove_circle(Graph *g, vertex_descriptor_t start, boost::property_map<Graph, boost::vertex_bundle_t>::type pmap) {
     
     vertex_descriptor_t cur, next;
+    cur = start;
     int num_sources;
     // properties of the vertices
     VertexProperty cur_property;
@@ -221,7 +222,7 @@ bool remove_circle(Graph *g, vertex_descriptor_t start, boost::property_map<Grap
 
     while (1) {
         num_sources = find_source_vertices(*g, cur).size();
-        cout << "number of sources is: " << num_sources << endl;
+        // cout << "number of sources is: " << num_sources << endl;
         // when we are at an ADD node
         if (num_sources == 2) {
             cout << "two source!" << endl;
