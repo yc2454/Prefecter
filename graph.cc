@@ -275,8 +275,7 @@ bool remove_circle(Graph *g, vertex_descriptor_t start, boost::property_map<Grap
                 }
                 // cout << endl;
 
-                // the new start of the circle is the next vertex
-                cout << "done removing" << endl;
+                cout << "done removing, the start is: " << start << endl;
                 return true;
             }
             else {
