@@ -289,6 +289,10 @@ void dummy(Graph g) {
     cout << "FUCK C++\n";
 }
 
+void remove_vertex_in_func(Graph *g, vertex_descriptor_t v) {
+    boost::remove_vertex(v, *g);
+}
+
 void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
 
     int num_sources;
@@ -300,20 +304,24 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
     boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, *g);
 
     // search up along the path
-    while (1) {
-        if (!remove_circle(g, start, pmap)) {
-            break;
-        }
-        else {
-            dummy(*g);
-            start = get_nonterm_source(*g, start);
-            cout << "updated start\n";
-            if (start == NULL) {
-                break;
-            }
-            cout << "finding a new circle\n";
-        }
-    }
+    
+    remove_vertex_in_func(g, root);
+    dummy(*g);
+
+    // while (1) {
+        
+    //     if (!remove_circle(g, start, pmap)) {
+    //         break;
+    //     }
+    //     else {
+    //         start = get_nonterm_source(*g, start);
+    //         cout << "updated start\n";
+    //         if (start == NULL) {
+    //             break;
+    //         }
+    //         cout << "finding a new circle\n";
+    //     }
+    // }
     
 }
 
