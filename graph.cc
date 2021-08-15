@@ -292,6 +292,10 @@ bool remove_circle(Graph *g, vertex_descriptor_t start, boost::property_map<Grap
     return false;
 }
 
+void dummy_func(vertex_descriptor_t v) {
+    cout << v << endl;
+}
+
 void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
 
     int num_sources;
@@ -309,7 +313,8 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
         }
         else {
             cout << "find the next of " << start << endl;
-            start = get_nonterm_source(*g, start);
+            dummy_func(start);
+            // start = get_nonterm_source(*g, start);
             cout << "updated start\n";
             if (start == NULL) {
                 break;
