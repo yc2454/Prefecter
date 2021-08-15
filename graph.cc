@@ -229,41 +229,41 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
     boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, *g);
 
     // search up along the path
-    while (1) {
-        num_sources = find_source_vertices(*g, cur).size();
-
-        // when we are at an ADD node
-        if (num_sources == 2) {
-            cout << "two source!" << endl;
-            // check if the ADD node has a child who is a nonterm
-            cur = get_nonterm_source(*g, cur);
-            cur_property = boost::get(pmap, cur);
-            if (cur == NULL) 
-                break;
-            else if (cur_property.value == LOAD) {
-                start = cur;
-                target_of_start = get_target(*g, start);
-                circle.push_back(start);
+    while (circle.empty()) {
+        while (1) {
+            num_sources = find_source_vertices(*g, cur).size();
+            // when we are at an ADD node
+            if (num_sources == 2) {
+                cout << "two source!" << endl;
+                // check if the ADD node has a child who is a nonterm
+                cur = get_nonterm_source(*g, cur);
+                cur_property = boost::get(pmap, cur);
+                if (cur == NULL) 
+                    break;
+                else if (cur_property.value == LOAD) {
+                    start = cur;
+                    target_of_start = get_target(*g, start);
+                    circle.push_back(start);
+                }
             }
-        }
+            // when we reach a leaf node
+            else if (num_sources == 0) {
+                cout << "no more source!" << endl;
+                cout << "BEFORE EXITING, the graph contains " << boost::num_vertices(*g) << " vertices" << endl;
 
-        // when we reach a leaf node
-        else if (num_sources == 0) {
-            cout << "no more source!" << endl;
-            cout << "BEFORE EXITING, the graph contains " << boost::num_vertices(*g) << " vertices" << endl;
-            break;
-        }
-
-        // when we reach a LOAD node
-        else if (num_sources == 1) {
+                break;
+            }
+            // when we reach a LOAD node
+            else if (num_sources == 1) {
 
             cout << "only one source!" << endl;
 
             // circle.push_back(cur);
 
             next = get_nonterm_source(*g, cur);
-            if (next == NULL)
+            if (next == NULL) {
                 break;
+            }
             
             // check whether cur complete the circle
             cur_property = boost::get(pmap, cur);
@@ -304,9 +304,9 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
             }
 
             cur = next;
+            }
         }
     }
-    
 }
 
 void remove_vertex_in_func(Graph *g, vertex_descriptor_t v) {
