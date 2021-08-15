@@ -269,14 +269,14 @@ bool remove_circle(Graph *g, vertex_descriptor_t start, boost::property_map<Grap
                 
                 circle.push_back(next);
 
-                // cout << "start removing:" << endl;
-                // cout << "the size of the circle is: " << circle.size() << endl;
+                cout << "start removing:" << endl;
+                cout << "the size of the circle is: " << circle.size() << endl;
 
                 for (int i = 1; i < circle.size(); i++) {
-                    // cout << i  << " " << circle[i] << " ";
+                    cout << i  << " " << circle[i] << " ";
                     boost::remove_vertex(circle[i], *g);
                 }
-                // cout << endl;
+                cout << endl;
 
                 cout << "done removing, the start is: " << start << endl;
                 return true;
@@ -290,10 +290,6 @@ bool remove_circle(Graph *g, vertex_descriptor_t start, boost::property_map<Grap
     }
 
     return false;
-}
-
-void dummy_func(vertex_descriptor_t v) {
-    cout << v << endl;
 }
 
 void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
@@ -313,8 +309,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
         }
         else {
             cout << "find the next of " << start << endl;
-            dummy_func(start);
-            // start = get_nonterm_source(*g, start);
+            start = get_nonterm_source(*g, start);
             cout << "updated start\n";
             if (start == NULL) {
                 break;
@@ -323,10 +318,6 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
         }
     }
     
-}
-
-void remove_vertex_in_func(Graph *g, vertex_descriptor_t v) {
-    boost::remove_vertex(v, *g);
 }
 
 int main() {
