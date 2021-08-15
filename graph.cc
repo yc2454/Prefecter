@@ -353,7 +353,7 @@ int main() {
     // add_edge(&g, ld3, ld2);
 
     boost::remove_vertex(ld7, g);
-    dummy(g);
+    // dummy(g);
 
     // cout << "before pruning" << endl;
     // cout << "the graph contains " << boost::num_vertices(g) << " vertices" << endl;
