@@ -19,7 +19,9 @@ vertex_descriptor_t add_vertex(Graph * g, uint64_t value, uint64_t source, verte
     VertexProperty vp; 
 
     vp.ty = t;
+
     vp.value = value;
+
     vp.source = source;
     
     vertex_descriptor_t vd = boost::add_vertex(vp, *g);
@@ -202,25 +204,34 @@ void remove_self_edge(Graph * g) {
     }
 }
 
-bool remove_circle(Graph *g, vertex_descriptor_t start, boost::property_map<Graph, boost::vertex_bundle_t>::type pmap) {
-    
-    vertex_descriptor_t cur, next;
-    cur = start;
+void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
+
     int num_sources;
+    // The vector to keep track of the vertices along the path
+    deque<vertex_descriptor_t> circle;
+    // find the first non-terminal source
+    vertex_descriptor_t start;
+    // the current place on the path
+    vertex_descriptor_t cur = root;
+    // the next place in the path
+    vertex_descriptor_t next;
+    // the target of the start point
+    vertex_descriptor_t target_of_start;
     // properties of the vertices
     VertexProperty cur_property;
     VertexProperty start_property;
     VertexProperty next_property;
+    // properties for testing
+    VertexProperty p;
+    // self-edge. Don't understand why it exists yet
+    edge_descriptor_t start_self;
+    bool start_self_exists;
+    boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, *g);
 
-    // the target of the start point
-    vertex_descriptor_t target_of_start;
-
-    // The vector to keep track of the vertices along the path
-    deque<vertex_descriptor_t> circle;
-
+    // search up along the path
     while (1) {
         num_sources = find_source_vertices(*g, cur).size();
-        // cout << "number of sources is: " << num_sources << endl;
+
         // when we are at an ADD node
         if (num_sources == 2) {
             cout << "two source!" << endl;
@@ -228,7 +239,7 @@ bool remove_circle(Graph *g, vertex_descriptor_t start, boost::property_map<Grap
             cur = get_nonterm_source(*g, cur);
             cur_property = boost::get(pmap, cur);
             if (cur == NULL) 
-                return false;
+                break;
             else if (cur_property.value == LOAD) {
                 start = cur;
                 target_of_start = get_target(*g, start);
@@ -240,7 +251,7 @@ bool remove_circle(Graph *g, vertex_descriptor_t start, boost::property_map<Grap
         else if (num_sources == 0) {
             cout << "no more source!" << endl;
             cout << "BEFORE EXITING, the graph contains " << boost::num_vertices(*g) << " vertices" << endl;
-            return false;
+            break;
         }
 
         // when we reach a LOAD node
@@ -248,9 +259,11 @@ bool remove_circle(Graph *g, vertex_descriptor_t start, boost::property_map<Grap
 
             cout << "only one source!" << endl;
 
+            // circle.push_back(cur);
+
             next = get_nonterm_source(*g, cur);
             if (next == NULL)
-                return false;
+                break;
             
             // check whether cur complete the circle
             cur_property = boost::get(pmap, cur);
@@ -262,17 +275,29 @@ bool remove_circle(Graph *g, vertex_descriptor_t start, boost::property_map<Grap
                 
                 circle.push_back(next);
 
-                cout << "start removing:" << endl;
-                cout << "the size of the circle is: " << circle.size() << endl;
+                // cout << "start removing:" << endl;
+                // cout << "the size of the circle is: " << circle.size() << endl;
 
                 for (int i = 1; i < circle.size(); i++) {
-                    cout << i  << " " << circle[i] << " ";
+                    // cout << i  << " " << circle[i] << " ";
                     boost::remove_vertex(circle[i], *g);
                 }
-                cout << endl;
+                // cout << endl;
 
-                cout << "done removing, the start is: " << start << endl;
-                return true;
+                // reconnect the graph
+                // print_vertices(g);
+                // cout << start << endl;
+
+                // target_of_start = target_of_start;
+                // add_edge(g, next, target_of_start);
+                // cout << "reconnect target " << target_of_start << " of start " << start << " to the next vertex " << next;
+                
+                // clear the circle
+                circle.clear();
+                // the new start of the circle is the next vertex
+                cout << "done removing" << endl;
+                start = next;
+                break;
             }
             else {
                 circle.push_back(next);
@@ -281,45 +306,11 @@ bool remove_circle(Graph *g, vertex_descriptor_t start, boost::property_map<Grap
             cur = next;
         }
     }
-
-    return false;
-}
-
-void dummy(Graph g) {
-    cout << "FUCK C++\n";
+    
 }
 
 void remove_vertex_in_func(Graph *g, vertex_descriptor_t v) {
     boost::remove_vertex(v, *g);
-}
-
-void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
-
-    int num_sources;
-    // The vector to keep track of the vertices along the path
-    deque<vertex_descriptor_t> circle;
-    // find the first non-terminal source
-    vertex_descriptor_t start = root;
-    // property map to help easily find properties
-    boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, *g);
-
-    // search up along the path
-
-    // while (1) {
-        
-    //     if (!remove_circle(g, start, pmap)) {
-    //         break;
-    //     }
-    //     else {
-    //         start = get_nonterm_source(*g, start);
-    //         cout << "updated start\n";
-    //         if (start == NULL) {
-    //             break;
-    //         }
-    //         cout << "finding a new circle\n";
-    //     }
-    // }
-    
 }
 
 int main() {
@@ -352,18 +343,19 @@ int main() {
     // add_edge(&g, ld2, add1);
     // add_edge(&g, ld3, ld2);
 
-    boost::remove_vertex(ld7, g);
-    // dummy(g);
-
-    // cout << "before pruning" << endl;
-    // cout << "the graph contains " << boost::num_vertices(g) << " vertices" << endl;
-    // print_vertices(&g);
-    // store_load_bypassing(&g, root);
-    // cout << "finished store load bypassing" << endl;
-    // remove_self_edge(&g);
-    // cout << "after pruning" << endl;
-    // cout << "the graph contains " << boost::num_vertices(g) << " vertices" << endl;
-    // print_vertices(&g);
+    cout << "before pruning" << endl;
+    cout << "the graph contains " << boost::num_vertices(g) << " vertices" << endl;
+    print_vertices(&g);
+    // print_graph(g, root);
+    store_load_bypassing(&g, root);
+    cout << "finished store load bypassing" << endl;
+    remove_self_edge(&g);
+    // remove_vertex_in_func(&g, root);
+    // remove_vertex_in_func(&g, ld1);
+    cout << "after pruning" << endl;
+    cout << "the graph contains " << boost::num_vertices(g) << " vertices" << endl;
+    print_vertices(&g);
+    // print_graph(g, root);
 
     return 0;
 
