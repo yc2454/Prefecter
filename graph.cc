@@ -292,7 +292,7 @@ bool remove_circle(Graph *g, vertex_descriptor_t start, boost::property_map<Grap
     return false;
 }
 
-void takeingraph(Graph g) {
+void takeingraph(Graph * g) {
     cout << "good bye\n";
 }
 
@@ -313,7 +313,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
         }
         else {
             cout << "find the next of " << start << endl;
-            takeingraph(*g);
+            takeingraph(g);
             start = get_nonterm_source(*g, start);
             cout << "updated start\n";
             if (start == NULL) {
