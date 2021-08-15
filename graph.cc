@@ -290,6 +290,7 @@ void dummy(Graph g) {
 }
 
 void remove_vertex_in_func(Graph *g, vertex_descriptor_t v) {
+    cout << "removing root\n";
     boost::remove_vertex(v, *g);
 }
 
