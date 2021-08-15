@@ -81,6 +81,7 @@ VertexProperty get_source_property(Graph g, vertex_descriptor_t target) {
 vertex_descriptor_t get_nonterm_source(Graph g, vertex_descriptor_t target) {
     
     // find in edges to target
+    cout << "got here -2\n";
     boost::graph_traits<Graph>::in_edge_iterator ei, ei_end;
     cout << "got here -1\n";
     boost::tie(ei, ei_end) = boost::in_edges(target, g);
