@@ -19,9 +19,7 @@ vertex_descriptor_t add_vertex(Graph * g, uint64_t value, uint64_t source, verte
     VertexProperty vp; 
 
     vp.ty = t;
-
     vp.value = value;
-
     vp.source = source;
     
     vertex_descriptor_t vd = boost::add_vertex(vp, *g);
@@ -81,20 +79,15 @@ VertexProperty get_source_property(Graph g, vertex_descriptor_t target) {
 vertex_descriptor_t get_nonterm_source(Graph g, vertex_descriptor_t target) {
     
     // find in edges to target
-    cout << "got here -2\n";
     boost::graph_traits<Graph>::in_edge_iterator ei, ei_end;
-    cout << "got here -1\n";
     boost::tie(ei, ei_end) = boost::in_edges(target, g);
-    cout << "got here 0\n";
     // find source
     vertex_descriptor_t src, nonterm_src;
     VertexProperty vp;
     boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, g);
     
     for (; ei != ei_end; ++ei) {
-        cout << "got here 1\n";
         src = boost::source(*ei, g);
-        cout << "got here 2\n";
         vp = boost::get(pmap, src);
         if (vp.ty == NONTERM) 
             return src;
@@ -292,6 +285,10 @@ bool remove_circle(Graph *g, vertex_descriptor_t start, boost::property_map<Grap
     return false;
 }
 
+void dummy(Graph g) {
+    cout << "FUCK C++\n";
+}
+
 void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
 
     int num_sources;
@@ -301,15 +298,15 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
     vertex_descriptor_t start = root;
     // property map to help easily find properties
     boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, *g);
-    cout << "graph before removal " << g << endl;
+    dummy(*g);
     // search up along the path
     while (1) {
         if (!remove_circle(g, start, pmap)) {
             break;
         }
         else {
-            cout << "graph after removal " << g << endl;
             start = get_nonterm_source(*g, start);
+            dummy(*g);
             cout << "updated start\n";
             if (start == NULL) {
                 break;
