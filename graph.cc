@@ -78,22 +78,22 @@ VertexProperty get_source_property(Graph g, vertex_descriptor_t target) {
 }
 
 // Find the source vertex of the input target in g
-vertex_descriptor_t get_nonterm_source(Graph * g, vertex_descriptor_t target) {
+vertex_descriptor_t get_nonterm_source(Graph g, vertex_descriptor_t target) {
     
     // find in edges to target
     cout << "got here -2\n";
     boost::graph_traits<Graph>::in_edge_iterator ei, ei_end;
     cout << "got here -1\n";
-    boost::tie(ei, ei_end) = boost::in_edges(target, *g);
+    boost::tie(ei, ei_end) = boost::in_edges(target, g);
     cout << "got here 0\n";
     // find source
     vertex_descriptor_t src, nonterm_src;
     VertexProperty vp;
-    boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, *g);
+    boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, g);
     
     for (; ei != ei_end; ++ei) {
         cout << "got here 1\n";
-        src = boost::source(*ei, *g);
+        src = boost::source(*ei, g);
         cout << "got here 2\n";
         vp = boost::get(pmap, src);
         if (vp.ty == NONTERM) 
@@ -232,7 +232,7 @@ bool remove_circle(Graph *g, vertex_descriptor_t start, boost::property_map<Grap
         if (num_sources == 2) {
             cout << "two source!" << endl;
             // check if the ADD node has a child who is a nonterm
-            cur = get_nonterm_source(g, cur);
+            cur = get_nonterm_source(*g, cur);
             cur_property = boost::get(pmap, cur);
             if (cur == NULL) 
                 return false;
@@ -255,7 +255,7 @@ bool remove_circle(Graph *g, vertex_descriptor_t start, boost::property_map<Grap
 
             cout << "only one source!" << endl;
 
-            next = get_nonterm_source(g, cur);
+            next = get_nonterm_source(*g, cur);
             if (next == NULL)
                 return false;
             
@@ -308,8 +308,8 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
             break;
         }
         else {
-            cout << "find the next of " << start << endl;
-            start = get_nonterm_source(g, start);
+            cout << "find the next of " << *g << endl;
+            start = get_nonterm_source(*g, start);
             cout << "updated start\n";
             if (start == NULL) {
                 break;
