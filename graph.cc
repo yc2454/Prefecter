@@ -308,6 +308,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
             break;
         }
         else {
+            cout << "find a new start\n";
             start = get_nonterm_source(*g, start);
             cout << "updated start\n";
             if (start == NULL) {
