@@ -230,9 +230,10 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
 
     // search up along the path
     while (circle.empty()) {
-        cout << "to find another circle\n";
+        cout << "TO find another circle\n";
         while (1) {
             num_sources = find_source_vertices(*g, cur).size();
+            cout << "CAN find num of sources\n";
             // when we are at an ADD node
             if (num_sources == 2) {
                 cout << "two source!" << endl;
