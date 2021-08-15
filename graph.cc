@@ -298,15 +298,15 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
     vertex_descriptor_t start = root;
     // property map to help easily find properties
     boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, *g);
-    dummy(*g);
+
     // search up along the path
     while (1) {
         if (!remove_circle(g, start, pmap)) {
             break;
         }
         else {
-            start = get_nonterm_source(*g, start);
             dummy(*g);
+            start = get_nonterm_source(*g, start);
             cout << "updated start\n";
             if (start == NULL) {
                 break;
