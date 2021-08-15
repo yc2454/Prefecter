@@ -255,8 +255,6 @@ bool remove_circle(Graph *g, vertex_descriptor_t start, boost::property_map<Grap
 
             cout << "only one source!" << endl;
 
-            // circle.push_back(cur);
-
             next = get_nonterm_source(*g, cur);
             if (next == NULL)
                 return false;
@@ -310,7 +308,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
             break;
         }
         else {
-            cout << "find a new start\n";
+            cout << "find the next of " << start << endl;
             start = get_nonterm_source(*g, start);
             cout << "updated start\n";
             if (start == NULL) {
