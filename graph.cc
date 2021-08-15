@@ -304,9 +304,6 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
     boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, *g);
 
     // search up along the path
-    
-    boost::remove_vertex(root, *g);
-    dummy(*g);
 
     // while (1) {
         
@@ -355,19 +352,18 @@ int main() {
     // add_edge(&g, ld2, add1);
     // add_edge(&g, ld3, ld2);
 
-    cout << "before pruning" << endl;
-    cout << "the graph contains " << boost::num_vertices(g) << " vertices" << endl;
-    print_vertices(&g);
-    // print_graph(g, root);
-    store_load_bypassing(&g, root);
-    cout << "finished store load bypassing" << endl;
-    remove_self_edge(&g);
-    // remove_vertex_in_func(&g, root);
-    // remove_vertex_in_func(&g, ld1);
-    cout << "after pruning" << endl;
-    cout << "the graph contains " << boost::num_vertices(g) << " vertices" << endl;
-    print_vertices(&g);
-    // print_graph(g, root);
+    boost::remove_vertex(ld7, g);
+    dummy(g);
+
+    // cout << "before pruning" << endl;
+    // cout << "the graph contains " << boost::num_vertices(g) << " vertices" << endl;
+    // print_vertices(&g);
+    // store_load_bypassing(&g, root);
+    // cout << "finished store load bypassing" << endl;
+    // remove_self_edge(&g);
+    // cout << "after pruning" << endl;
+    // cout << "the graph contains " << boost::num_vertices(g) << " vertices" << endl;
+    // print_vertices(&g);
 
     return 0;
 
