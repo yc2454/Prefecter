@@ -290,7 +290,6 @@ void dummy(Graph g) {
 }
 
 void remove_vertex_in_func(Graph *g, vertex_descriptor_t v) {
-    cout << "removing root\n";
     boost::remove_vertex(v, *g);
 }
 
@@ -306,7 +305,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
 
     // search up along the path
     
-    remove_vertex_in_func(g, root);
+    boost::remove_vertex(root, *g);
     dummy(*g);
 
     // while (1) {
