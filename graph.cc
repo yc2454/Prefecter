@@ -355,7 +355,7 @@ int main() {
     // cout << "the graph contains " << boost::num_vertices(g) << " vertices" << endl;
     // print_vertices(&g);
 
-    remove_vertex_in_func(&g, ld7);
+    boost::remove_vertex(ld7, g);
     print_vertices(&g);
     
     return 0;
