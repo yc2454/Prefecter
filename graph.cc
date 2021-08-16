@@ -345,20 +345,19 @@ int main() {
     // add_edge(&g, ld2, add1);
     // add_edge(&g, ld3, ld2);
 
-    cout << "before pruning" << endl;
-    cout << "the graph contains " << boost::num_vertices(g) << " vertices" << endl;
-    print_vertices(&g);
-    // print_graph(g, root);
-    store_load_bypassing(&g, root);
-    cout << "finished store load bypassing" << endl;
-    remove_self_edge(&g);
-    // remove_vertex_in_func(&g, root);
-    // remove_vertex_in_func(&g, ld1);
-    cout << "after pruning" << endl;
-    cout << "the graph contains " << boost::num_vertices(g) << " vertices" << endl;
-    print_vertices(&g);
-    // print_graph(g, root);
+    // cout << "before pruning" << endl;
+    // cout << "the graph contains " << boost::num_vertices(g) << " vertices" << endl;
+    // print_vertices(&g);
+    // store_load_bypassing(&g, root);
+    // cout << "finished store load bypassing" << endl;
+    // remove_self_edge(&g);
+    // cout << "after pruning" << endl;
+    // cout << "the graph contains " << boost::num_vertices(g) << " vertices" << endl;
+    // print_vertices(&g);
 
+    remove_vertex_in_func(&g, ld7);
+    print_vertices(&g);
+    
     return 0;
 
 }
