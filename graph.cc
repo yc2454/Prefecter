@@ -313,6 +313,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
 
 void remove_vertex_in_func(Graph *g, vertex_descriptor_t v) {
     boost::remove_vertex(v, *g);
+    print_vertices(g);
 }
 
 int main() {
@@ -355,8 +356,7 @@ int main() {
     // cout << "the graph contains " << boost::num_vertices(g) << " vertices" << endl;
     // print_vertices(&g);
 
-    boost::remove_vertex(ld7, g);
-    print_vertices(&g);
+    remove_vertex_in_func(&g, ld7);
     
     return 0;
 
