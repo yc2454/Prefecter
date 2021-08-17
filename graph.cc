@@ -251,24 +251,22 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                     next = get_nonterm_source(g, next);
 
                     // cout << "start removing:" << endl;
-                    // cout << "the size of the circle is: " << circle.size() << endl;
+                    cout << "before removal, the graph contains " << boost::num_edges(*g) << " edges" << endl;
                     for (int i = 1; i < circle.size(); i++) {
                         p = boost::get(pmap, circle[i]);
                         cout << i << ": ";
                         print_vertex_property(p);
-                        cout << "num of edges before removing: " << boost::num_edges(*g);
-                        boost::remove_in_edge_if(circle[i], pred, *g);
-                        cout << "num of edges after removing: " << boost::num_edges(*g);
+                        // boost::remove_in_edge_if(circle[i], pred, *g);
                         boost::remove_vertex(circle[i], *g);
                     }
                     // cout << endl;
+                    cout << "after removal, the graph contains " << boost::num_edges(*g) << " edges" << endl;
+                    
+                    // recalculate the pmap after vertex removal
                     pmap = boost::get(boost::vertex_bundle, *g);
 
-                    // cout << "after removal, the graph contains " << boost::num_vertices(*g) << " vertices" << endl;
-                    
                     // reconnect the graph
                     add_edge(g, next, start);
-
                     cout << "THE SOURCES OF START: ";
                     vector<vertex_descriptor_t> ss = find_source_vertices(g, start);
                     
