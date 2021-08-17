@@ -229,7 +229,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
     boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, *g);
 
     // search up along the path
-    while (circle.empty()) {
+    do {
         cout << "TO find another circle\n";
         while (1) {
             num_sources = find_source_vertices(g, cur).size();
@@ -311,7 +311,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                 cur = next;
             }
         }
-    }
+    } while (!circle.empty())
 }
 
 void remove_vertex_in_func(Graph *g, vertex_descriptor_t v, vertex_descriptor_t root) {
