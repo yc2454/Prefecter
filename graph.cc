@@ -206,7 +206,7 @@ void remove_self_edge(Graph * g) {
 }
 
 void print_vertex_property(VertexProperty p) {
-    cout << "source: " << p.source << "value: " << p.value << endl;
+    cout << "source: " << p.source << " value: " << p.value << endl;
 }
 
 void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
@@ -296,8 +296,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                     cout << endl;
 
                     // reconnect the graph
-                    add_edge(g, next, target_of_start);
-                    cout << "reconnect target " << target_of_start << " of start " << start << " to the next vertex " << next << endl;
+                    add_edge(g, next, start);
                     cout << "AFTER reconnect\n";
                     print_vertices(g);
                     // clear the circle
