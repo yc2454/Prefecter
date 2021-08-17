@@ -252,6 +252,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
 
                     // cout << "start removing:" << endl;
                     cout << "before removal, the graph contains " << boost::num_edges(*g) << " edges" << endl;
+                    boost::remove_in_edge_if(circle[0], pred, *g);
                     for (int i = 1; i < circle.size(); i++) {
                         p = boost::get(pmap, circle[i]);
                         cout << i << ": ";
