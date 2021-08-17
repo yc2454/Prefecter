@@ -115,7 +115,6 @@ vertex_descriptor_t get_target(Graph * g, vertex_descriptor_t v) {
     // cout << "got here 2" << endl;
     return target;
     
-        
 }
 
 // print out the graph in matrix from
@@ -158,36 +157,6 @@ void print_vertices(Graph *g) {
     // cout << endl;
 }
 
-// void print_vertex(Graph g, vertex_descriptor_t v) {
-
-//     boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, g);
-
-//     VertexProperty property = boost::get(pmap, v);
-
-//     cout << property.value << endl;
-
-// }
-
-// void print_graph(Graph g, vertex_descriptor_t root) {
-
-//     print_vertex(g, root);
-//     cout << "current vertex is: " << root << " and its neighbors are: " << endl;
-    
-//     boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, g);
-
-//     vector<vertex_descriptor_t> sources = find_source_vertices(g, root);
-
-//     for (vector<vertex_descriptor_t>::iterator i = sources.begin(); i != sources.end(); i++) {
-//         cout << *i << " ";
-//     }
-//     cout << endl;
-
-//     for (vector<vertex_descriptor_t>::iterator i = sources.begin(); i != sources.end(); i++) {
-//         print_graph(g, *i);
-//     }
-
-// }
-
 void remove_self_edge(Graph * g) {
     boost::graph_traits<Graph>::vertex_iterator vi, vi_end;
     boost::tie(vi, vi_end) = boost::vertices(*g);
@@ -229,6 +198,9 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
     // self-edge. Don't understand why it exists yet
     edge_descriptor_t start_self;
     bool start_self_exists;
+    // edge iterators for the current vertex
+    boost::graph_traits<Graph>::out_edge_iterator ei, ei_end;
+    // property map to easily access the properties
     boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, *g);
 
     // search up along the path
@@ -289,6 +261,8 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                         p = boost::get(pmap, circle[i]);
                         cout << i << ": ";
                         print_vertex_property(p);
+                        boost::tie(ei, ei_end) = boost::in_edges(circle[i], *g);
+                        boost::remove_edge(ei, *g);
                         boost::remove_vertex(circle[i], *g);
                     }
                     // cout << endl;
