@@ -7,7 +7,7 @@
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 using namespace std;
  
-enum term_type {CONST, REG, ADDR};
+enum term_type {CONST, REG, ADDR, NONTERM};
 
 // The properties of the vertex
 // value stands for the op code when ty == NONTERM

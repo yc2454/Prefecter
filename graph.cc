@@ -85,7 +85,8 @@ vertex_descriptor_t get_nonterm_source(Graph * g, vertex_descriptor_t target) {
     
     for (; ei != ei_end; ++ei) {
         src = boost::source(*ei, *g);
-        if (find_source_vertices(g, src).size() != 0)
+        vp = boost::get(pmap, src);
+        if (vp.ty == NONTERM) 
             return src;
     }
 
@@ -268,7 +269,6 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
                     // reconnect the graph
                     if (next != NULL) 
                         add_edge(g, next, start);
-                        
                     else {
                         cout << "Next is NULL, exit\n";
                         break;
