@@ -256,7 +256,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                         p = boost::get(pmap, circle[i]);
                         cout << i << ": ";
                         print_vertex_property(p);
-                        // boost::remove_in_edge_if(circle[i], pred, *g);
+                        boost::remove_in_edge_if(circle[i], pred, *g);
                         boost::remove_vertex(circle[i], *g);
                     }
                     // cout << endl;
