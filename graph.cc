@@ -268,14 +268,14 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
 
                     // reconnect the graph
                     add_edge(g, next, start);
-                    cout << "THE SOURCES OF START: ";
-                    vector<vertex_descriptor_t> ss = find_source_vertices(g, start);
+                    // cout << "THE SOURCES OF START: ";
+                    // vector<vertex_descriptor_t> ss = find_source_vertices(g, start);
                     
-                    for (int i = 0; i < ss.size(); i++)
-                    {
-                        p = boost::get(pmap, ss[i]);
-                        print_vertex_property(p);
-                    }
+                    // for (int i = 0; i < ss.size(); i++)
+                    // {
+                    //     p = boost::get(pmap, ss[i]);
+                    //     print_vertex_property(p);
+                    // }
                     
                     cout << "AFTER reconnect\n";
                     print_vertices(g);
