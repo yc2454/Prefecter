@@ -238,6 +238,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                 cout << "two source!" << endl;
                 // check if the ADD node has a child who is a nonterm
                 cur = get_nonterm_source(g, cur);
+                pmap = boost::get(boost::vertex_bundle, *g);
                 cur_property = boost::get(pmap, cur);
                 if (cur == NULL) 
                     break;
