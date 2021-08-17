@@ -264,6 +264,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                 next = get_nonterm_source(g, cur);
                 if (next == NULL) {
                     cout << "no more next vertex\n";
+                    circle.clear();
                     break;
                 }
                 
