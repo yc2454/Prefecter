@@ -43,17 +43,17 @@ pair<edge_descriptor_t, bool> add_edge(Graph * g, vertex_descriptor_t src, verte
 
 }
 
-vector<vertex_descriptor_t> find_source_vertices(Graph g, vertex_descriptor_t v) {
+vector<vertex_descriptor_t> find_source_vertices(Graph * g, vertex_descriptor_t v) {
     
     // find in edges to target
     boost::graph_traits<Graph>::in_edge_iterator ei, ei_end;
-    boost::tie(ei, ei_end) = boost::in_edges(v, g);
+    boost::tie(ei, ei_end) = boost::in_edges(v, *g);
 
     vector<vertex_descriptor_t> adjs;
     vertex_descriptor_t src;
 
     for (; ei != ei_end; ++ei) {
-        src = boost::source(*ei, g);
+        src = boost::source(*ei, *g);
         adjs.push_back(src);
     }
 
@@ -232,7 +232,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
     while (circle.empty()) {
         cout << "TO find another circle\n";
         while (1) {
-            num_sources = find_source_vertices(*g, cur).size();
+            num_sources = find_source_vertices(g, cur).size();
             // when we are at an ADD node
             if (num_sources == 2) {
                 cout << "two source!" << endl;
@@ -346,17 +346,17 @@ int main() {
     // add_edge(&g, ld2, add1);
     // add_edge(&g, ld3, ld2);
 
-    // cout << "before pruning" << endl;
-    // cout << "the graph contains " << boost::num_vertices(g) << " vertices" << endl;
-    // print_vertices(&g);
-    // store_load_bypassing(&g, root);
-    // cout << "finished store load bypassing" << endl;
-    // remove_self_edge(&g);
-    // cout << "after pruning" << endl;
-    // cout << "the graph contains " << boost::num_vertices(g) << " vertices" << endl;
-    // print_vertices(&g);
+    cout << "before pruning" << endl;
+    cout << "the graph contains " << boost::num_vertices(g) << " vertices" << endl;
+    print_vertices(&g);
+    store_load_bypassing(&g, root);
+    cout << "finished store load bypassing" << endl;
+    remove_self_edge(&g);
+    cout << "after pruning" << endl;
+    cout << "the graph contains " << boost::num_vertices(g) << " vertices" << endl;
+    print_vertices(&g);
 
-    remove_vertex_in_func(&g, ld7, root);
+    // remove_vertex_in_func(&g, ld7, root);
     
     return 0;
 
