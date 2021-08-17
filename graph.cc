@@ -220,8 +220,6 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
     vertex_descriptor_t cur = root;
     // the next place in the path
     vertex_descriptor_t next;
-    // the target of the start point
-    vertex_descriptor_t target_of_start;
     // properties of the vertices
     VertexProperty cur_property;
     VertexProperty start_property;
@@ -237,8 +235,8 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
     while (circle.empty()) {
         cout << "TO find another circle\n";
         while (1) {
+            cout << "Loop!\n";
             num_sources = find_source_vertices(g, cur).size();
-            cout << "CAN find num of sources\n";
             // when we are at an ADD node
             if (num_sources == 2) {
                 cout << "two source!" << endl;
@@ -250,11 +248,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                 if (cur == NULL) 
                     break;
                 else if (cur_property.value == LOAD) {
-                    start = cur;
-                    target_of_start = get_target(g, start);
-                    VertexProperty t_prop = boost::get(pmap, target_of_start);
-                    cout << "the TARGET is: ";
-                    print_vertex_property(t_prop);                    
+                    start = cur;               
                     circle.push_back(start);
                 }
             }
