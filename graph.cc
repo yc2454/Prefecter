@@ -238,8 +238,9 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                 cout << "two source!" << endl;
                 // check if the ADD node has a child who is a nonterm
                 cur = get_nonterm_source(g, cur);
-                pmap = boost::get(boost::vertex_bundle, *g);
+                cout << "can get source\n";
                 cur_property = boost::get(pmap, cur);
+                cout << "can get source property\n";
                 if (cur == NULL) 
                     break;
                 else if (cur_property.value == LOAD) {
@@ -299,7 +300,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                     // clear the circle
                     circle.clear();
                     // the new start of the circle is the next vertex
-                    cout << "done removing" << endl;
+                    cout << "DONE removing" << endl;
                     start = root;
                     cur = start;
                     break;
