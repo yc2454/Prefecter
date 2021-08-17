@@ -94,6 +94,20 @@ vertex_descriptor_t get_nonterm_source(Graph * g, vertex_descriptor_t target) {
     
 }
 
+vertex_descriptor_t get_first_source(Graph * g, vertex_descriptor_t target) {
+    
+    // find in edges to target
+    boost::graph_traits<Graph>::in_edge_iterator ei, ei_end;
+    boost::tie(ei, ei_end) = boost::in_edges(target, *g);
+    // find source
+    vertex_descriptor_t src, nonterm_src;
+    VertexProperty vp;
+    boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, *g);
+    
+    return boost::source(*ei, *g);
+    
+}
+
 vertex_descriptor_t get_target(Graph * g, vertex_descriptor_t v) {
 
     // find in edges to target
@@ -248,7 +262,7 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
                 if (next_property.source == start_property.source) {
                     
                     circle.push_back(next);
-                    next = get_nonterm_source(g, next);
+                    next = get_first_source(g, next);
 
                     // cout << "start removing:" << endl;
                     cout << "before removal, the graph contains " << boost::num_edges(*g) << " edges" << endl;
