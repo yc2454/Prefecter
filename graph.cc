@@ -256,7 +256,6 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
             else if (num_sources == 0) {
                 cout << "no more source!" << endl;
                 cout << "BEFORE EXITING, the graph contains " << boost::num_vertices(*g) << " vertices" << endl;
-
                 break;
             }
             // when we reach a LOAD node
@@ -297,6 +296,16 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
 
                     // reconnect the graph
                     add_edge(g, next, start);
+                    cout << "THE SOURCES OF START: ";
+                    vector<vertex_descriptor_t> ss = find_source_vertices(g, start);
+                    for (int i = 0; i < ss.size(); i++)
+                    {
+                        p = boost::get(pmap, ss[i]);
+                        cout << i << ": ";
+                        print_vertex_property(p);
+                        boost::remove_vertex(ss[i], *g);
+                    }
+                    
                     cout << "AFTER reconnect\n";
                     print_vertices(g);
                     // clear the circle
