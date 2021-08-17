@@ -1,4 +1,5 @@
 #include "graph.h"
+#include <string>
 using namespace std;
 #define NO_NONTERM -100
 #define ADD 11111
@@ -204,6 +205,10 @@ void remove_self_edge(Graph * g) {
     }
 }
 
+void print_vertex_property(VertexProperty p) {
+    cout << "source: " << p.source << "value: " << p.value << endl;
+}
+
 void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
 
     int num_sources;
@@ -245,6 +250,9 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                 else if (cur_property.value == LOAD) {
                     start = cur;
                     target_of_start = get_target(g, start);
+                    VertexProperty t_prop = boost::get(pmap, target_of_start);
+                    cout << "the TARGET is: ";
+                    print_vertex_property(t_prop);                    
                     circle.push_back(start);
                 }
             }
