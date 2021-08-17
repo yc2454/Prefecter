@@ -234,9 +234,6 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
             else if (num_sources == 1) {
 
                 cout << "only one source!" << endl;
-
-                // circle.push_back(cur);
-
                 next = get_nonterm_source(g, cur);
                 if (next == NULL) {
                     cout << "no more next vertex\n";
@@ -268,10 +265,14 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                     // cout << endl;
                     pmap = boost::get(boost::vertex_bundle, *g);
 
+                    cout << "after removal, the graph contains " << boost::num_vertices(*g) << " vertices" << endl;
+                    
                     // reconnect the graph
                     add_edge(g, next, start);
+
                     cout << "THE SOURCES OF START: ";
                     vector<vertex_descriptor_t> ss = find_source_vertices(g, start);
+                    
                     for (int i = 0; i < ss.size(); i++)
                     {
                         p = boost::get(pmap, ss[i]);
