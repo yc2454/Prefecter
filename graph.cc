@@ -256,13 +256,12 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
 
                     // cout << "start removing:" << endl;
                     // cout << "the size of the circle is: " << circle.size() << endl;
-
                     for (int i = 1; i < circle.size(); i++) {
                         p = boost::get(pmap, circle[i]);
                         cout << i << ": ";
                         print_vertex_property(p);
                         if (i+1 < circle.size())
-                            boost::remove_edge(circle[i], circle[i+1], *g);
+                            boost::remove_edge(circle[i-1], circle[i], *g);
                         boost::remove_vertex(circle[i], *g);
                     }
                     // cout << endl;
