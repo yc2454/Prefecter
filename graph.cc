@@ -264,10 +264,13 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                     cout << "after removal, the graph contains " << boost::num_edges(*g) << " edges" << endl;
                     
                     // recalculate the pmap after vertex removal
-                    // pmap = boost::get(boost::vertex_bundle, *g);
+                    pmap = boost::get(boost::vertex_bundle, *g);
 
                     // reconnect the graph
-                    add_edge(g, next, start);
+                    if (next != NULL)
+                        add_edge(g, next, start);
+                    else 
+                        break;
                     // cout << "THE SOURCES OF START: ";
                     // vector<vertex_descriptor_t> ss = find_source_vertices(g, start);
                     
