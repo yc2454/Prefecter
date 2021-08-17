@@ -266,13 +266,14 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
                     pmap = boost::get(boost::vertex_bundle, *g);
 
                     // reconnect the graph
-                    if (next != NULL) {
-                        cout << "Next is NULL, exit\n";
+                    if (next != NULL) 
                         add_edge(g, next, start);
+                        
+                    else {
+                        cout << "Next is NULL, exit\n";
+                        break;
                     }
                         
-                    else 
-                        break;
                     // cout << "THE SOURCES OF START: ";
                     // vector<vertex_descriptor_t> ss = find_source_vertices(g, start);
                     
