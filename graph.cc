@@ -2,8 +2,6 @@
 #include <string>
 using namespace std;
 #define NO_NONTERM -100
-#define ADD 11111
-#define LOAD 22222
 
 // Problem Aug 3, the reordering of vertices after removing
 
@@ -14,12 +12,11 @@ Graph graph_create() {
 
 }
 
-vertex_descriptor_t add_vertex(Graph * g, uint64_t value, uint64_t source, vertex_type t) {
+vertex_descriptor_t add_vertex(Graph * g, uint64_t source, term_type t) {
     
     VertexProperty vp; 
 
     vp.ty = t;
-    vp.value = value;
     vp.source = source;
     
     vertex_descriptor_t vd = boost::add_vertex(vp, *g);
@@ -88,8 +85,7 @@ vertex_descriptor_t get_nonterm_source(Graph * g, vertex_descriptor_t target) {
     
     for (; ei != ei_end; ++ei) {
         src = boost::source(*ei, *g);
-        vp = boost::get(pmap, src);
-        if (vp.ty == NONTERM) 
+        if (find_source_vertices(g, src).size() != 0)
             return src;
     }
 
@@ -172,7 +168,7 @@ void remove_self_edge(Graph * g) {
 }
 
 void print_vertex_property(VertexProperty p) {
-    cout << "source: " << p.source << " value: " << p.value << endl;
+    cout << "source: " << p.source << endl;
 }
 
 void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
@@ -213,12 +209,15 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                 cout << "two source!" << endl;
                 // check if the ADD node has a child who is a nonterm
                 cur = get_nonterm_source(g, cur);
+
+                // print the current vertex
                 cout << "current: ";
                 cur_property = boost::get(pmap, cur);
                 print_vertex_property(cur_property);
+
                 if (cur == NULL) 
                     break;
-                else if (cur_property.value == LOAD) {
+                else if (find_source_vertices(g, cur).size() == 1) {
                     start = cur;               
                     circle.push_back(start);
                 }
@@ -309,19 +308,19 @@ int main() {
 
     Graph g = graph_create();
 
-    vertex_descriptor_t root = add_vertex(&g, ADD, 1, NONTERM);
-    vertex_descriptor_t const1 = add_vertex(&g, 28, 2, CONST);
-    vertex_descriptor_t ld1 = add_vertex(&g, LOAD, 3, NONTERM);
-    vertex_descriptor_t ld2 = add_vertex(&g, LOAD, 4, NONTERM);
-    vertex_descriptor_t ld3 = add_vertex(&g, LOAD, 5, NONTERM);
-    vertex_descriptor_t ld4 = add_vertex(&g, LOAD, 3, NONTERM);
-    vertex_descriptor_t ld5 = add_vertex(&g, LOAD, 3, NONTERM);
-    vertex_descriptor_t ld6 = add_vertex(&g, LOAD, 3, NONTERM);
-    vertex_descriptor_t ld7 = add_vertex(&g, LOAD, 3, NONTERM);
-    // vertex_descriptor_t add1 = add_vertex(&g, ADD, 0, NONTERM);
+    vertex_descriptor_t root = add_vertex(&g, 1, ADDR);
+    vertex_descriptor_t const1 = add_vertex(&g, 2, CONST);
+    vertex_descriptor_t ld1 = add_vertex(&g, 3, ADDR);
+    vertex_descriptor_t ld2 = add_vertex(&g, 4, ADDR);
+    vertex_descriptor_t ld3 = add_vertex(&g, 5, ADDR);
+    vertex_descriptor_t ld4 = add_vertex(&g, 3, ADDR);
+    vertex_descriptor_t ld5 = add_vertex(&g, 3, ADDR);
+    vertex_descriptor_t ld6 = add_vertex(&g, 3, ADDR);
+    vertex_descriptor_t ld7 = add_vertex(&g, 3, ADDR);
+    // vertex_descriptor_t add1 = add_vertex(&g, ADD, 0, ADDR);
     // vertex_descriptor_t const2 = add_vertex(&g, 8, 0, CONST);
-    // vertex_descriptor_t ld2 = add_vertex(&g, LOAD, 0x12345678, NONTERM);
-    // vertex_descriptor_t ld3 = add_vertex(&g, LOAD, 12, NONTERM);
+    // vertex_descriptor_t ld2 = add_vertex(&g, LOAD, 0x12345678, ADDR);
+    // vertex_descriptor_t ld3 = add_vertex(&g, LOAD, 12, ADDR);
 
     add_edge(&g, const1, root);
     add_edge(&g, ld1, root);
