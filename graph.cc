@@ -285,6 +285,10 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                 if (next_property.source == start_property.source) {
                     
                     circle.push_back(next);
+                    next = get_nonterm_source(g, next);
+                    cout << "next: ";
+                    p = boost::get(pmap, next);
+                    print_vertex_property(p);
 
                     // cout << "start removing:" << endl;
                     // cout << "the size of the circle is: " << circle.size() << endl;
@@ -298,11 +302,6 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                     // cout << endl;
 
                     // reconnect the graph
-                    cur = next;
-                    next = get_nonterm_source(g, cur);
-                    cout << "next: ";
-                    p = boost::get(pmap, next);
-                    print_vertex_property(p);
                     add_edge(g, next, start);
                     cout << "AFTER reconnect\n";
                     print_vertices(g);
