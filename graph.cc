@@ -78,18 +78,18 @@ VertexProperty get_source_property(Graph g, vertex_descriptor_t target) {
 }
 
 // Find the source vertex of the input target in g
-vertex_descriptor_t get_nonterm_source(Graph g, vertex_descriptor_t target) {
+vertex_descriptor_t get_nonterm_source(Graph * g, vertex_descriptor_t target) {
     
     // find in edges to target
     boost::graph_traits<Graph>::in_edge_iterator ei, ei_end;
-    boost::tie(ei, ei_end) = boost::in_edges(target, g);
+    boost::tie(ei, ei_end) = boost::in_edges(target, *g);
     // find source
     vertex_descriptor_t src, nonterm_src;
     VertexProperty vp;
-    boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, g);
+    boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, *g);
     
     for (; ei != ei_end; ++ei) {
-        src = boost::source(*ei, g);
+        src = boost::source(*ei, *g);
         vp = boost::get(pmap, src);
         if (vp.ty == NONTERM) 
             return src;
@@ -237,7 +237,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
             if (num_sources == 2) {
                 cout << "two source!" << endl;
                 // check if the ADD node has a child who is a nonterm
-                cur = get_nonterm_source(*g, cur);
+                cur = get_nonterm_source(g, cur);
                 cur_property = boost::get(pmap, cur);
                 if (cur == NULL) 
                     break;
@@ -261,7 +261,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
 
             // circle.push_back(cur);
 
-            next = get_nonterm_source(*g, cur);
+            next = get_nonterm_source(g, cur);
             if (next == NULL) {
                 break;
             }
@@ -313,7 +313,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
 
 void remove_vertex_in_func(Graph *g, vertex_descriptor_t v, vertex_descriptor_t root) {
     boost::remove_vertex(v, *g);
-    get_nonterm_source(*g, root);
+    get_nonterm_source(g, root);
 }
 
 int main() {
