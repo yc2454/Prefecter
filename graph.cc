@@ -311,7 +311,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                 cur = next;
             }
         }
-    } while (!circle.empty())
+    } while (!circle.empty());
 }
 
 void remove_vertex_in_func(Graph *g, vertex_descriptor_t v, vertex_descriptor_t root) {
