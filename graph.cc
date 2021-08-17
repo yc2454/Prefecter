@@ -290,10 +290,12 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                     // cout << "the size of the circle is: " << circle.size() << endl;
 
                     for (int i = 1; i < circle.size(); i++) {
-                        cout << i  << " " << circle[i] << " ";
+                        p = boost::get(pmap, circle[i]);
+                        cout << i << ": ";
+                        print_vertex_property(p);
                         boost::remove_vertex(circle[i], *g);
                     }
-                    cout << endl;
+                    // cout << endl;
 
                     // reconnect the graph
                     add_edge(g, next, start);
