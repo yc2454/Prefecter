@@ -312,19 +312,19 @@ int main() {
 
     Graph g = graph_create();
 
-    vertex_descriptor_t root = add_vertex(&g, 1, ADDR);
+    vertex_descriptor_t root = add_vertex(&g, 1, NONTERM);
     vertex_descriptor_t const1 = add_vertex(&g, 2, CONST);
-    vertex_descriptor_t ld1 = add_vertex(&g, 3, ADDR);
-    vertex_descriptor_t ld2 = add_vertex(&g, 4, ADDR);
-    vertex_descriptor_t ld3 = add_vertex(&g, 5, ADDR);
-    vertex_descriptor_t ld4 = add_vertex(&g, 3, ADDR);
-    vertex_descriptor_t ld5 = add_vertex(&g, 3, ADDR);
-    vertex_descriptor_t ld6 = add_vertex(&g, 3, ADDR);
-    vertex_descriptor_t ld7 = add_vertex(&g, 3, ADDR);
-    // vertex_descriptor_t add1 = add_vertex(&g, ADD, 0, ADDR);
+    vertex_descriptor_t ld1 = add_vertex(&g, 3, NONTERM);
+    vertex_descriptor_t ld2 = add_vertex(&g, 4, NONTERM);
+    vertex_descriptor_t ld3 = add_vertex(&g, 5, NONTERM);
+    vertex_descriptor_t ld4 = add_vertex(&g, 3, NONTERM);
+    vertex_descriptor_t ld5 = add_vertex(&g, 3, NONTERM);
+    vertex_descriptor_t ld6 = add_vertex(&g, 3, NONTERM);
+    vertex_descriptor_t ld7 = add_vertex(&g, 3, NONTERM);
+    // vertex_descriptor_t add1 = add_vertex(&g, ADD, 0, NONTERM);
     // vertex_descriptor_t const2 = add_vertex(&g, 8, 0, CONST);
-    // vertex_descriptor_t ld2 = add_vertex(&g, LOAD, 0x12345678, ADDR);
-    // vertex_descriptor_t ld3 = add_vertex(&g, LOAD, 12, ADDR);
+    // vertex_descriptor_t ld2 = add_vertex(&g, LOAD, 0x12345678, NONTERM);
+    // vertex_descriptor_t ld3 = add_vertex(&g, LOAD, 12, NONTERM);
 
     add_edge(&g, const1, root);
     add_edge(&g, ld1, root);
