@@ -233,6 +233,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
         cout << "TO find another circle\n";
         while (1) {
             num_sources = find_source_vertices(g, cur).size();
+            cout << "CAN find num of sources\n";
             // when we are at an ADD node
             if (num_sources == 2) {
                 cout << "two source!" << endl;
@@ -287,9 +288,6 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                     // cout << endl;
 
                     // reconnect the graph
-                    print_vertices(g);
-                    cout << start << endl;
-
                     target_of_start = target_of_start;
                     add_edge(g, next, target_of_start);
                     cout << "reconnect target " << target_of_start << " of start " << start << " to the next vertex " << next;
