@@ -298,8 +298,8 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                     // cout << endl;
 
                     // reconnect the graph
-                    cout << "start: ";
-                    p = boost::get(pmap, start);
+                    cout << "next: ";
+                    p = boost::get(pmap, next);
                     print_vertex_property(p);
                     add_edge(g, next, start);
                     cout << "AFTER reconnect\n";
