@@ -290,7 +290,8 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                     // reconnect the graph
                     add_edge(g, next, target_of_start);
                     cout << "reconnect target " << target_of_start << " of start " << start << " to the next vertex " << next << endl;
-                    
+                    cout << "AFTER reconnect\n";
+                    print_vertices(g);
                     // clear the circle
                     circle.clear();
                     // the new start of the circle is the next vertex
