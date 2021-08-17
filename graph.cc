@@ -199,7 +199,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
     edge_descriptor_t start_self;
     bool start_self_exists;
     // edge iterators for the current vertex
-    boost::graph_traits<Graph>::in_edge_iterator ei, ei_end;
+    boost::graph_traits<Graph>::edge_iterator ei, ei_end;
     // property map to easily access the properties
     boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, *g);
 
