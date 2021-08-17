@@ -299,6 +299,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                         boost::remove_vertex(circle[i], *g);
                     }
                     // cout << endl;
+                    pmap = boost::get(boost::vertex_bundle, *g);
 
                     // reconnect the graph
                     add_edge(g, next, start);
