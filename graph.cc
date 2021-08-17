@@ -99,18 +99,18 @@ vertex_descriptor_t get_nonterm_source(Graph * g, vertex_descriptor_t target) {
     
 }
 
-vertex_descriptor_t get_target(Graph g, vertex_descriptor_t v) {
+vertex_descriptor_t get_target(Graph * g, vertex_descriptor_t v) {
 
     // find in edges to target
     // cout << "got here -1" << endl;
     boost::graph_traits<Graph>::out_edge_iterator ei, ei_end;
     // cout << "got here 0" << endl;
-    boost::tie(ei, ei_end) = boost::out_edges(v, g);
+    boost::tie(ei, ei_end) = boost::out_edges(v, *g);
     // find source
     vertex_descriptor_t target;
     
     // cout << "got here 1" << endl;
-    target = boost::target(*ei, g);
+    target = boost::target(*ei, *g);
     // cout << "got here 2" << endl;
     return target;
     
@@ -243,7 +243,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                     break;
                 else if (cur_property.value == LOAD) {
                     start = cur;
-                    // target_of_start = get_target(*g, start);
+                    target_of_start = get_target(g, start);
                     circle.push_back(start);
                 }
             }
@@ -287,12 +287,12 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                     // cout << endl;
 
                     // reconnect the graph
-                    // print_vertices(g);
-                    // cout << start << endl;
+                    print_vertices(g);
+                    cout << start << endl;
 
-                    // target_of_start = target_of_start;
-                    // add_edge(g, next, target_of_start);
-                    // cout << "reconnect target " << target_of_start << " of start " << start << " to the next vertex " << next;
+                    target_of_start = target_of_start;
+                    add_edge(g, next, target_of_start);
+                    cout << "reconnect target " << target_of_start << " of start " << start << " to the next vertex " << next;
                     
                     // clear the circle
                     circle.clear();
