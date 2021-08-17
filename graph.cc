@@ -257,55 +257,57 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
             // when we reach a LOAD node
             else if (num_sources == 1) {
 
-            cout << "only one source!" << endl;
+                cout << "only one source!" << endl;
 
-            // circle.push_back(cur);
+                // circle.push_back(cur);
 
-            next = get_nonterm_source(g, cur);
-            if (next == NULL) {
-                break;
-            }
-            
-            // check whether cur complete the circle
-            cur_property = boost::get(pmap, cur);
-            next_property = boost::get(pmap, next);
-            start_property = boost::get(pmap, start);
-
-            // if a circle is completed, remove all vertices in the circle
-            if (next_property.source == start_property.source) {
-                
-                circle.push_back(next);
-
-                // cout << "start removing:" << endl;
-                // cout << "the size of the circle is: " << circle.size() << endl;
-
-                for (int i = 1; i < circle.size(); i++) {
-                    // cout << i  << " " << circle[i] << " ";
-                    boost::remove_vertex(circle[i], *g);
+                next = get_nonterm_source(g, cur);
+                if (next == NULL) {
+                    cout << "no more next vertex\n";
+                    break;
                 }
-                // cout << endl;
-
-                // reconnect the graph
-                // print_vertices(g);
-                // cout << start << endl;
-
-                // target_of_start = target_of_start;
-                // add_edge(g, next, target_of_start);
-                // cout << "reconnect target " << target_of_start << " of start " << start << " to the next vertex " << next;
                 
-                // clear the circle
-                circle.clear();
-                // the new start of the circle is the next vertex
-                cout << "done removing" << endl;
-                start = next;
-                cur = start;
-                break;
-            }
-            else {
-                circle.push_back(next);
-            }
+                // check whether cur complete the circle
+                cur_property = boost::get(pmap, cur);
+                next_property = boost::get(pmap, next);
+                start_property = boost::get(pmap, start);
 
-            cur = next;
+                // if a circle is completed, remove all vertices in the circle
+                if (next_property.source == start_property.source) {
+                    
+                    circle.push_back(next);
+
+                    // cout << "start removing:" << endl;
+                    // cout << "the size of the circle is: " << circle.size() << endl;
+
+                    for (int i = 1; i < circle.size(); i++) {
+                        // cout << i  << " " << circle[i] << " ";
+                        boost::remove_vertex(circle[i], *g);
+                    }
+                    // cout << endl;
+
+                    // reconnect the graph
+                    // print_vertices(g);
+                    // cout << start << endl;
+
+                    // target_of_start = target_of_start;
+                    // add_edge(g, next, target_of_start);
+                    // cout << "reconnect target " << target_of_start << " of start " << start << " to the next vertex " << next;
+                    
+                    // clear the circle
+                    circle.clear();
+                    // the new start of the circle is the next vertex
+                    cout << "done removing" << endl;
+                    start = next;
+                    cur = start;
+                    break;
+                }
+                else {
+                    cout << "havent reached the end of circle yet\n";
+                    circle.push_back(next);
+                }
+
+                cur = next;
             }
         }
     }
