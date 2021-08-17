@@ -171,7 +171,7 @@ void print_vertex_property(VertexProperty p) {
     cout << "source: " << p.source << endl;
 }
 
-void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
+void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
 
     int num_sources;
     // The vector to keep track of the vertices along the path
@@ -266,8 +266,11 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                     pmap = boost::get(boost::vertex_bundle, *g);
 
                     // reconnect the graph
-                    if (next != NULL)
+                    if (next != NULL) {
+                        cout << "Next is NULL, exit\n";
                         add_edge(g, next, start);
+                    }
+                        
                     else 
                         break;
                     // cout << "THE SOURCES OF START: ";
