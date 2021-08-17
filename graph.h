@@ -33,6 +33,13 @@ typedef boost::graph_traits<Graph>::edge_descriptor edge_descriptor_t;
 
 EdgeProperty ep; 
 
+template <class edge_descriptor_t>
+struct edge_predicate {
+    bool operator() (const edge_descriptor_t& e) const {
+      return true;
+    }
+};
+
 // Graph graph_create() {
     
 //     Graph graph;
