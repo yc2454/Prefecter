@@ -10,7 +10,6 @@ using namespace std;
 Graph graph_create() {
     
     Graph graph;
-
     return graph;
 
 }
@@ -20,9 +19,7 @@ vertex_descriptor_t add_vertex(Graph * g, uint64_t value, uint64_t source, verte
     VertexProperty vp; 
 
     vp.ty = t;
-
     vp.value = value;
-
     vp.source = source;
     
     vertex_descriptor_t vd = boost::add_vertex(vp, *g);
@@ -202,6 +199,8 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
     boost::graph_traits<Graph>::edge_iterator ei, ei_end;
     // property map to easily access the properties
     boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, *g);
+    // Predicate for removing edge
+    edge_predicate<edge_descriptor_t> pred;
 
     // search up along the path
     while (circle.empty()) {
@@ -257,7 +256,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                         p = boost::get(pmap, circle[i]);
                         cout << i << ": ";
                         print_vertex_property(p);
-                        boost::remove_in_edge_if(circle[i], true, *g);
+                        boost::remove_in_edge_if(circle[i], pred, *g);
                         boost::remove_vertex(circle[i], *g);
                     }
                     // cout << endl;
