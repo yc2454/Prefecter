@@ -298,7 +298,8 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                     // cout << endl;
 
                     // reconnect the graph
-                    next = get_nonterm_source(g, next);
+                    cur = next;
+                    next = get_nonterm_source(g, cur);
                     cout << "next: ";
                     p = boost::get(pmap, next);
                     print_vertex_property(p);
