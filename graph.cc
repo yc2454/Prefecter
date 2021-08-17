@@ -235,7 +235,7 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
     while (circle.empty()) {
         cout << "TO find another circle\n";
         while (1) {
-            cout << "Loop!\n";
+            // cout << "Loop!\n";
             num_sources = find_source_vertices(g, cur).size();
             // when we are at an ADD node
             if (num_sources == 2) {
