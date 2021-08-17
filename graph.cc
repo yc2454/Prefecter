@@ -302,7 +302,6 @@ void store_load_bypassing(Graph * g, vertex_descriptor_t root) {
                     {
                         p = boost::get(pmap, ss[i]);
                         print_vertex_property(p);
-                        boost::remove_vertex(ss[i], *g);
                     }
                     
                     cout << "AFTER reconnect\n";
