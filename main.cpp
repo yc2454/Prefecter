@@ -10,8 +10,6 @@ char trace_string[1024];
 char gunzip_command[1024];
 
 uint64_t champsim_seed;
-uint64_t load_op = 69698705567;
-uint64_t add_op = 1691269;
 
 // the trace file
 FILE *trace_file;
@@ -290,6 +288,8 @@ int traceback_reg(uint8_t reg, deque<ooo_model_instr> trace_window, int index) {
     
 }
 
+// Search the last occurence of the effective address
+// if not found, return -1
 int traceback_ea(uint64_t ea, deque<ooo_model_instr> trace_window, int index) {
     
     int size = trace_window.size();
@@ -318,147 +318,119 @@ long long int find_const_offset(ooo_model_instr cur_instr) {
         return -17;
 }
 
-// Builds the graph
-// Returns the descriptor of the sink of the graph
-vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, uint64_t miss_pc) {
-
-    bool complete = false;
-    int cur_index = 1;
-    cout << "the size of the window " << trace_window.size() << endl;
-    ooo_model_instr cur_instr = trace_window.at(cur_index);
+int instr_to_vertex(vertex_descriptor_t parent, ooo_model_instr instr, deque<ooo_model_instr> trace_window, Graph *g) {
     
-    vertex_descriptor_t cur_root_vertex = add_vertex(g, cur_instr.source_memory[0], 0, ADDR);
+    vertex_descriptor_t son;
+    vertex_descriptor_t offset;
 
-    vertex_descriptor_t the_root_vertex = cur_root_vertex;
+    int next_index;
 
-    vertex_descriptor_t load_op_vertex;
-    vertex_descriptor_t add_op_vertex;
-    vertex_descriptor_t const_vertex;
-    vertex_descriptor_t reg_vertex;
-    vertex_descriptor_t ea_vertex;
-
-    int reg_index, ea_index;
-
-    long long int offset;
-    
-    // backtrack in the trace window for another dependence
-    while (1) {
-        // cout << "loop once\n";
-        cur_instr = trace_window.at(cur_index);
-        
-        // the memory op number at which there is a discrepency between ea and reg value
-        offset = find_const_offset(cur_instr);
-
-        // if we come across the miss PC again, stop
-        if (cur_instr.ip == miss_pc && cur_index != 0) 
-            break;
-            
-        // This means that we found a constant offset
-        if (offset != -17) {
-            
-            // first add the ADD vertex into the graph, because we need to add the offset as 
-            // part of the kernel
-            add_op_vertex = add_vertex(g, add_op, 0, NONTERM);
-            // connect it to the current root
-            add_edge(g, cur_root_vertex, add_op_vertex);
-
-            // add the children of ADD vertex, the first one is of course the offset
-            const_vertex = add_vertex(g, offset, 0, CONST);
-            add_edge(g, add_op_vertex, const_vertex);
-            
-            // When the current instruction fetch data from memory
-            if (cur_instr.is_memory) {
-                // find the last occurence of the current effective address
-                ea_index = traceback_ea(cur_instr.source_memory[0], trace_window, cur_index);
-                
-                // set the current root to a new value, notice that it is a
-                // load node
-                cur_root_vertex = add_vertex(g, load_op, cur_instr.source_memory[0], NONTERM);
-                
-                // when there does not exist a previous occurence
-                if (ea_index == -1) {
-                    ea_vertex = add_vertex(g, cur_instr.source_memory[0], 0, ADDR);
-                    add_edge(g, cur_root_vertex, ea_vertex);
-                    break;
-                }
-                else {
-                    cur_index = ea_index;
-                    continue;
-                }
-            }
-
-            // when the source is not from main memory, search for occurrence 
-            // of the register
-            else {
-                // traceback to find the register
-                reg_index = traceback_reg(cur_instr.source_registers[0], trace_window, cur_index);
-                
-                // set the current root to a new value
-                cur_root_vertex = add_vertex(g, load_op, cur_instr.source_registers[0], NONTERM);
-                add_edge(g, add_op_vertex, cur_root_vertex);
-
-                // the register cannot be traced back further
-                if (reg_index == -1) {
-                    reg_vertex = add_vertex(g, cur_instr.source_registers[0], 0, REG);
-                    add_edge(g, cur_root_vertex, reg_vertex);
-                    break;
-                }
-                else {
-                    cur_index = reg_index;
-                    continue;
-                }
-                
-            }
-            
+    // When there is no offset
+    if (instr.offset1 == -1) {
+        if (instr.is_memory) {
+            son = add_vertex(g, instr.source_memory[0], ADDR);
+            next_index = traceback_ea(instr.source_memory[0], trace_window, 0);
         }
         else {
-            if (cur_instr.is_memory) {
-                ea_index = traceback_ea(cur_instr.source_memory[0], trace_window, cur_index);
+            son = add_vertex(g, instr.source_registers[0], ADDR);
+            next_index = traceback_ea(instr.source_registers[0], trace_window, 0);
+        }
+        add_edge(g, parent, son);
+    }
+    else {
+        offset = add_vertex(g, instr.offset1, CONST);
+        if (instr.is_memory) {
+            son = add_vertex(g, instr.source_memory[0], ADDR);
+            next_index = traceback_ea(instr.source_memory[0], trace_window, 0);
+        }
+        else {
+            son = add_vertex(g, instr.source_registers[0], ADDR);
+            next_index = traceback_ea(instr.source_registers[0], trace_window, 0);
+        }
+        add_edge(g, parent, offset);
+        add_edge(g, parent, son);
+    }
 
-                load_op_vertex = add_vertex(g, load_op, cur_instr.source_memory[0], NONTERM);
-                add_edge(g, cur_root_vertex, load_op_vertex);
-                cur_root_vertex = load_op_vertex;
+    return next_index;
+}
 
-                if (ea_index == -1)
-                {
-                    ea_vertex = add_vertex(g, cur_instr.source_memory[0], 0, ADDR);
-                    add_edge(g, cur_root_vertex, ea_vertex);
-                    break;
+// Builds the graph for the instructions in the trace window
+vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, uint64_t miss_pc) {
+
+    // the possible constant source of the root
+    vertex_descriptor_t offset;
+    // the root of our graph
+    vertex_descriptor_t root;
+    // the index for the current instruction
+    int cur_index;
+    int next_index;
+    // the vertex correponding to the current instruction
+    vertex_descriptor_t cur_vertex;
+    // the parent for the current instruction
+    vertex_descriptor_t cur_parent;
+
+    // First, we add the instruction at the miss-causing pc into the graph
+    if (trace_window[0].offset1 == -1) {
+        if (trace_window[0].is_memory) {
+            root = add_vertex(g, trace_window[0].source_memory[0], ADDR);
+            cur_index = traceback_ea(trace_window[0].source_memory[0], trace_window, 0);
+        }
+        else {
+            root = add_vertex(g, trace_window[0].source_registers[0], ADDR);
+            cur_index = traceback_reg(trace_window[0].source_registers[0], trace_window, 0);
+        }
+    }
+    else {
+        offset = add_vertex(g, trace_window[0].offset1, CONST);
+        if (trace_window[0].is_memory) {
+            root = add_vertex(g, trace_window[0].source_memory[0], ADDR);
+            cur_index = traceback_ea(trace_window[0].source_memory[0], trace_window, 0);
+        }
+        else {
+            root = add_vertex(g, trace_window[0].source_registers[0], ADDR);
+            cur_index = traceback_reg(trace_window[0].source_registers[0], trace_window, 0);
+        }
+    }
+
+    // Find the first dependency of the miss-causing pc
+
+    // Scan up the trace window until we see the miss pc again
+    while(1) {
+        // If we see the miss pc again, the graph is completed
+        if (trace_window[cur_index].ip == miss_pc) 
+            break;
+        
+        else {
+            if (trace_window[cur_index].offset1 == -1) {
+                if (trace_window[cur_index].is_memory) {
+                    cur_vertex = add_vertex(g, trace_window[cur_index].source_memory[0], ADDR);
+                    next_index = traceback_ea(trace_window[cur_index].source_memory[0], trace_window, 0);
                 }
-                else
-                {
-                    cur_index = ea_index;
-                    continue;
+                else {
+                    cur_vertex = add_vertex(g, trace_window[cur_index].source_registers[0], ADDR);
+                    next_index = traceback_ea(trace_window[cur_index].source_registers[0], trace_window, 0);
                 }
+                add_edge(g, cur_parent, cur_vertex);
             }
             else {
-                // traceback to find the register
-                reg_index = traceback_reg(cur_instr.source_registers[0], trace_window, cur_index);
-
-                load_op_vertex = add_vertex(g, load_op, cur_instr.source_registers[0], NONTERM);
-                add_edge(g, cur_root_vertex, load_op_vertex);
-                cur_root_vertex = load_op_vertex;
-                
-                // the register cannot be traced back further
-                if (reg_index == -1)
-                {
-                    reg_vertex = add_vertex(g, cur_instr.source_registers[0], 0, REG);
-                    add_edge(g, cur_root_vertex, reg_vertex);
-                    break;
+                offset = add_vertex(g, trace_window[cur_index].offset1, CONST);
+                if (trace_window[cur_index].is_memory) {
+                    cur_vertex = add_vertex(g, trace_window[cur_index].source_memory[0], ADDR);
+                    next_index = traceback_ea(trace_window[cur_index].source_memory[0], trace_window, 0);
                 }
-                else
-                {
-                    cur_index = reg_index;
-                    continue;
+                else {
+                    cur_vertex = add_vertex(g, trace_window[cur_index].source_registers[0], ADDR);
+                    next_index = traceback_ea(trace_window[cur_index].source_registers[0], trace_window, 0);
                 }
+                add_edge(g, cur_parent, offset);
+                add_edge(g, cur_parent, cur_vertex);
             }
+            // if we cannot trace back anymore, break
+            if (next_index == -1)
+                break;
             
         }
-        
-        
     }
-    
-    return the_root_vertex;
     
 }
 
@@ -544,11 +516,8 @@ int main(int argc, char** argv)
     fclose(profile);
 
     cout << "creating the graph" << endl;
-
     Graph g = graph_create();
-
     cout << "building the graph" << endl;
-
     build_graph(last_occur_window, &g, miss_pc);
 
     cout << "finish\n";
