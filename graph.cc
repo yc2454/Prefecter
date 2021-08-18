@@ -276,13 +276,12 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
                 next_property = boost::get(pmap, next);
                 start_property = boost::get(pmap, start);
 
-                cout << "CAN get properties\n";
-
                 // if a circle is completed, remove all vertices in the circle
                 if (next_property.source == start_property.source) {
                     
                     circle.push_back(next);
-                    next = get_first_source(g, next);
+                    if (find_source_vertices(g, next).size() > 0)
+                        next = get_first_source(g, next);
 
                     // cout << "start removing:" << endl;
                     cout << "before removal, the graph contains " << boost::num_edges(*g) << " edges" << endl;
