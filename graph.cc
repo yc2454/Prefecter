@@ -341,13 +341,11 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
                         }
                         // cout << endl;
                         cout << "after removal, the graph contains " << boost::num_edges(*g) << " edges" << endl;
-                        circle.clear();
                         // the new start of the circle is the next vertex
                         cout << "DONE removing" << endl;
                         cur = root;
                         break;
                     }
-                    
                 }
                 else {
                     cout << "havent reached the end of circle yet\n";
