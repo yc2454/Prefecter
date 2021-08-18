@@ -266,6 +266,7 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
 
                 cout << "only one source!" << endl;
                 next = get_first_source(g, cur);
+                p = boost::get(pmap, next);
                 if (next == NULL) {
                     cout << "no more next vertex\n";
                     break;
@@ -280,8 +281,8 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
                 if (next_property.source == start_property.source) {
                     
                     circle.push_back(next);
+                    next = get_first_source(g, next);
 
-                    // cout << "start removing:" << endl;
                     cout << "before removal, the graph contains " << boost::num_edges(*g) << " edges" << endl;
                     boost::remove_in_edge_if(circle[0], pred, *g);
                     for (int i = 1; i < circle.size(); i++) {
@@ -297,16 +298,22 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
                     // recalculate the pmap after vertex removal
                     pmap = boost::get(boost::vertex_bundle, *g);
 
-                    if (find_source_vertices(g, next).size() > 0) {
-                        next = get_first_source(g, next);
-                        // reconnect the graph
-                        if (next != NULL) 
-                            add_edge(g, next, start);
-                        else {
-                            cout << "Next is NULL, exit\n";
-                            break;
-                        }
+                    // reconnect the graph
+                    if (next != NULL) 
+                        add_edge(g, next, start);
+                    else {
+                        cout << "Next is NULL, exit\n";
+                        break;
                     }
+                        
+                    // cout << "THE SOURCES OF START: ";
+                    // vector<vertex_descriptor_t> ss = find_source_vertices(g, start);
+                    
+                    // for (int i = 0; i < ss.size(); i++)
+                    // {
+                    //     p = boost::get(pmap, ss[i]);
+                    //     print_vertex_property(p);
+                    // }
                     
                     cout << "AFTER reconnect\n";
                     print_vertices(g);
