@@ -284,49 +284,70 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
                 if (next_property.source == start_property.source) {
                     
                     circle.push_back(next);
-                    cout << "the next has " << find_source_vertices(g, next).size() << " sources\n";
-                    next = get_first_source(g, next);
 
-                    cout << "before removal, the graph contains " << boost::num_edges(*g) << " edges" << endl;
-                    boost::remove_in_edge_if(circle[0], pred, *g);
-                    for (int i = 1; i < circle.size(); i++) {
-                        p = boost::get(pmap, circle[i]);
-                        cout << i << ": ";
-                        print_vertex_property(p);
-                        boost::remove_in_edge_if(circle[i], pred, *g);
-                        boost::remove_vertex(circle[i], *g);
-                    }
-                    // cout << endl;
-                    cout << "after removal, the graph contains " << boost::num_edges(*g) << " edges" << endl;
-                    
-                    // recalculate the pmap after vertex removal
-                    pmap = boost::get(boost::vertex_bundle, *g);
+                    if (find_source_vertices(g, next).size()) {
+                        next = get_first_source(g, next);
 
-                    // reconnect the graph
-                    if (next != NULL) 
-                        add_edge(g, next, start);
-                    else {
-                        cout << "Next is NULL, exit\n";
+                        cout << "before removal, the graph contains " << boost::num_edges(*g) << " edges" << endl;
+                        boost::remove_in_edge_if(circle[0], pred, *g);
+                        for (int i = 1; i < circle.size(); i++) {
+                            p = boost::get(pmap, circle[i]);
+                            cout << i << ": ";
+                            print_vertex_property(p);
+                            boost::remove_in_edge_if(circle[i], pred, *g);
+                            boost::remove_vertex(circle[i], *g);
+                        }
+                        // cout << endl;
+                        cout << "after removal, the graph contains " << boost::num_edges(*g) << " edges" << endl;
+                        
+                        // recalculate the pmap after vertex removal
+                        pmap = boost::get(boost::vertex_bundle, *g);
+
+                        // reconnect the graph
+                        if (next != NULL) 
+                            add_edge(g, next, start);
+                        else {
+                            cout << "Next is NULL, exit\n";
+                            break;
+                        }
+                            
+                        // cout << "THE SOURCES OF START: ";
+                        // vector<vertex_descriptor_t> ss = find_source_vertices(g, start);
+                        
+                        // for (int i = 0; i < ss.size(); i++)
+                        // {
+                        //     p = boost::get(pmap, ss[i]);
+                        //     print_vertex_property(p);
+                        // }
+                        
+                        cout << "AFTER reconnect\n";
+                        print_vertices(g);
+                        // clear the circle
+                        circle.clear();
+                        // the new start of the circle is the next vertex
+                        cout << "DONE removing" << endl;
+                        cur = root;
                         break;
                     }
-                        
-                    // cout << "THE SOURCES OF START: ";
-                    // vector<vertex_descriptor_t> ss = find_source_vertices(g, start);
+                    else {
+                        cout << "before removal, the graph contains " << boost::num_edges(*g) << " edges" << endl;
+                        boost::remove_in_edge_if(circle[0], pred, *g);
+                        for (int i = 1; i < circle.size(); i++) {
+                            p = boost::get(pmap, circle[i]);
+                            cout << i << ": ";
+                            print_vertex_property(p);
+                            boost::remove_in_edge_if(circle[i], pred, *g);
+                            boost::remove_vertex(circle[i], *g);
+                        }
+                        // cout << endl;
+                        cout << "after removal, the graph contains " << boost::num_edges(*g) << " edges" << endl;
+                        circle.clear();
+                        // the new start of the circle is the next vertex
+                        cout << "DONE removing" << endl;
+                        cur = root;
+                        break;
+                    }
                     
-                    // for (int i = 0; i < ss.size(); i++)
-                    // {
-                    //     p = boost::get(pmap, ss[i]);
-                    //     print_vertex_property(p);
-                    // }
-                    
-                    cout << "AFTER reconnect\n";
-                    print_vertices(g);
-                    // clear the circle
-                    circle.clear();
-                    // the new start of the circle is the next vertex
-                    cout << "DONE removing" << endl;
-                    cur = root;
-                    break;
                 }
                 else {
                     cout << "havent reached the end of circle yet\n";
