@@ -266,7 +266,6 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
 
                 cout << "only one source!" << endl;
                 next = get_first_source(g, cur);
-                cout << "got here\n";
                 if (next == NULL) {
                     cout << "no more next vertex\n";
                     break;
@@ -276,6 +275,8 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
                 cur_property = boost::get(pmap, cur);
                 next_property = boost::get(pmap, next);
                 start_property = boost::get(pmap, start);
+
+                cout << "CAN get properties\n";
 
                 // if a circle is completed, remove all vertices in the circle
                 if (next_property.source == start_property.source) {
