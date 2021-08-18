@@ -103,7 +103,7 @@ vertex_descriptor_t get_first_source(Graph * g, vertex_descriptor_t target) {
     vertex_descriptor_t src;
 
     src = boost::source(*ei, *g);
-        cout << "the source is " << src << endl;
+
     return src;
     
 }
@@ -284,6 +284,7 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
                 if (next_property.source == start_property.source) {
                     
                     circle.push_back(next);
+                    cout << "the next has " << find_source_vertices(g, next).size() << " sources\n";
                     next = get_first_source(g, next);
 
                     cout << "before removal, the graph contains " << boost::num_edges(*g) << " edges" << endl;
