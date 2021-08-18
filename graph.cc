@@ -86,7 +86,7 @@ vertex_descriptor_t get_nonterm_source(Graph * g, vertex_descriptor_t target) {
     for (; ei != ei_end; ++ei) {
         src = boost::source(*ei, *g);
         vp = boost::get(pmap, src);
-        if (vp.ty == NONTERM) 
+        if (find_source_vertices(g, src).size() != 0)
             return src;
     }
 
