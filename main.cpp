@@ -520,6 +520,7 @@ int main(int argc, char** argv)
     Graph g = graph_create();
     cout << "building the graph" << endl;
     build_graph(last_occur_window, &g, miss_pc);
+    print_vertices(&g);
 
     cout << "finish\n";
     
