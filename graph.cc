@@ -103,6 +103,7 @@ vertex_descriptor_t get_first_source(Graph * g, vertex_descriptor_t target) {
     vertex_descriptor_t src;
 
     src = boost::source(*ei, *g);
+    cout << "CAN find source\n";
     return src;
     
 }
@@ -266,8 +267,9 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
 
                 cout << "only one source!" << endl;
                 next = get_first_source(g, cur);
-                p = boost::get(pmap, next);
-                print_vertex_property(p);
+                // p = boost::get(pmap, next);
+                // print_vertex_property(p);
+
                 if (next == NULL) {
                     cout << "no more next vertex\n";
                     break;
