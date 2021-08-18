@@ -101,8 +101,6 @@ vertex_descriptor_t get_first_source(Graph * g, vertex_descriptor_t target) {
     boost::tie(ei, ei_end) = boost::in_edges(target, *g);
     // find source
     vertex_descriptor_t src, nonterm_src;
-    VertexProperty vp;
-    boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, *g);
     
     return boost::source(*ei, *g);
     
@@ -182,8 +180,28 @@ void remove_self_edge(Graph * g) {
     }
 }
 
+string ty_to_string(term_type t) {
+    switch (t)
+    {
+    case REG:
+        return "REG";
+    
+    case ADDR:
+        return "ADDR";
+
+    case CONST:
+        return "CONST";
+    
+    case NONTERM:
+        return "NONTERM";
+
+    default:
+        break;
+    }
+}
+
 void print_vertex_property(VertexProperty p) {
-    cout << "source: " << p.source << endl;
+    cout << "source: " << p.source << " type: " << ty_to_string(p.ty) << endl;
 }
 
 void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
