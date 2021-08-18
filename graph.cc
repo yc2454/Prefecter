@@ -103,7 +103,8 @@ vertex_descriptor_t get_first_source(Graph * g, vertex_descriptor_t target) {
     vertex_descriptor_t src;
 
     src = boost::source(*ei, *g);
-    cout << "CAN find source\n";
+    if (src == NULL) 
+        cout << "CANT FIND SOURCE\n";
     return src;
     
 }
