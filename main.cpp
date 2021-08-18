@@ -432,6 +432,7 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
         }
     }
     
+    return root;
 }
 
 int main(int argc, char** argv)
