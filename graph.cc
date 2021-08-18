@@ -100,9 +100,11 @@ vertex_descriptor_t get_first_source(Graph * g, vertex_descriptor_t target) {
     boost::graph_traits<Graph>::in_edge_iterator ei, ei_end;
     boost::tie(ei, ei_end) = boost::in_edges(target, *g);
     // find source
-    vertex_descriptor_t src, nonterm_src;
-    
-    return boost::source(*ei, *g);
+    vertex_descriptor_t src;
+
+    src = boost::source(*ei, *g);
+    cout << "got here\n";
+    return src;
     
 }
 
@@ -181,8 +183,7 @@ void remove_self_edge(Graph * g) {
 }
 
 string ty_to_string(term_type t) {
-    switch (t)
-    {
+    switch (t) {
     case REG:
         return "REG";
     
@@ -196,7 +197,7 @@ string ty_to_string(term_type t) {
         return "NONTERM";
 
     default:
-        break;
+        return "ERROR";
     }
 }
 
