@@ -192,9 +192,6 @@ string ty_to_string(term_type t) {
 
     case CONST:
         return "CONST";
-    
-    case NONTERM:
-        return "NONTERM";
 
     default:
         return "ERROR";
