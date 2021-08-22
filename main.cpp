@@ -392,6 +392,8 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
         }
     }
 
+    cur_parent = root;
+
     // Find the first dependency of the miss-causing pc
 
     // Scan up the trace window until we see the miss pc again
@@ -521,8 +523,6 @@ int main(int argc, char** argv)
     cout << "building the graph" << endl;
     build_graph(last_occur_window, &g, miss_pc);
     print_vertices(&g);
-
-    cout << "finish\n";
     
     return 0;
 }
