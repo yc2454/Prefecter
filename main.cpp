@@ -368,6 +368,7 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
     vertex_descriptor_t cur_vertex;
     // the parent for the current instruction
     vertex_descriptor_t cur_parent;
+    int count = 0;
 
     // First, we add the instruction at the miss-causing pc into the graph
     if (trace_window[0].offset1 == -1) {
@@ -395,7 +396,6 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
     cur_parent = root;
 
     // Find the first dependency of the miss-causing pc
-
     // Scan up the trace window until we see the miss pc again
     while(1) {
         // If we see the miss pc again, the graph is completed
@@ -431,6 +431,10 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
             if (next_index == -1)
                 break;
             
+        }
+        count ++;
+        if (count >= 1000) {
+            break;
         }
     }
     
