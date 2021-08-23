@@ -237,8 +237,7 @@ deque<ooo_model_instr> search_last_occurence(uint64_t miss_pc) {
             window.pop_back();
             window.push_front(current_instr);
         }
-        
-
+        cout << "the current ip is: " << current_instr_read.ip << endl;
         if (miss_pc == current_instr_read.ip) {
             found = 1;
             break;
