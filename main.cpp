@@ -231,11 +231,11 @@ deque<ooo_model_instr> search_last_occurence(uint64_t miss_pc) {
     {
         current_instr = copy_into_format(current_instr_read);
         if (window.size() < max_window_size) {
-            window.push_front(current_instr);
+            window.push_back(current_instr);
         }
         else {
-            window.pop_back();
-            window.push_front(current_instr);
+            window.pop_front();
+            window.push_back(current_instr);
         }
         // cout << "the target: " << hex << miss_pc << dec << endl;
         // cout << "the current ip is: " << hex << current_instr_read.ip << dec << endl;
