@@ -395,6 +395,7 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
         }
     }
 
+    cout << "current index before entering is loop is: " << cur_index << endl;
     cur_parent = root;
 
     // Find the first dependency of the miss-causing pc
