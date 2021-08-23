@@ -54,16 +54,16 @@ int main() {
 
     vector<trace_instr_format_t> instrs;
 
-    instrs[0] = create_instr(0x4013fe, 0x28, XMM1, RAX, 0, 0);
-    instrs[1] = create_instr(0x4013fa, -1, RAX, 0, 0, 0x12345);
-    instrs[2] = create_instr(0x4013f6, -1, 0, RDI, 0x12345, 0);
-    instrs[3] = create_instr(0x4013f3, -1, RBP, RSP, 0, 0);
-    instrs[4] = create_instr(0x4013f2, -1, RBP, 0, 0, 0);
-    instrs[5] = create_instr(0x40144e, -1, RDI, RAX, 0, 0);
-    instrs[6] = create_instr(0x40144a, 0, RAX, 0, 0, 0x12345);
-    instrs[7] = create_instr(0x40145e, 0, 0, RAX, 0x12345, 0);
-    instrs[8] = create_instr(0x40145a, 0x38, 0, RAX, 0, 0);
-    instrs[9] = create_instr(0x401456, 0, RAX, 0, 0, 0x12345);
+    instrs.push_back(create_instr(0x4013fe, 0x28, XMM1, RAX, 0, 0));
+    instrs.push_back(create_instr(0x4013fa, -1, RAX, 0, 0, 0x12345));
+    instrs.push_back(create_instr(0x4013f6, -1, 0, RDI, 0x12345, 0));
+    instrs.push_back(create_instr(0x4013f3, -1, RBP, RSP, 0, 0));
+    instrs.push_back(create_instr(0x4013f2, -1, RBP, 0, 0, 0));
+    instrs.push_back(create_instr(0x40144e, -1, RDI, RAX, 0, 0));
+    instrs.push_back(create_instr(0x40144a, 0, RAX, 0, 0, 0x12345));
+    instrs.push_back(create_instr(0x40145e, 0, 0, RAX, 0x12345, 0));
+    instrs.push_back(create_instr(0x40145a, 0x38, 0, RAX, 0, 0));
+    instrs.push_back(create_instr(0x401456, 0, RAX, 0, 0, 0x12345));
 
     for (int i = 0; i < instrs.size(); i++)
     {
