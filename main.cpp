@@ -517,7 +517,7 @@ int main(int argc, char** argv)
         miss_pc = (int)strtol(miss_instr, NULL, 0);
         cout << miss_pc << endl;
         last_occur_window = search_last_occurence(miss_pc);
-
+        cout << "included " << last_occur_window.size() << " instructions in the window\n";
     }
     
     fclose(profile);
