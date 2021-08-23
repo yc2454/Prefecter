@@ -376,22 +376,22 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
     if (trace_window[0].offset1 == -1) {
         if (trace_window[0].is_memory) {
             root = add_vertex(g, trace_window[0].source_memory[0], ADDR);
-            cur_index = traceback_ea(trace_window[0].source_memory[0], trace_window, 0);
+            cur_index = traceback_ea(trace_window[0].source_memory[0], trace_window, 1);
         }
         else {
             root = add_vertex(g, trace_window[0].source_registers[0], ADDR);
-            cur_index = traceback_reg(trace_window[0].source_registers[0], trace_window, 0);
+            cur_index = traceback_reg(trace_window[0].source_registers[0], trace_window, 1);
         }
     }
     else {
         offset = add_vertex(g, trace_window[0].offset1, CONST);
         if (trace_window[0].is_memory) {
             root = add_vertex(g, trace_window[0].source_memory[0], ADDR);
-            cur_index = traceback_ea(trace_window[0].source_memory[0], trace_window, 0);
+            cur_index = traceback_ea(trace_window[0].source_memory[0], trace_window, 1);
         }
         else {
             root = add_vertex(g, trace_window[0].source_registers[0], ADDR);
-            cur_index = traceback_reg(trace_window[0].source_registers[0], trace_window, 0);
+            cur_index = traceback_reg(trace_window[0].source_registers[0], trace_window, 1);
         }
     }
 
