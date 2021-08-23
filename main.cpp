@@ -401,8 +401,10 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
     // Scan up the trace window until we see the miss pc again
     while(1) {
         // If we see the miss pc again, the graph is completed
-        if (trace_window[cur_index].ip == miss_pc) 
+        if (trace_window[cur_index].ip == miss_pc) {
+            cout << "reached miss pc again, exit\n";
             break;
+        }
         
         else {
             if (trace_window[cur_index].offset1 == -1) {
