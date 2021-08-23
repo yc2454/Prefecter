@@ -73,7 +73,7 @@ int main() {
     instrs.push_back(create_instr(0x40145a, 0x38, 0, RAX, 0, 0));
     instrs.push_back(create_instr(0x401456, 0, RAX, 0, 0, 0x12345));
 
-    for (int i = 0; i < instrs.size(); i++)
+    for (int i = instrs.size() - 1; i >= 0; i--)
     {
         fwrite(&instrs[i], sizeof(trace_instr_format_t), 1, out);
     }
