@@ -284,6 +284,7 @@ int traceback_reg(uint8_t reg, deque<ooo_model_instr> trace_window, int index) {
         }
     }
 
+    cout << "previous reg not found, returning -1\n";
     return -1;
     
 }
@@ -305,6 +306,7 @@ int traceback_ea(uint64_t ea, deque<ooo_model_instr> trace_window, int index) {
         }
     }
 
+    cout << "previous ea not found, returning -1\n";
     return -1;
     
 }
