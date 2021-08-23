@@ -237,8 +237,8 @@ deque<ooo_model_instr> search_last_occurence(uint64_t miss_pc) {
             window.pop_back();
             window.push_front(current_instr);
         }
-        cout << "the target: " << hex << miss_pc << dec << endl;
-        cout << "the current ip is: " << hex << current_instr_read.ip << dec << endl;
+        // cout << "the target: " << hex << miss_pc << dec << endl;
+        // cout << "the current ip is: " << hex << current_instr_read.ip << dec << endl;
         if (miss_pc == current_instr_read.ip) {
             found = 1;
             break;
@@ -526,6 +526,12 @@ int main(int argc, char** argv)
     }
     
     fclose(profile);
+
+    for (int i = 0; i < last_occur_window.size(); i++)
+    {
+        cout << last_occur_window[i].ip << endl;
+    }
+    
 
     cout << "creating the graph" << endl;
     Graph g = graph_create();
