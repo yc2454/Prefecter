@@ -529,7 +529,7 @@ int main(int argc, char** argv)
 
     for (int i = 0; i < last_occur_window.size(); i++)
     {
-        cout << last_occur_window[i].ip << endl;
+        cout << hex << last_occur_window[i].ip << dec << endl;
     }
     
 
