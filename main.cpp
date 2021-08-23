@@ -514,8 +514,8 @@ int main(int argc, char** argv)
            presence would allow to handle lines longer that sizeof(line) */
         
         printf("%s", miss_instr); 
-        miss_pc = atoi(miss_instr);
-        cout << miss_pc;
+        miss_pc = (int)strtol(miss_instr, NULL, 0);
+        cout << miss_pc << endl;
         last_occur_window = search_last_occurence(miss_pc);
 
     }
