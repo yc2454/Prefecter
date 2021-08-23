@@ -17,8 +17,8 @@
 using namespace std;
 
 typedef struct trace_instr_format {
-    long long int offset1;
-    long long int offset2;
+    long long int offset1 = -1;
+    long long int offset2 = -1;
     
     unsigned long long int ip;  // instruction pointer (program counter) value
     unsigned long long int op; // op code 
@@ -40,8 +40,16 @@ trace_instr_format_t create_instr(unsigned long long int ip, long long int offse
     trace_instr_format_t instr;
     instr.ip = ip;
     instr.offset1 = offset;
+    for (int i = 0; i < NUM_INSTR_DESTINATIONS; i++) {
+        instr.destination_memory[i] = 0;
+        instr.destination_registers[i] = 0;
+    }
     instr.destination_registers[0] = dst_reg;
     instr.destination_memory[0] = dst_mem;
+    for (int i = 0; i < NUM_INSTR_SOURCES; i++) {
+        instr.source_memory[i] = 0;
+        instr.source_registers[i] = 0;
+    }
     instr.source_memory[0] = src_mem;
     instr.source_registers[0] = src_reg;
 
