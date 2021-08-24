@@ -446,6 +446,7 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
             // if we cannot trace back anymore, break
             if (next_index == -1)
                 break;
+            cur_index = next_index;
             
         }
 
