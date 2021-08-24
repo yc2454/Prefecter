@@ -413,7 +413,7 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
         }
         
         else {
-            if (trace_window[cur_index].offset1 == 42) {
+            if (trace_window[cur_index].offset1 == -1) {
                 cout << "NO offset at instr " << cur_index << endl;
                 if (trace_window[cur_index].is_memory) {
                     cout << "instr " << cur_index << " uses memory\n";
