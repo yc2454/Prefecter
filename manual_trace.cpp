@@ -9,7 +9,7 @@
 #define NUM_INSTR_SOURCES 4
 
 #define RDI 24
-#define RAX 1
+#define RAX 10
 #define XMM1 33
 #define RSP 21
 #define RBP 22
