@@ -48,9 +48,6 @@ int read_from_trace() {
     }
     else
     {
-        // cout << hex << "0x" << trace_read_instr.ip << dec;
-        // cout << " from register: " << trace_read_instr.source_registers[0] << " and " << trace_read_instr.source_registers[1];
-        // cout << " from mem loc: " << hex << "0x" << trace_read_instr.source_memory[0] << dec << " and " << trace_read_instr.source_memory[1] << endl;
         return 1;
     }
     
@@ -253,12 +250,12 @@ deque<ooo_model_instr> search_last_occurence(uint64_t miss_pc) {
         
     // exit
     if (found) {
-        cout << "the instruction is found\n";
+        // cout << "the instruction is found\n";
         return window;
     } 
     else {
         // if the miss_pc was not found, return an empty deque;
-        cout << "NOT FOUND\n";
+        // cout << "NOT FOUND\n";
         return window;
     }
         
@@ -287,7 +284,7 @@ int traceback_reg(uint8_t reg, deque<ooo_model_instr> trace_window, int index) {
         }
     }
 
-    cout << "previous reg not found, returning -1\n";
+    // cout << "previous reg not found, returning -1\n";
     return -1;
     
 }
@@ -309,7 +306,7 @@ int traceback_ea(uint64_t ea, deque<ooo_model_instr> trace_window, int index) {
         }
     }
 
-    cout << "previous ea not found, returning -1\n";
+    // cout << "previous ea not found, returning -1\n";
     return -1;
     
 }
@@ -406,7 +403,7 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
 
     root = add_vertex(g, trace_window[0].destination_registers[0], ADDR);
 
-    cout << "current index before entering is loop is: " << cur_index << endl;
+    // cout << "current index before entering is loop is: " << cur_index << endl;
     cur_parent = root;
 
     // Find the first dependency of the miss-causing pc
@@ -415,29 +412,29 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
         // If we see the miss pc again, the graph is completed
         
         if (trace_window[cur_index].offset1 == -1) {
-            cout << "NO offset at instr " << cur_index << endl;
+            // cout << "NO offset at instr " << cur_index << endl;
             if (trace_window[cur_index].is_memory) {
-                cout << "instr " << cur_index << " uses memory " << trace_window[cur_index].source_memory[0] << endl;
+                // cout << "instr " << cur_index << " uses memory " << trace_window[cur_index].source_memory[0] << endl;
                 cur_vertex = add_vertex(g, trace_window[cur_index].source_memory[0], ADDR);
                 next_index = traceback_ea(trace_window[cur_index].source_memory[0], trace_window, cur_index + 1);
             }
             else {
-                cout << "instr " << cur_index << " uses reg " << trace_window[cur_index].source_registers[0] << endl;
+                // cout << "instr " << cur_index << " uses reg " << trace_window[cur_index].source_registers[0] << endl;
                 cur_vertex = add_vertex(g, trace_window[cur_index].source_registers[0], ADDR);
                 next_index = traceback_reg(trace_window[cur_index].source_registers[0], trace_window, cur_index + 1);
             }
             add_edge(g, cur_parent, cur_vertex);
         }
         else {
-            cout << "YES offset at instr " << cur_index << endl;
+            // cout << "YES offset at instr " << cur_index << endl;
             offset = add_vertex(g, trace_window[cur_index].offset1, CONST);
             if (trace_window[cur_index].is_memory) {
-                cout << "instr " << cur_index << " uses memory " << trace_window[cur_index].source_memory[0] << endl;
+                // cout << "instr " << cur_index << " uses memory " << trace_window[cur_index].source_memory[0] << endl;
                 cur_vertex = add_vertex(g, trace_window[cur_index].source_memory[0], ADDR);
                 next_index = traceback_ea(trace_window[cur_index].source_memory[0], trace_window, cur_index + 1);
             }
             else {
-                cout << "instr " << cur_index << " uses reg " << trace_window[cur_index].source_registers[0] << endl;
+                // cout << "instr " << cur_index << " uses reg " << trace_window[cur_index].source_registers[0] << endl;
                 cur_vertex = add_vertex(g, trace_window[cur_index].source_registers[0], ADDR);
                 next_index = traceback_reg(trace_window[cur_index].source_registers[0], trace_window, cur_index + 1);
             }
@@ -451,7 +448,7 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
         cur_index = next_index;
             
         if (trace_window[cur_index].ip == miss_pc) {
-            cout << "reached miss pc again, exit\n";
+            // cout << "reached miss pc again, exit\n";
             break;
         }
     }
@@ -466,7 +463,7 @@ int main(int argc, char** argv)
     deque<ooo_model_instr> last_occur_window;
 
     for (int i=0; i<argc; i++) {
-        cout << "num of arg: " << i << " arg: " << argv[i] << endl;
+        // cout << "num of arg: " << i << " arg: " << argv[i] << endl;
     }
 
     sprintf(trace_string, "%s", argv[2]);
@@ -533,15 +530,15 @@ int main(int argc, char** argv)
         
         printf("%s", miss_instr); 
         miss_pc = (int)strtol(miss_instr, NULL, 0);
-        cout << miss_pc << endl;
+        // cout << miss_pc << endl;
         last_occur_window = search_last_occurence(miss_pc);
-        cout << "included " << last_occur_window.size() << " instructions in the window\n";
+        // cout << "included " << last_occur_window.size() << " instructions in the window\n";
     }
     
     fclose(profile);
 
     for (int i = 0; i < last_occur_window.size(); i++) {
-        cout << hex << last_occur_window[i].ip << dec << endl;
+        // cout << hex << last_occur_window[i].ip << dec << endl;
     }
     
 
