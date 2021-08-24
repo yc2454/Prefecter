@@ -418,12 +418,12 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
                 if (trace_window[cur_index].is_memory) {
                     cout << "instr " << cur_index << " uses memory\n";
                     cur_vertex = add_vertex(g, trace_window[cur_index].source_memory[0], ADDR);
-                    next_index = traceback_ea(trace_window[cur_index].source_memory[0], trace_window, 0);
+                    next_index = traceback_ea(trace_window[cur_index].source_memory[0], trace_window, cur_index + 1);
                 }
                 else {
                     cout << "instr " << cur_index << " uses reg\n";
                     cur_vertex = add_vertex(g, trace_window[cur_index].source_registers[0], ADDR);
-                    next_index = traceback_reg(trace_window[cur_index].source_registers[0], trace_window, 0);
+                    next_index = traceback_reg(trace_window[cur_index].source_registers[0], trace_window, cur_index + 1);
                 }
                 add_edge(g, cur_parent, cur_vertex);
             }
@@ -433,12 +433,12 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
                 if (trace_window[cur_index].is_memory) {
                     cout << "instr " << cur_index << " uses memory\n";
                     cur_vertex = add_vertex(g, trace_window[cur_index].source_memory[0], ADDR);
-                    next_index = traceback_ea(trace_window[cur_index].source_memory[0], trace_window, 0);
+                    next_index = traceback_ea(trace_window[cur_index].source_memory[0], trace_window, cur_index + 1);
                 }
                 else {
                     cout << "instr " << cur_index << " uses reg\n";
                     cur_vertex = add_vertex(g, trace_window[cur_index].source_registers[0], ADDR);
-                    next_index = traceback_reg(trace_window[cur_index].source_registers[0], trace_window, 0);
+                    next_index = traceback_reg(trace_window[cur_index].source_registers[0], trace_window, cur_index + 1);
                 }
                 add_edge(g, cur_parent, offset);
                 add_edge(g, cur_parent, cur_vertex);
