@@ -401,6 +401,7 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
             root = add_vertex(g, trace_window[0].source_registers[0], ADDR);
             cur_index = traceback_reg(trace_window[0].source_registers[0], trace_window, 1);
         }
+        add_edge(g, root, offset);
     }
 
     cout << "current index before entering is loop is: " << cur_index << endl;
