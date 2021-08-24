@@ -105,10 +105,10 @@ ooo_model_instr copy_into_format (input_instr current_instr) {
         
         if (arch_instr.destination_registers[i])
             num_reg_ops++;
-        if (arch_instr.destination_memory[i]) {
-            num_mem_ops++;
+        // if (arch_instr.destination_memory[i]) {
+        //     num_mem_ops++;
 
-        }
+        // }
     }
     for (int i=0; i<NUM_INSTR_SOURCES; i++) {
         arch_instr.source_registers[i] = current_instr.source_registers[i];
