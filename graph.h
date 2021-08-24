@@ -192,11 +192,15 @@ void print_vertices(Graph *g) {
     boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, *g);
     VertexProperty vp;
 
-    cout << std::setw(8);
     for (; vi != vi_end; vi++) {
         vp = boost::get(pmap, *vi);
-        cout << std::setw(7) << vp.source;
+        if (i == 0)
+            cout << std::setw(7) << vp.source;
+        else
+            cout << std::setw(6) << vp.source;
+        i++;
     }
+    i = 0;
     cout << endl;
 
     boost::tie(vi, vi_end) = boost::vertices(*g);
