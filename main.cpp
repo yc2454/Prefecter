@@ -404,7 +404,7 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
     //     add_edge(g, root, offset);
     // }
 
-    root = add_vertex(g, miss_pc, ADDR);
+    root = add_vertex(g, trace_window[0].destination_registers[0], ADDR);
 
     cout << "current index before entering is loop is: " << cur_index << endl;
     cur_parent = root;
