@@ -189,15 +189,14 @@ void print_vertices(Graph *g) {
             boost::tie(e, to) = boost::edge(*ui, *vi, *g);
             boost::tie(e, from) = boost::edge(*vi, *ui, *g);
             if (to || from)
-                cout << std::setw(2) << 1 << std::setw(2);
+                cout << std::setw(6) << 1;
             else 
-                cout << std::setw(2) << 0 << std::setw(2);  
+                cout << std::setw(6) << 0;  
         }
         
         cout << endl;
     }
 
-    // cout << endl;
 }
 
 void remove_self_edge(Graph * g) {
