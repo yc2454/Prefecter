@@ -375,12 +375,12 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
     if (trace_window[0].offset1 == -1) {
         cout << "NO offset at root\n";
         if (trace_window[0].is_memory) {
-            cout << "Root uses memory\n";
+            cout << "Root uses memory " << trace_window[0].source_memory[0] << endl;
             root = add_vertex(g, trace_window[0].source_memory[0], ADDR);
             cur_index = traceback_ea(trace_window[0].source_memory[0], trace_window, 1);
         }
         else {
-            cout << "Root uses register\n";
+            cout << "Root uses register " << trace_window[0].source_registers[0] << endl;
             root = add_vertex(g, trace_window[0].source_registers[0], ADDR);
             cur_index = traceback_reg(trace_window[0].source_registers[0], trace_window, 1);
         }
@@ -389,12 +389,12 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
         cout << "YES offset at root\n";
         offset = add_vertex(g, trace_window[0].offset1, CONST);
         if (trace_window[0].is_memory) {
-            cout << "Root uses memory\n";
+            cout << "Root uses memory " << trace_window[0].source_memory[0] << endl;
             root = add_vertex(g, trace_window[0].source_memory[0], ADDR);
             cur_index = traceback_ea(trace_window[0].source_memory[0], trace_window, 1);
         }
         else {
-            cout << "Root uses register\n";
+            cout << "Root uses register " << trace_window[0].source_registers[0] << endl;
             root = add_vertex(g, trace_window[0].source_registers[0], ADDR);
             cur_index = traceback_reg(trace_window[0].source_registers[0], trace_window, 1);
         }
@@ -416,12 +416,12 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
             if (trace_window[cur_index].offset1 == -1) {
                 cout << "NO offset at instr " << cur_index << endl;
                 if (trace_window[cur_index].is_memory) {
-                    cout << "instr " << cur_index << " uses memory\n";
+                    cout << "instr " << cur_index << " uses memory " << trace_window[cur_index].source_memory[0] << endl;
                     cur_vertex = add_vertex(g, trace_window[cur_index].source_memory[0], ADDR);
                     next_index = traceback_ea(trace_window[cur_index].source_memory[0], trace_window, cur_index + 1);
                 }
                 else {
-                    cout << "instr " << cur_index << " uses reg\n";
+                    cout << "instr " << cur_index << " uses reg " << trace_window[cur_index].source_registers[0] << endl;
                     cur_vertex = add_vertex(g, trace_window[cur_index].source_registers[0], ADDR);
                     next_index = traceback_reg(trace_window[cur_index].source_registers[0], trace_window, cur_index + 1);
                 }
@@ -431,12 +431,12 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
                 cout << "YES offset at instr " << cur_index << endl;
                 offset = add_vertex(g, trace_window[cur_index].offset1, CONST);
                 if (trace_window[cur_index].is_memory) {
-                    cout << "instr " << cur_index << " uses memory\n";
+                    cout << "instr " << cur_index << " uses memory " << trace_window[cur_index].source_memory[0] << endl;
                     cur_vertex = add_vertex(g, trace_window[cur_index].source_memory[0], ADDR);
                     next_index = traceback_ea(trace_window[cur_index].source_memory[0], trace_window, cur_index + 1);
                 }
                 else {
-                    cout << "instr " << cur_index << " uses reg\n";
+                    cout << "instr " << cur_index << " uses reg " << trace_window[cur_index].source_registers[0] << endl;
                     cur_vertex = add_vertex(g, trace_window[cur_index].source_registers[0], ADDR);
                     next_index = traceback_reg(trace_window[cur_index].source_registers[0], trace_window, cur_index + 1);
                 }
