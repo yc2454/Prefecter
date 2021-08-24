@@ -312,7 +312,7 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
                 // print the current vertex
                 // cout << "current: ";
                 cur_property = boost::get(pmap, cur);
-                print_vertex_property(cur_property);
+                // print_vertex_property(cur_property);
 
                 if (cur == NULL) 
                     break;
