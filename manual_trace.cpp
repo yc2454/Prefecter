@@ -70,7 +70,7 @@ int main() {
     instrs.push_back(create_instr(0x40144e, -1, RDI, RAX, 0, 0));
     instrs.push_back(create_instr(0x40144a, -1, RAX, 0, 0, 0x12345));
     instrs.push_back(create_instr(0x40145e, -1, 0, RAX, 0x12345, 0));
-    instrs.push_back(create_instr(0x40145a, 0x38, 0, RAX, 0, 0));
+    instrs.push_back(create_instr(0x40145a, 0x38, RAX, RAX, 0, 0));
     instrs.push_back(create_instr(0x401456, -1, RAX, 0, 0, 0x12345));
 
     for (int i = instrs.size() - 1; i >= 0; i--) {
