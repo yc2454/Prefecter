@@ -367,7 +367,7 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
     // the root of our graph
     vertex_descriptor_t root;
     // the index for the current instruction
-    int cur_index;
+    int cur_index = 0;
     int next_index;
     // the vertex correponding to the current instruction
     vertex_descriptor_t cur_vertex;
