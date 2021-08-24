@@ -337,7 +337,7 @@ int instr_to_vertex(vertex_descriptor_t parent, ooo_model_instr instr, deque<ooo
             son = add_vertex(g, instr.source_registers[0], ADDR);
             next_index = traceback_ea(instr.source_registers[0], trace_window, 0);
         }
-        add_edge(g, parent, son);
+        add_edge(g, son, parent);
     }
     else {
         offset = add_vertex(g, instr.offset1, CONST);
@@ -349,8 +349,8 @@ int instr_to_vertex(vertex_descriptor_t parent, ooo_model_instr instr, deque<ooo
             son = add_vertex(g, instr.source_registers[0], ADDR);
             next_index = traceback_ea(instr.source_registers[0], trace_window, 0);
         }
-        add_edge(g, parent, offset);
-        add_edge(g, parent, son);
+        add_edge(g, offset, parent);
+        add_edge(g, son, parent);
     }
 
     return next_index;
@@ -423,7 +423,7 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
                 cur_vertex = add_vertex(g, trace_window[cur_index].source_registers[0], ADDR);
                 next_index = traceback_reg(trace_window[cur_index].source_registers[0], trace_window, cur_index + 1);
             }
-            add_edge(g, cur_parent, cur_vertex);
+            add_edge(g, cur_vertex, cur_parent);
         }
         else {
             // cout << "YES offset at instr " << cur_index << endl;
@@ -438,8 +438,8 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
                 cur_vertex = add_vertex(g, trace_window[cur_index].source_registers[0], ADDR);
                 next_index = traceback_reg(trace_window[cur_index].source_registers[0], trace_window, cur_index + 1);
             }
-            add_edge(g, cur_parent, offset);
-            add_edge(g, cur_parent, cur_vertex);
+            add_edge(g, offset, cur_parent);
+            add_edge(g, cur_vertex, cur_parent);
         }
         // if we cannot trace back anymore, break
         if (next_index == -1)
