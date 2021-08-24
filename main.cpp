@@ -547,6 +547,9 @@ int main(int argc, char** argv)
     cout << "building the graph" << endl;
     vertex_descriptor_t root = build_graph(last_occur_window, &g, miss_pc);
     print_vertices(&g);
+    boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, g);
+    VertexProperty root_p = boost::get(pmap, root);
+    print_vertex_property(root_p);
 
     // cout << "do compaction to the graph" << endl;
     // store_load_bypassing(&g, root);
