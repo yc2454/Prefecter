@@ -187,6 +187,7 @@ void print_vertices(Graph *g) {
 
     edge_descriptor_t e;
     bool to, from;
+    int i = 0;
 
     boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, *g);
     VertexProperty vp;
@@ -203,13 +204,22 @@ void print_vertices(Graph *g) {
         vp = boost::get(pmap, *vi);
         cout << vp.source;
         boost::tie(ui, ui_end) = boost::vertices(*g);
+
         for (; ui != ui_end; ui++) {
             boost::tie(e, to) = boost::edge(*ui, *vi, *g);
             boost::tie(e, from) = boost::edge(*vi, *ui, *g);
-            if (to || from)
-                cout << std::setw(6 - numlen(vp.source)) << 1;
-            else 
-                cout << std::setw(6 - numlen(vp.source)) << 0;  
+            if (i == 0) {
+                if (to || from)
+                    cout << std::setw(6 - numlen(vp.source)) << 1;
+                else 
+                    cout << std::setw(6 - numlen(vp.source)) << 0;  
+            }
+            else {
+                if (to || from)
+                    cout << std::setw(6) << 1;
+                else 
+                    cout << std::setw(6) << 0; 
+            }
         }
         
         cout << endl;
