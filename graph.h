@@ -210,9 +210,9 @@ void print_vertices(Graph *g) {
             boost::tie(e, from) = boost::edge(*vi, *ui, *g);
             if (i == 0) {
                 if (to || from)
-                    cout << std::setw(6 - numlen(vp.source)) << 1;
+                    cout << std::setw(7 - numlen(vp.source)) << 1;
                 else 
-                    cout << std::setw(6 - numlen(vp.source)) << 0;  
+                    cout << std::setw(7 - numlen(vp.source)) << 0;  
             }
             else {
                 if (to || from)
