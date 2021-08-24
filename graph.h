@@ -160,6 +160,24 @@ vertex_descriptor_t get_target(Graph * g, vertex_descriptor_t v) {
     
 }
 
+int numlen(uint64_t n)
+{
+    // count number of characters needed for number, +1 if negative
+    int length = 0;
+    if (n == 0)
+        return 1;
+    if (n < 0) {
+        n = -n;
+        length++;
+    }
+    while (n > 0) {
+        length++;
+        n = n / 10;
+    }
+    
+    return length;
+}
+
 // print out the graph in matrix from
 void print_vertices(Graph *g) {
     boost::graph_traits<Graph>::vertex_iterator vi, vi_end;
@@ -183,7 +201,7 @@ void print_vertices(Graph *g) {
     boost::tie(vi, vi_end) = boost::vertices(*g);
     for (; vi != vi_end; vi++) {
         vp = boost::get(pmap, *vi);
-        // cout << vp.source << std::setw(2);
+        cout << std::setw(6 - numlen(vp.source)) << vp.source;
         boost::tie(ui, ui_end) = boost::vertices(*g);
         for (; ui != ui_end; ui++) {
             boost::tie(e, to) = boost::edge(*ui, *vi, *g);
