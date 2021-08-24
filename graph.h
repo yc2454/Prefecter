@@ -220,6 +220,7 @@ void print_vertices(Graph *g) {
                 else 
                     cout << std::setw(6) << 0; 
             }
+            i++;
         }
         i = 0;
         
