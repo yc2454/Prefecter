@@ -375,34 +375,36 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
     vertex_descriptor_t cur_parent;
 
     // First, we add the instruction at the miss-causing pc into the graph
-    if (trace_window[0].offset1 == -1) {
-        cout << "NO offset at root\n";
-        if (trace_window[0].is_memory) {
-            cout << "Root uses memory " << trace_window[0].source_memory[0] << endl;
-            root = add_vertex(g, trace_window[0].source_memory[0], ADDR);
-            cur_index = traceback_ea(trace_window[0].source_memory[0], trace_window, 1);
-        }
-        else {
-            cout << "Root uses register " << trace_window[0].source_registers[0] << endl;
-            root = add_vertex(g, trace_window[0].source_registers[0], ADDR);
-            cur_index = traceback_reg(trace_window[0].source_registers[0], trace_window, 1);
-        }
-    }
-    else {
-        cout << "YES offset at root\n";
-        offset = add_vertex(g, trace_window[0].offset1, CONST);
-        if (trace_window[0].is_memory) {
-            cout << "Root uses memory " << trace_window[0].source_memory[0] << endl;
-            root = add_vertex(g, trace_window[0].source_memory[0], ADDR);
-            cur_index = traceback_ea(trace_window[0].source_memory[0], trace_window, 1);
-        }
-        else {
-            cout << "Root uses register " << trace_window[0].source_registers[0] << endl;
-            root = add_vertex(g, trace_window[0].source_registers[0], ADDR);
-            cur_index = traceback_reg(trace_window[0].source_registers[0], trace_window, 1);
-        }
-        add_edge(g, root, offset);
-    }
+    // if (trace_window[0].offset1 == -1) {
+    //     cout << "NO offset at root\n";
+    //     if (trace_window[0].is_memory) {
+    //         cout << "Root uses memory " << trace_window[0].source_memory[0] << endl;
+    //         root = add_vertex(g, trace_window[0].source_memory[0], ADDR);
+    //         cur_index = traceback_ea(trace_window[0].source_memory[0], trace_window, 1);
+    //     }
+    //     else {
+    //         cout << "Root uses register " << trace_window[0].source_registers[0] << endl;
+    //         root = add_vertex(g, trace_window[0].source_registers[0], ADDR);
+    //         cur_index = traceback_reg(trace_window[0].source_registers[0], trace_window, 1);
+    //     }
+    // }
+    // else {
+    //     cout << "YES offset at root\n";
+    //     offset = add_vertex(g, trace_window[0].offset1, CONST);
+    //     if (trace_window[0].is_memory) {
+    //         cout << "Root uses memory " << trace_window[0].source_memory[0] << endl;
+    //         root = add_vertex(g, trace_window[0].source_memory[0], ADDR);
+    //         cur_index = traceback_ea(trace_window[0].source_memory[0], trace_window, 1);
+    //     }
+    //     else {
+    //         cout << "Root uses register " << trace_window[0].source_registers[0] << endl;
+    //         root = add_vertex(g, trace_window[0].source_registers[0], ADDR);
+    //         cur_index = traceback_reg(trace_window[0].source_registers[0], trace_window, 1);
+    //     }
+    //     add_edge(g, root, offset);
+    // }
+
+    root = add_vertex(g, miss_pc, ADDR);
 
     cout << "current index before entering is loop is: " << cur_index << endl;
     cur_parent = root;
