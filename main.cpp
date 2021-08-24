@@ -423,7 +423,7 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
                 else {
                     cout << "instr " << cur_index << " uses reg\n";
                     cur_vertex = add_vertex(g, trace_window[cur_index].source_registers[0], ADDR);
-                    next_index = traceback_ea(trace_window[cur_index].source_registers[0], trace_window, 0);
+                    next_index = traceback_reg(trace_window[cur_index].source_registers[0], trace_window, 0);
                 }
                 add_edge(g, cur_parent, cur_vertex);
             }
@@ -438,7 +438,7 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
                 else {
                     cout << "instr " << cur_index << " uses reg\n";
                     cur_vertex = add_vertex(g, trace_window[cur_index].source_registers[0], ADDR);
-                    next_index = traceback_ea(trace_window[cur_index].source_registers[0], trace_window, 0);
+                    next_index = traceback_reg(trace_window[cur_index].source_registers[0], trace_window, 0);
                 }
                 add_edge(g, cur_parent, offset);
                 add_edge(g, cur_parent, cur_vertex);
