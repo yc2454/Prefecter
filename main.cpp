@@ -68,6 +68,9 @@ ooo_model_instr copy_into_format (input_instr current_instr) {
     arch_instr.is_branch = current_instr.is_branch;
     arch_instr.branch_taken = current_instr.branch_taken;
 
+    arch_instr.offset1 = current_instr.offset1;
+    arch_instr.offset2 = current_instr.offset2;
+
     // arch_instr.asid[0] = cpu;
     // arch_instr.asid[1] = cpu;
 
