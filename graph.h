@@ -195,7 +195,7 @@ void print_vertices(Graph *g) {
     cout << std::setw(8);
     for (; vi != vi_end; vi++) {
         vp = boost::get(pmap, *vi);
-        cout << std::setw(6) << vp.source;
+        cout << std::setw(7) << vp.source;
     }
     cout << endl;
 
