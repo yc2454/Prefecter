@@ -551,9 +551,9 @@ int main(int argc, char** argv)
     VertexProperty root_p = boost::get(pmap, root);
     print_vertex_property(root_p);
 
-    // cout << "do compaction to the graph" << endl;
-    // store_load_bypassing(&g, root);
-    // print_vertices(&g);
+    cout << "do compaction to the graph" << endl;
+    store_load_bypassing(&g, root);
+    print_vertices(&g);
     
     return 0;
 }
