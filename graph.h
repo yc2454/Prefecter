@@ -221,6 +221,7 @@ void print_vertices(Graph *g) {
                     cout << std::setw(6) << 0; 
             }
         }
+        i = 0;
         
         cout << endl;
     }
