@@ -244,7 +244,7 @@ void remove_self_edge(Graph * g) {
     for (; vi != vi_end; vi++) {
         boost::tie(start_self, start_self_exists) = boost::edge(*vi, *vi, *g);
         if (start_self_exists) {
-            cout << "removed self edge for " << *vi << endl;
+            // cout << "removed self edge for " << *vi << endl;
             boost::remove_edge(start_self, *g);
         }
     }
@@ -299,18 +299,18 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
 
     // search up along the path
     while (circle.empty()) {
-        cout << "TO find another circle\n";
+        // cout << "TO find another circle\n";
         while (1) {
             // cout << "Loop!\n";
             num_sources = find_source_vertices(g, cur).size();
             // when we are at an ADD node
             if (num_sources == 2) {
-                cout << "two source!" << endl;
+                // cout << "two source!" << endl;
                 // check if the ADD node has a child who is a nonterm
                 cur = get_nonterm_source(g, cur);
 
                 // print the current vertex
-                cout << "current: ";
+                // cout << "current: ";
                 cur_property = boost::get(pmap, cur);
                 print_vertex_property(cur_property);
 
@@ -323,20 +323,20 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
             }
             // when we reach a leaf node
             else if (num_sources == 0) {
-                cout << "no more source!" << endl;
-                cout << "BEFORE EXITING, the graph contains " << boost::num_vertices(*g) << " vertices" << endl;
+                // cout << "no more source!" << endl;
+                // cout << "BEFORE EXITING, the graph contains " << boost::num_vertices(*g) << " vertices" << endl;
                 break;
             }
             // when we reach a LOAD node
             else if (num_sources == 1) {
 
-                cout << "only one source!" << endl;
+                // cout << "only one source!" << endl;
                 next = get_first_source(g, cur);
                 // p = boost::get(pmap, next);
                 // print_vertex_property(p);
 
                 if (next == NULL) {
-                    cout << "no more next vertex\n";
+                    // cout << "no more next vertex\n";
                     break;
                 }
                 
@@ -353,17 +353,17 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
                     if (find_source_vertices(g, next).size()) {
                         next = get_first_source(g, next);
 
-                        cout << "before removal, the graph contains " << boost::num_edges(*g) << " edges" << endl;
+                        // cout << "before removal, the graph contains " << boost::num_edges(*g) << " edges" << endl;
                         boost::remove_in_edge_if(circle[0], pred, *g);
                         for (int i = 1; i < circle.size(); i++) {
                             p = boost::get(pmap, circle[i]);
-                            cout << i << ": ";
-                            print_vertex_property(p);
+                            // cout << i << ": ";
+                            // print_vertex_property(p);
                             boost::remove_in_edge_if(circle[i], pred, *g);
                             boost::remove_vertex(circle[i], *g);
                         }
                         // cout << endl;
-                        cout << "after removal, the graph contains " << boost::num_edges(*g) << " edges" << endl;
+                        // cout << "after removal, the graph contains " << boost::num_edges(*g) << " edges" << endl;
                         
                         // recalculate the pmap after vertex removal
                         pmap = boost::get(boost::vertex_bundle, *g);
@@ -372,7 +372,7 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
                         if (next != NULL) 
                             add_edge(g, next, start);
                         else {
-                            cout << "Next is NULL, exit\n";
+                            // cout << "Next is NULL, exit\n";
                             break;
                         }
                             
@@ -385,35 +385,35 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
                         //     print_vertex_property(p);
                         // }
                         
-                        cout << "AFTER reconnect\n";
-                        print_vertices(g);
+                        // cout << "AFTER reconnect\n";
+                        // print_vertices(g);
                         // clear the circle
                         circle.clear();
                         // the new start of the circle is the next vertex
-                        cout << "DONE removing" << endl;
+                        // cout << "DONE removing" << endl;
                         cur = root;
                         break;
                     }
                     else {
-                        cout << "before removal, the graph contains " << boost::num_edges(*g) << " edges" << endl;
+                        // cout << "before removal, the graph contains " << boost::num_edges(*g) << " edges" << endl;
                         boost::remove_in_edge_if(circle[0], pred, *g);
                         for (int i = 1; i < circle.size(); i++) {
                             p = boost::get(pmap, circle[i]);
-                            cout << i << ": ";
-                            print_vertex_property(p);
+                            // cout << i << ": ";
+                            // print_vertex_property(p);
                             boost::remove_in_edge_if(circle[i], pred, *g);
                             boost::remove_vertex(circle[i], *g);
                         }
                         // cout << endl;
-                        cout << "after removal, the graph contains " << boost::num_edges(*g) << " edges" << endl;
+                        // cout << "after removal, the graph contains " << boost::num_edges(*g) << " edges" << endl;
                         // the new start of the circle is the next vertex
-                        cout << "DONE removing" << endl;
+                        // cout << "DONE removing" << endl;
                         cur = root;
                         break;
                     }
                 }
                 else {
-                    cout << "havent reached the end of circle yet\n";
+                    // cout << "havent reached the end of circle yet\n";
                     circle.push_back(next);
                 }
 
