@@ -413,50 +413,47 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
     // Scan up the trace window until we see the miss pc again
     while(1) {
         // If we see the miss pc again, the graph is completed
+        
+        if (trace_window[cur_index].offset1 == -1) {
+            cout << "NO offset at instr " << cur_index << endl;
+            if (trace_window[cur_index].is_memory) {
+                cout << "instr " << cur_index << " uses memory " << trace_window[cur_index].source_memory[0] << endl;
+                cur_vertex = add_vertex(g, trace_window[cur_index].source_memory[0], ADDR);
+                next_index = traceback_ea(trace_window[cur_index].source_memory[0], trace_window, cur_index + 1);
+            }
+            else {
+                cout << "instr " << cur_index << " uses reg " << trace_window[cur_index].source_registers[0] << endl;
+                cur_vertex = add_vertex(g, trace_window[cur_index].source_registers[0], ADDR);
+                next_index = traceback_reg(trace_window[cur_index].source_registers[0], trace_window, cur_index + 1);
+            }
+            add_edge(g, cur_parent, cur_vertex);
+        }
+        else {
+            cout << "YES offset at instr " << cur_index << endl;
+            offset = add_vertex(g, trace_window[cur_index].offset1, CONST);
+            if (trace_window[cur_index].is_memory) {
+                cout << "instr " << cur_index << " uses memory " << trace_window[cur_index].source_memory[0] << endl;
+                cur_vertex = add_vertex(g, trace_window[cur_index].source_memory[0], ADDR);
+                next_index = traceback_ea(trace_window[cur_index].source_memory[0], trace_window, cur_index + 1);
+            }
+            else {
+                cout << "instr " << cur_index << " uses reg " << trace_window[cur_index].source_registers[0] << endl;
+                cur_vertex = add_vertex(g, trace_window[cur_index].source_registers[0], ADDR);
+                next_index = traceback_reg(trace_window[cur_index].source_registers[0], trace_window, cur_index + 1);
+            }
+            add_edge(g, cur_parent, offset);
+            add_edge(g, cur_parent, cur_vertex);
+        }
+        // if we cannot trace back anymore, break
+        if (next_index == -1)
+            break;
+        cur_parent = cur_vertex;
+        cur_index = next_index;
+            
         if (trace_window[cur_index].ip == miss_pc) {
             cout << "reached miss pc again, exit\n";
             break;
         }
-        
-        else {
-            if (trace_window[cur_index].offset1 == -1) {
-                cout << "NO offset at instr " << cur_index << endl;
-                if (trace_window[cur_index].is_memory) {
-                    cout << "instr " << cur_index << " uses memory " << trace_window[cur_index].source_memory[0] << endl;
-                    cur_vertex = add_vertex(g, trace_window[cur_index].source_memory[0], ADDR);
-                    next_index = traceback_ea(trace_window[cur_index].source_memory[0], trace_window, cur_index + 1);
-                }
-                else {
-                    cout << "instr " << cur_index << " uses reg " << trace_window[cur_index].source_registers[0] << endl;
-                    cur_vertex = add_vertex(g, trace_window[cur_index].source_registers[0], ADDR);
-                    next_index = traceback_reg(trace_window[cur_index].source_registers[0], trace_window, cur_index + 1);
-                }
-                add_edge(g, cur_parent, cur_vertex);
-            }
-            else {
-                cout << "YES offset at instr " << cur_index << endl;
-                offset = add_vertex(g, trace_window[cur_index].offset1, CONST);
-                if (trace_window[cur_index].is_memory) {
-                    cout << "instr " << cur_index << " uses memory " << trace_window[cur_index].source_memory[0] << endl;
-                    cur_vertex = add_vertex(g, trace_window[cur_index].source_memory[0], ADDR);
-                    next_index = traceback_ea(trace_window[cur_index].source_memory[0], trace_window, cur_index + 1);
-                }
-                else {
-                    cout << "instr " << cur_index << " uses reg " << trace_window[cur_index].source_registers[0] << endl;
-                    cur_vertex = add_vertex(g, trace_window[cur_index].source_registers[0], ADDR);
-                    next_index = traceback_reg(trace_window[cur_index].source_registers[0], trace_window, cur_index + 1);
-                }
-                add_edge(g, cur_parent, offset);
-                add_edge(g, cur_parent, cur_vertex);
-            }
-            // if we cannot trace back anymore, break
-            if (next_index == -1)
-                break;
-            cur_parent = cur_vertex;
-            cur_index = next_index;
-            
-        }
-
     }
     
     return root;
