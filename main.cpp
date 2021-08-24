@@ -277,7 +277,7 @@ int traceback_reg(uint8_t reg, deque<ooo_model_instr> trace_window, int index) {
 
     for (int i = index; i < size; i++)
     {
-        cur_instr = trace_window.at(i);
+        cur_instr = trace_window[i];
         if(cur_instr.source_registers[0] == reg) {
             found = 1;
             return i;
