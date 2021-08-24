@@ -201,15 +201,15 @@ void print_vertices(Graph *g) {
     boost::tie(vi, vi_end) = boost::vertices(*g);
     for (; vi != vi_end; vi++) {
         vp = boost::get(pmap, *vi);
-        cout << std::setw(6 - numlen(vp.source)) << vp.source;
+        cout << vp.source;
         boost::tie(ui, ui_end) = boost::vertices(*g);
         for (; ui != ui_end; ui++) {
             boost::tie(e, to) = boost::edge(*ui, *vi, *g);
             boost::tie(e, from) = boost::edge(*vi, *ui, *g);
             if (to || from)
-                cout << std::setw(6) << 1;
+                cout << std::setw(6 - numlen(vp.source)) << 1;
             else 
-                cout << std::setw(6) << 0;  
+                cout << std::setw(6 - numlen(vp.source)) << 0;  
         }
         
         cout << endl;
