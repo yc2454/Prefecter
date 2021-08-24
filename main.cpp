@@ -548,9 +548,9 @@ int main(int argc, char** argv)
     vertex_descriptor_t root = build_graph(last_occur_window, &g, miss_pc);
     print_vertices(&g);
 
-    cout << "do compaction to the graph" << endl;
-    store_load_bypassing(&g, root);
-    print_vertices(&g);
+    // cout << "do compaction to the graph" << endl;
+    // store_load_bypassing(&g, root);
+    // print_vertices(&g);
     
     return 0;
 }
