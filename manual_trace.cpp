@@ -56,7 +56,7 @@ trace_instr_format_t create_instr(unsigned long long int ip, long long int offse
     return instr;
 }
 
-
+// Manually generate a trace file
 int main() {
     FILE *out = fopen("manually_created_trace", "w+");
 

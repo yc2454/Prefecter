@@ -14,45 +14,17 @@ uint64_t champsim_seed;
 // the trace file
 FILE *trace_file;
 
-// the profile
+// the cache miss profile, contains the ip of instructions
+// where cache miss happened
 FILE *profile;
 
 // ./main -traces ../ChampSim/dpc3_traces/600.perlbench_s-210B.champsimtrace.xz examp.txt
 // g++ -g -Wall -std=c++11 -o main main.cpp
 
-struct Source
-{
-    bool is_mem;
-    uint8_t reg;
-    uint64_t mem;
-};
-
 using namespace std;
 
-int read_from_trace() {
-
-    input_instr trace_read_instr;
-    char instr[255];
-    size_t instr_size = sizeof(input_instr);
-
-    if (!fread(&trace_read_instr, instr_size, 1, trace_file))
-    {
-        // reached end of file for this trace
-        cout << "*** Reached end of trace " << endl; 
-
-        // close the trace file 
-        pclose(trace_file);
-        
-        // exit
-        return 0;
-    }
-    else
-    {
-        return 1;
-    }
-    
-}
-
+// Read in an instruction in input_instr structure and 
+// transform it to ooo_model_instr type
 ooo_model_instr copy_into_format (input_instr current_instr) {
     
     // copy the instruction into the performance model's instruction format
@@ -212,6 +184,7 @@ ooo_model_instr copy_into_format (input_instr current_instr) {
 
 }
 
+// Search the last occurence of the miss pc in the trace_file
 deque<ooo_model_instr> search_last_occurence(uint64_t miss_pc) {
 
     // to read in from the trace file
@@ -249,22 +222,12 @@ deque<ooo_model_instr> search_last_occurence(uint64_t miss_pc) {
     pclose(trace_file);
         
     // exit
-    if (found) {
-        // cout << "the instruction is found\n";
-        return window;
-    } 
-    else {
-        // if the miss_pc was not found, return an empty deque;
-        // cout << "NOT FOUND\n";
-        return window;
+    if (!found) {
+        cout << "NOT FOUND\n";
     }
+
+    return window;
         
-}
-
-
-// TODO:
-uint64_t find_source(input_instr i) {
-    return 0;
 }
 
 // Search the last occurence of register reg
@@ -317,7 +280,7 @@ long long int find_const_offset(ooo_model_instr cur_instr) {
     else if (cur_instr.offset2 != -1 && cur_instr.offset2 != 0) 
         return cur_instr.offset2;
     else
-        return -17;
+        return -1;
 }
 
 int instr_to_vertex(vertex_descriptor_t parent, ooo_model_instr instr, deque<ooo_model_instr> trace_window, Graph *g) {
@@ -370,36 +333,6 @@ vertex_descriptor_t build_graph(deque<ooo_model_instr> trace_window, Graph *g, u
     vertex_descriptor_t cur_vertex;
     // the parent for the current instruction
     vertex_descriptor_t cur_parent;
-
-    // First, we add the instruction at the miss-causing pc into the graph
-    // if (trace_window[0].offset1 == -1) {
-    //     cout << "NO offset at root\n";
-    //     if (trace_window[0].is_memory) {
-    //         cout << "Root uses memory " << trace_window[0].source_memory[0] << endl;
-    //         root = add_vertex(g, trace_window[0].source_memory[0], ADDR);
-    //         cur_index = traceback_ea(trace_window[0].source_memory[0], trace_window, 1);
-    //     }
-    //     else {
-    //         cout << "Root uses register " << trace_window[0].source_registers[0] << endl;
-    //         root = add_vertex(g, trace_window[0].source_registers[0], ADDR);
-    //         cur_index = traceback_reg(trace_window[0].source_registers[0], trace_window, 1);
-    //     }
-    // }
-    // else {
-    //     cout << "YES offset at root\n";
-    //     offset = add_vertex(g, trace_window[0].offset1, CONST);
-    //     if (trace_window[0].is_memory) {
-    //         cout << "Root uses memory " << trace_window[0].source_memory[0] << endl;
-    //         root = add_vertex(g, trace_window[0].source_memory[0], ADDR);
-    //         cur_index = traceback_ea(trace_window[0].source_memory[0], trace_window, 1);
-    //     }
-    //     else {
-    //         cout << "Root uses register " << trace_window[0].source_registers[0] << endl;
-    //         root = add_vertex(g, trace_window[0].source_registers[0], ADDR);
-    //         cur_index = traceback_reg(trace_window[0].source_registers[0], trace_window, 1);
-    //     }
-    //     add_edge(g, root, offset);
-    // }
 
     root = add_vertex(g, trace_window[0].destination_registers[0], ADDR);
 
@@ -524,24 +457,15 @@ int main(int argc, char** argv)
     profile = fopen(argv[3], "r");
     uint64_t miss_pc;
 
+    // Build a trace window
     while (fgets(miss_instr, sizeof(miss_instr), profile)) {
-        /* note that fgets don't strip the terminating \n, checking its
-           presence would allow to handle lines longer that sizeof(line) */
-        
         printf("%s", miss_instr); 
         miss_pc = (int)strtol(miss_instr, NULL, 0);
-        // cout << miss_pc << endl;
         last_occur_window = search_last_occurence(miss_pc);
-        // cout << "included " << last_occur_window.size() << " instructions in the window\n";
     }
-    
+
     fclose(profile);
-
-    for (int i = 0; i < last_occur_window.size(); i++) {
-        // cout << hex << last_occur_window[i].ip << dec << endl;
-    }
     
-
     cout << "creating the graph" << endl;
     Graph g = graph_create();
     cout << "building the graph" << endl;
