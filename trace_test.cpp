@@ -9,8 +9,6 @@ char trace_string[1024];
 char gunzip_command[1024];
 
 uint64_t champsim_seed;
-uint64_t load_op = 69698705567;
-uint64_t add_op = 1691269;
 
 // the trace file
 FILE *trace_file;
