@@ -21,18 +21,19 @@ struct VertexProperty{
 };
 
 struct EdgeProperty {
-
 };
 
+// The type for our graph.
+// It uses an adjacency list implementation
 typedef boost::adjacency_list<boost::vecS, boost::listS,       
             boost::bidirectionalS, VertexProperty, EdgeProperty>
     Graph;
 
+// Types for vertex descriptor and edge descriptor
 typedef boost::graph_traits<Graph>::vertex_descriptor vertex_descriptor_t;
 typedef boost::graph_traits<Graph>::edge_descriptor edge_descriptor_t;
 
-EdgeProperty ep; 
-
+// A trivial predicate about edges that always returns true 
 template <class edge_descriptor_t>
 struct edge_predicate {
     bool operator() (const edge_descriptor_t& e) const {
@@ -40,6 +41,7 @@ struct edge_predicate {
     }
 };
 
+// Creates a graph
 Graph graph_create() {
     
     Graph graph;
@@ -47,6 +49,8 @@ Graph graph_create() {
 
 }
 
+// Add vertex with source [source] and type [t] to graph [g]
+// returns the vertex descriptor of the newly added vertex
 vertex_descriptor_t add_vertex(Graph * g, uint64_t source, term_type t) {
     
     VertexProperty vp; 
@@ -59,6 +63,10 @@ vertex_descriptor_t add_vertex(Graph * g, uint64_t source, term_type t) {
     return vd;
 }
 
+// Add a directed edge to the graph [g]
+// Source of the edge is [src] and destination of the edge is [dst]
+// Returns a pair of edge descriptor and boolean. The Boolean 
+// describes whether the edge is successfully added
 pair<edge_descriptor_t, bool> add_edge(Graph * g, vertex_descriptor_t src, vertex_descriptor_t dst){
 
     // EdgeProperty ep;
@@ -73,6 +81,8 @@ pair<edge_descriptor_t, bool> add_edge(Graph * g, vertex_descriptor_t src, verte
 
 }
 
+// Find the sources of [v] in [g]
+// Returns the vertices in a vector
 vector<vertex_descriptor_t> find_source_vertices(Graph * g, vertex_descriptor_t v) {
     
     // find in edges to target
@@ -92,22 +102,8 @@ vector<vertex_descriptor_t> find_source_vertices(Graph * g, vertex_descriptor_t 
 
 }
 
-VertexProperty get_source_property(Graph g, vertex_descriptor_t target) {
-
-    // find in edges to target
-    boost::graph_traits<Graph>::in_edge_iterator ei, ei_end;
-    boost::tie(ei, ei_end) = boost::in_edges(target, g);
-    // find source
-    vertex_descriptor_t src = boost::source(*ei, g);
-    // get property
-    boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, g);
-    VertexProperty vp = boost::get(pmap, src);
-
-    return vp;
-
-}
-
-// Find the source vertex of the input target in g
+// Find the nonterminal source vertex of the input [target] in [g]
+// As a pre-condition, there is at most one such source
 vertex_descriptor_t get_nonterm_source(Graph * g, vertex_descriptor_t target) {
     
     // find in edges to target
@@ -129,6 +125,7 @@ vertex_descriptor_t get_nonterm_source(Graph * g, vertex_descriptor_t target) {
     
 }
 
+// Find the first source vertex of the input [target] in [g]
 vertex_descriptor_t get_first_source(Graph * g, vertex_descriptor_t target) {
     
     // find in edges to target
@@ -143,26 +140,23 @@ vertex_descriptor_t get_first_source(Graph * g, vertex_descriptor_t target) {
     
 }
 
+// Find the target of [v] in [g]
 vertex_descriptor_t get_target(Graph * g, vertex_descriptor_t v) {
 
     // find in edges to target
-    // cout << "got here -1" << endl;
     boost::graph_traits<Graph>::out_edge_iterator ei, ei_end;
-    // cout << "got here 0" << endl;
     boost::tie(ei, ei_end) = boost::out_edges(v, *g);
     // find source
     vertex_descriptor_t target;
     
-    // cout << "got here 1" << endl;
     target = boost::target(*ei, *g);
-    // cout << "got here 2" << endl;
     return target;
     
 }
 
-int numlen(uint64_t n)
-{
-    // count number of characters needed for number, +1 if negative
+// Count number of characters needed for number, +1 if negative
+int numlen(uint64_t n) {
+    
     int length = 0;
     if (n == 0)
         return 1;
@@ -233,6 +227,7 @@ void print_vertices(Graph *g) {
 
 }
 
+// Remove edges in [g] whose source and target are the same vertex
 void remove_self_edge(Graph * g) {
     boost::graph_traits<Graph>::vertex_iterator vi, vi_end;
     boost::tie(vi, vi_end) = boost::vertices(*g);
@@ -250,6 +245,7 @@ void remove_self_edge(Graph * g) {
     }
 }
 
+// Transform type to string
 string ty_to_string(term_type t) {
     switch (t) {
     case REG:
@@ -266,6 +262,7 @@ string ty_to_string(term_type t) {
     }
 }
 
+// Print out of vertex properties
 void print_vertex_property(VertexProperty p) {
     cout << "source: " << p.source << " type: " << ty_to_string(p.ty) << endl;
 }
@@ -289,7 +286,6 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
     VertexProperty p;
     // self-edge. Don't understand why it exists yet
     edge_descriptor_t start_self;
-    // bool start_self_exists;
     // edge iterators for the current vertex
     boost::graph_traits<Graph>::edge_iterator ei, ei_end;
     // property map to easily access the properties

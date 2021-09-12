@@ -19,7 +19,7 @@ FILE *trace_file;
 FILE *profile;
 
 // ./main -traces ../ChampSim/dpc3_traces/600.perlbench_s-210B.champsimtrace.xz examp.txt
-// g++ -g -Wall -std=c++11 -o main main.cpp
+// g++ -g -std=c++11 -o main main.cpp
 
 using namespace std;
 
@@ -274,6 +274,9 @@ int traceback_ea(uint64_t ea, deque<ooo_model_instr> trace_window, int index) {
     
 }
 
+// Check if the intruction has constant offset
+// If it does, return the offset
+// Otherwise, return -1
 long long int find_const_offset(ooo_model_instr cur_instr) {
     if (cur_instr.offset1 != -1 && cur_instr.offset1 != 0) 
         return cur_instr.offset1;
@@ -283,6 +286,7 @@ long long int find_const_offset(ooo_model_instr cur_instr) {
         return -1;
 }
 
+// Transform an instruction to a vertex in the graph
 int instr_to_vertex(vertex_descriptor_t parent, ooo_model_instr instr, deque<ooo_model_instr> trace_window, Graph *g) {
     
     vertex_descriptor_t son;
@@ -395,10 +399,6 @@ int main(int argc, char** argv)
     char miss_instr[255];
     deque<ooo_model_instr> last_occur_window;
 
-    for (int i=0; i<argc; i++) {
-        // cout << "num of arg: " << i << " arg: " << argv[i] << endl;
-    }
-
     sprintf(trace_string, "%s", argv[2]);
 
     std::string full_name(argv[2]);
@@ -407,6 +407,7 @@ int main(int argc, char** argv)
     std::string fmtstr;
     std::string decomp_program;
 
+    // Assert the type of trace the program accepts
     if (full_name.substr(0,4) == "http")
     {
         // Check file exists
@@ -440,8 +441,10 @@ int main(int argc, char** argv)
         assert(0);
     }
 
+    // Build the command for opening the trace file
     sprintf(gunzip_command, fmtstr.c_str(), decomp_program.c_str(), argv[2]);
 
+    // Open the trace file
     trace_file = popen(gunzip_command, "r");
     if (trace_file == NULL) {
         printf("\n*** Trace file not found: %s ***\n\n", argv[2]);
@@ -452,6 +455,7 @@ int main(int argc, char** argv)
     /////////////////////// trace reading complete ///////////////////////////////
     // ------------------------------------------------------------------------ //
 
+    // Open the profile file
     profile = fopen(argv[3], "r");
     uint64_t miss_pc;
 
