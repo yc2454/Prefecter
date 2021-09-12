@@ -18,6 +18,7 @@ a store-load-bypass function.
 This program prints out a trace file.
 
 ## Usage
+The system must have `boost/graph` library installed before use. <br>
 To run the program, use:
 ```
 g++ -g -std=c++11 -o main main.cpp
