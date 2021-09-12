@@ -20,6 +20,6 @@ This program prints out a trace file.
 ## Usage
 To run the program, use:
 ```
-g++ -g -Wall -std=c++11 -o main main.cpp
+g++ -g -std=c++11 -o main main.cpp
 ./main -traces TRACE_FILE PROFILE_FILE
 ```
