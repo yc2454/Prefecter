@@ -114,7 +114,7 @@ vertex_descriptor_t get_nonterm_source(Graph * g, vertex_descriptor_t target) {
     boost::graph_traits<Graph>::in_edge_iterator ei, ei_end;
     boost::tie(ei, ei_end) = boost::in_edges(target, *g);
     // find source
-    // vertex_descriptor_t src, nonterm_src;
+    vertex_descriptor_t src;
     VertexProperty vp;
     boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, *g);
     
