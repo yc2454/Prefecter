@@ -407,8 +407,6 @@ int main(int argc, char** argv)
     std::string fmtstr;
     std::string decomp_program;
 
-    int status;
-
     if (full_name.substr(0,4) == "http")
     {
         // Check file exists

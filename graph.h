@@ -61,7 +61,7 @@ vertex_descriptor_t add_vertex(Graph * g, uint64_t source, term_type t) {
 
 pair<edge_descriptor_t, bool> add_edge(Graph * g, vertex_descriptor_t src, vertex_descriptor_t dst){
 
-    EdgeProperty ep;
+    // EdgeProperty ep;
 
     edge_descriptor_t ed;
     bool inserted;
@@ -114,7 +114,7 @@ vertex_descriptor_t get_nonterm_source(Graph * g, vertex_descriptor_t target) {
     boost::graph_traits<Graph>::in_edge_iterator ei, ei_end;
     boost::tie(ei, ei_end) = boost::in_edges(target, *g);
     // find source
-    vertex_descriptor_t src, nonterm_src;
+    // vertex_descriptor_t src, nonterm_src;
     VertexProperty vp;
     boost::property_map<Graph, boost::vertex_bundle_t>::type pmap = boost::get(boost::vertex_bundle, *g);
     
@@ -289,7 +289,7 @@ void store_load_bypassing(Graph *g, vertex_descriptor_t root) {
     VertexProperty p;
     // self-edge. Don't understand why it exists yet
     edge_descriptor_t start_self;
-    bool start_self_exists;
+    // bool start_self_exists;
     // edge iterators for the current vertex
     boost::graph_traits<Graph>::edge_iterator ei, ei_end;
     // property map to easily access the properties
